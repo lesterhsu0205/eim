@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.RoleDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.RoleDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 ROLE_ID AS roleId
+			,ROLE_NM AS roleNm
+			,ROLE_DESC AS roleDesc
+			,BASIC_MENU_ID AS basicMenuId
+			,@rownum := @rownum + 1 AS rn
+			<!--,ROW_NUMBER() over (order by ROLE_ID) as rn -->
+		FROM TBROLEBS
+		WHERE 1=1
+	<if test="roleId != null and roleId != ''">
+		AND ROLE_ID like CONCAT('%',#{roleId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="roleNm != null and roleNm != ''">
+		AND ROLE_NM like CONCAT('%',#{roleNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="roleDesc != null and roleDesc != ''">
+		AND ROLE_DESC like CONCAT('%',#{roleDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="basicMenuId != null and basicMenuId != ''">
+		AND BASIC_MENU_ID like CONCAT('%',#{basicMenuId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		order by ROLE_ID
+	) p , (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBROLEBS
+		WHERE 1=1
+	<if test="roleId != null and roleId != ''">
+		AND ROLE_ID like CONCAT('%',#{roleId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="roleNm != null and roleNm != ''">
+		AND ROLE_NM like CONCAT('%',#{roleNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="roleDesc != null and roleDesc != ''">
+		AND ROLE_DESC like CONCAT('%',#{roleDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="basicMenuId != null and basicMenuId != ''">
+		AND BASIC_MENU_ID like CONCAT('%',#{basicMenuId, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectRole" resultType="eims.web.dto.table.RoleDto">	
+	SELECT
+		 ROLE_ID AS roleId
+		,ROLE_NM AS roleNm
+		,ROLE_DESC AS roleDesc
+		,BASIC_MENU_ID AS basicMenuId
+	FROM TBROLEBS
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertRole"	parameterType="eims.web.dto.table.RoleDto">
+	INSERT INTO TBROLEBS (
+		 ROLE_ID		
+		,ROLE_NM		
+		,ROLE_DESC		
+		,BASIC_MENU_ID
+	) VALUES (
+ 		 #{roleId, jdbcType = VARCHAR}
+ 		,#{roleNm, jdbcType = VARCHAR}
+ 		,#{roleDesc, jdbcType = VARCHAR}
+ 		,#{basicMenuId, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateRole"	parameterType="eims.web.dto.table.RoleDto">
+	UPDATE TBROLEBS 
+	SET
+  		ROLE_NM = #{roleNm, jdbcType = VARCHAR}, 
+  		ROLE_DESC = #{roleDesc, jdbcType = VARCHAR},
+  		BASIC_MENU_ID = #{basicMenuId, jdbcType = VARCHAR}
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteRole"	parameterType="java.lang.String">
+	DELETE FROM TBROLEBS
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	</update>
+</mapper>

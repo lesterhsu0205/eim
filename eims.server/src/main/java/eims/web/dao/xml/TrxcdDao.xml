@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.TrxcdDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.TrxcdDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 TRX_CD AS trxCd
+			,TRX_CD_NM AS trxCdNm
+			,MNG_SYS_CD AS mngSysCd
+			,TRX_CD_DESC AS trxCdDesc
+			,@rownum := @rownum + 1 AS rn
+<!--			,ROW_NUMBER() over (order by TRX_CD, MNG_SYS_CD) as rn -->
+		FROM TBTRXCD
+		WHERE 1=1
+	<if test="trxCd != null and trxCd != ''">
+		AND TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCdNm != null and trxCdNm != ''">
+		AND TRX_CD_NM like CONCAT('%',#{trxCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="mngSysCd != null and mngSysCd != ''">
+		AND MNG_SYS_CD like CONCAT('%',#{mngSysCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCdDesc != null and trxCdDesc != ''">
+		AND TRX_CD_DESC like CONCAT('%',#{trxCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	order by TRX_CD, MNG_SYS_CD
+	) p , (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBTRXCD
+		WHERE 1=1
+	<if test="trxCd != null and trxCd != ''">
+		AND TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCdNm != null and trxCdNm != ''">
+		AND TRX_CD_NM like CONCAT('%',#{trxCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="mngSysCd != null and mngSysCd != ''">
+		AND MNG_SYS_CD like CONCAT('%',#{mngSysCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCdDesc != null and trxCdDesc != ''">
+		AND TRX_CD_DESC like CONCAT('%',#{trxCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectTrxcd" resultType="eims.web.dto.table.TrxcdDto">	
+	SELECT
+		 TRX_CD AS trxCd
+		,TRX_CD_NM AS trxCdNm
+		,MNG_SYS_CD AS mngSysCd
+		,TRX_CD_DESC AS trxCdDesc
+	FROM TBTRXCD
+	WHERE TRX_CD = #{trxCd, jdbcType = VARCHAR}
+	AND   MNG_SYS_CD = #{mngSysCd, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertTrxcd"	parameterType="eims.web.dto.table.TrxcdDto">
+	INSERT INTO TBTRXCD (
+		 TRX_CD		
+		,TRX_CD_NM		
+		,MNG_SYS_CD		
+		,TRX_CD_DESC		
+	) VALUES (
+		 #{trxCd, jdbcType = VARCHAR}
+ 		,#{trxCdNm, jdbcType = VARCHAR}
+ 		,#{mngSysCd, jdbcType = VARCHAR}
+ 		,#{trxCdDesc, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateTrxcd"	parameterType="eims.web.dto.table.TrxcdDto">
+	UPDATE TBTRXCD 
+	SET
+ 		TRX_CD_NM = #{trxCdNm, jdbcType = VARCHAR}		
+   		,TRX_CD_DESC = #{trxCdDesc, jdbcType = VARCHAR}		
+   	WHERE TRX_CD = #{trxCd, jdbcType = VARCHAR}
+	AND   MNG_SYS_CD = #{mngSysCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteTrxcd"	parameterType="eims.web.dto.table.TrxcdDto">
+	DELETE FROM TBTRXCD
+	WHERE TRX_CD = #{trxCd, jdbcType = VARCHAR}
+	AND   MNG_SYS_CD = #{mngSysCd, jdbcType = VARCHAR}
+	</update>
+</mapper>

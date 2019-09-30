@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.SrsysbsDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.SrsysbsDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 SYS_CD AS sysCd
+			,SYS_NM AS sysNm
+			,SYS_CD_DESC AS sysCdDesc
+			,CRG_MAN_NM AS crgManNm
+			,NONCORE_YN AS noncoreYn
+			,@rownum := @rownum + 1 AS rn
+			<!--  ,ROW_NUMBER() over (order by CRG_MAN_NM, SYS_CD) as rn -->
+		FROM TBSRSYSBS
+		WHERE 1=1
+	<if test="sysCd != null and sysCd != ''">
+		AND SYS_CD like CONCAT('%',#{sysCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="sysNm != null and sysNm != ''">
+		AND SYS_NM like CONCAT('%',#{sysNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="sysCdDesc != null and sysCdDesc != ''">
+		AND SYS_CD_DESC like CONCAT('%',#{sysCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="crgManNm != null and crgManNm != ''">
+		AND CRG_MAN_NM like CONCAT('%',#{crgManNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="noncoreYn != null and noncoreYn != ''">
+		AND NONCORE_YN like CONCAT('%',#{noncoreYn, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	 order by CRG_MAN_NM, SYS_CD
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))	   
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBSRSYSBS
+		WHERE 1=1
+	<if test="sysCd != null and sysCd != ''">
+		AND SYS_CD like CONCAT('%',#{sysCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="sysNm != null and sysNm != ''">
+		AND SYS_NM like CONCAT('%',#{sysNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="sysCdDesc != null and sysCdDesc != ''">
+		AND SYS_CD_DESC like CONCAT('%',#{sysCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="crgManNm != null and crgManNm != ''">
+		AND CRG_MAN_NM like CONCAT('%',#{crgManNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="noncoreYn != null and noncoreYn != ''">
+		AND NONCORE_YN like CONCAT('%',#{noncoreYn, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectSrsysbs" resultType="eims.web.dto.table.SrsysbsDto">	
+	SELECT
+		 SYS_CD AS sysCd
+		,SYS_NM AS sysNm
+		,SYS_CD_DESC AS sysCdDesc
+		,CRG_MAN_NM AS crgManNm
+		,NONCORE_YN AS noncoreYn
+	FROM TBSRSYSBS
+	WHERE SYS_CD = #{sysCd, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertSrsysbs"	parameterType="eims.web.dto.table.SrsysbsDto">
+	INSERT INTO TBSRSYSBS (
+		 SYS_CD		
+		,SYS_NM		
+		,SYS_CD_DESC		
+		,CRG_MAN_NM		
+	) VALUES (
+		 #{sysCd, jdbcType = VARCHAR}
+ 		,#{sysNm, jdbcType = VARCHAR}
+ 		,#{sysCdDesc, jdbcType = VARCHAR}
+ 		,#{crgManNm, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateSrsysbs"	parameterType="eims.web.dto.table.SrsysbsDto">
+	UPDATE TBSRSYSBS 
+	SET
+ 		SYS_NM = #{sysNm, jdbcType = VARCHAR}		
+  		,SYS_CD_DESC = #{sysCdDesc, jdbcType = VARCHAR}		
+  		,CRG_MAN_NM = #{crgManNm, jdbcType = VARCHAR}
+  		,NONCORE_YN = #{noncoreYn, jdbcType = VARCHAR}		
+   	WHERE SYS_CD = #{sysCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteSrsysbs"	parameterType="eims.web.dto.table.SrsysbsDto">
+	DELETE FROM TBSRSYSBS
+	WHERE SYS_CD = #{sysCd, jdbcType = VARCHAR}
+	</update>
+	<update id="deleteSrsysbsAll">
+	DELETE FROM TBSRSYSBS
+	</update>
+	
+	<update id="updateSysCodeInterface"	parameterType="eims.web.dto.table.CodeInterfaceDto">
+	UPDATE TB_EAI_CD_DMN_CD_VAL_I 
+	SET
+		EAI_IF_DATA_APLY_TMSTMP = #{ifDataAplyTmstmp, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_STS_CD = #{ifDataAplyStsCd, jdbcType = VARCHAR}		
+  		,EAI_IF_DATA_APLY_ERR_CD = #{ifDataAplyErrCd, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_ERR_MSG_CONT = #{ifDataAplyErrMsg, jdbcType = NUMERIC}
+   	WHERE 
+	   	EAI_IF_DATA_SEQ_NBR = #{ifDataSeq, jdbcType = NUMERIC}	
+	</update>
+	
+ 	<select id="selectSysCodeInterfaceList" resultType="eims.web.dto.table.CodeInterfaceDto">
+	 SELECT 
+	 	EAI_IF_DATA_SEQ_NBR as ifDataSeq,
+		EAI_IF_DATA_CRT_TMSTMP as ifDataCrtTmstmp,
+		EAI_IF_DATA_APLY_TP_CD as ifDataAplyTpCd,
+		EAI_IF_DATA_APLY_STS_CD as ifDataAplyStsCd,
+		EAI_IF_DATA_APLY_TMSTMP as ifDataAplyTmstmp,
+		EAI_IF_DATA_APLY_ERR_CD as ifDataAplyErrCd,
+		EAI_IF_DATA_APLY_ERR_MSG_CONT as ifDataAplyErrMsg,
+		CD_DMN_LGCL_NM as dmnLgclNm,
+		CD_DMN_PSCL_NM as dmnPsclNm,
+		CD_DMN_CD_VAL as dmnCdVal,
+		CD_DMN_CD_VAL_GLBL_NM as dmnCdValGlbl,
+		CD_DMN_CD_VAL_LCAL_NM as dmnCdValLcal
+	 FROM 
+	 	TB_EAI_CD_DMN_CD_VAL_I
+	 WHERE
+		(EAI_IF_DATA_APLY_STS_CD = 'N' OR EAI_IF_DATA_APLY_STS_CD = 'E') 
+		AND (CD_DMN_PSCL_NM ='SYS_CD'); 
+	</select>
+</mapper>

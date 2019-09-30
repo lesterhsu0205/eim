@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.ActionhisthsDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.ActionhisthsDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 HST_DSCD AS hstDscd
+			,ITEM_ID AS itemId
+			,WORK_CTT_CD AS workCttCd
+			,LOG_OCCUR_DTTM AS workDttm
+			,USER_ID AS userId
+			,ITEM_DESC AS itemDesc
+			,@rownum := @rownum + 1 AS rn
+<!-- 			,ROW_NUMBER() over (order by LOG_OCCUR_DTTM desc) as rn  -->
+		FROM TBACTIONHISTHS
+		WHERE 1=1
+	<if test="hstDscd != null and hstDscd != ''">
+		AND HST_DSCD like CONCAT('%',#{hstDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="itemId != null and itemId != ''">
+		AND ITEM_ID like CONCAT('%',#{itemId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="workCttCd != null and workCttCd != ''">
+		AND WORK_CTT_CD = #{workCttCd, jdbcType = VARCHAR}
+ 	</if>
+ 	<if test="workDttmFrom != null and workDttmFrom != '' and workDttmTo != null and workDttmTo != ''">
+		AND LOG_OCCUR_DTTM BETWEEN #{workDttmFrom, jdbcType = VARCHAR} and #{workDttmTo, jdbcType = VARCHAR}
+ 	</if>
+	<if test="userId != null and userId != ''">
+		AND USER_ID like CONCAT('%',#{userId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="itemDesc != null and itemDesc != ''">
+		AND ITEM_DESC like CONCAT('%',#{itemDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	order by LOG_OCCUR_DTTM desc
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBACTIONHISTHS
+		WHERE 1=1
+	<if test="hstDscd != null and hstDscd != ''">
+		AND HST_DSCD like CONCAT('%',#{hstDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="itemId != null and itemId != ''">
+		AND ITEM_ID like CONCAT('%',#{itemId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="workCttCd != null and workCttCd != ''">
+		AND WORK_CTT_CD = #{workCttCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="workDttmFrom != null and workDttmFrom != '' and workDttmTo != null and workDttmTo != ''">
+		AND LOG_OCCUR_DTTM BETWEEN #{workDttmFrom, jdbcType = VARCHAR} and #{workDttmTo, jdbcType = VARCHAR}
+ 	</if>
+	<if test="userId != null and userId != ''">
+		AND USER_ID like CONCAT('%',#{userId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="itemDesc != null and itemDesc != ''">
+		AND ITEM_DESC like CONCAT('%',#{itemDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectActionhisths" resultType="eims.web.dto.table.ActionhisthsDto">	
+	SELECT
+		 HST_DSCD AS hstDscd
+		,ITEM_ID AS itemId
+		,WORK_CTT_CD AS workCttCd
+		,LOG_OCCUR_DTTM AS workDttm
+		,USER_ID AS userId
+		,ITEM_DESC AS itemDesc
+	FROM TBACTIONHISTHS
+	</select>	
+
+	<insert id="insertActionhisths"	parameterType="eims.web.dto.table.ActionhisthsDto">
+	INSERT INTO TBACTIONHISTHS (
+		 HST_DSCD		
+		,ITEM_ID		
+		,WORK_CTT_CD		
+		,LOG_OCCUR_DTTM		
+		,USER_ID		
+		,ITEM_DESC		
+	) VALUES (
+		 #{hstDscd, jdbcType = VARCHAR}
+ 		,#{itemId, jdbcType = VARCHAR}
+ 		,#{workCttCd, jdbcType = VARCHAR}
+ 		,#{workDttm, jdbcType = VARCHAR}
+ 		,#{userId, jdbcType = VARCHAR}
+ 		,#{itemDesc, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateActionhisths"	parameterType="eims.web.dto.table.ActionhisthsDto">
+	UPDATE TBACTIONHISTHS 
+	SET
+		HST_DSCD = #{hstDscd, jdbcType = VARCHAR}		
+  		,ITEM_ID = #{itemId, jdbcType = VARCHAR}		
+  		,WORK_CTT_CD = #{workCttCd, jdbcType = VARCHAR}		
+  		,LOG_OCCUR_DTTM = #{workDttm, jdbcType = VARCHAR}		
+  		,USER_ID = #{userId, jdbcType = VARCHAR}		
+  		,ITEM_DESC = #{itemDesc, jdbcType = VARCHAR}		
+   	</update>
+	
+	<update id="deleteActionhisths"	parameterType="eims.web.dto.table.ActionhisthsDto">
+	DELETE FROM TBACTIONHISTHS
+	</update>
+</mapper>

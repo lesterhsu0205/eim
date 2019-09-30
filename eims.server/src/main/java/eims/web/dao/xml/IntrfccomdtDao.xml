@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.IntrfccomdtDao">
+
+	<resultMap id="getInterface" type="eims.web.dto.table.IntrfccomdtDto">
+	    <result property="intrfcId" column="INTRFC_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="trxCd" column="TRX_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="bizCd" column="BIZ_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="instCd" column="INST_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="trxTypeCd" column="TRX_TYPE_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="rawData" column="RAW_DATA" javaType="java.lang.String" jdbcType="CLOB" />	    	    
+	</resultMap>
+	
+	<select id="selectAll" resultType="eims.web.dto.table.IntrfccomdtDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 INTRFC_ID AS intrfcId
+			,TRX_CD AS trxCd
+			,BIZ_CD AS bizCd
+			,INST_CD AS instCd
+			,TRX_TYPE_CD AS trxTypeCd
+			,RAW_DATA AS rawData
+			,ROW_NUMBER() over (order by INTRFC_ID, TRX_CD, BIZ_CD, INST_CD, TRX_TYPE_CD) as rn
+		FROM TBINTRFCCOMDT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND TRX_CD = #{trxCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="bizCd != null and bizCd != ''">
+		AND BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="instCd != null and instCd != ''">
+		AND INST_CD = #{instCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="trxTypeCd != null and trxTypeCd != ''">
+		AND TRX_TYPE_CD = #{trxTypeCd, jdbcType = VARCHAR}
+ 	</if>
+	) p
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBINTRFCCOMDT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND TRX_CD = #{trxCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="bizCd != null and bizCd != ''">
+		AND BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="instCd != null and instCd != ''">
+		AND INST_CD = #{instCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="trxTypeCd != null and trxTypeCd != ''">
+		AND TRX_TYPE_CD = #{trxTypeCd, jdbcType = VARCHAR}
+ 	</if>
+	</select>
+	
+	<select id="selectIntrfccomdt" resultType="eims.web.dto.table.IntrfccomdtDto">	
+	SELECT
+		 INTRFC_ID AS intrfcId
+		,TRX_CD AS trxCd
+		,BIZ_CD AS bizCd
+		,INST_CD AS instCd
+		,TRX_TYPE_CD AS trxTypeCd
+		,RAW_DATA AS rawData
+	FROM TBINTRFCCOMDT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	AND TRX_CD = #{trxCd, jdbcType = VARCHAR}
+ 	AND BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+ 	AND INST_CD = #{instCd, jdbcType = VARCHAR}
+ 	AND TRX_TYPE_CD = #{trxTypeCd, jdbcType = VARCHAR}
+ 	</select>	
+
+	<insert id="insertIntrfccomdt"	parameterType="eims.web.dto.table.IntrfccomdtDto">
+	INSERT INTO TBINTRFCCOMDT (
+		 INTRFC_ID		
+		,TRX_CD		
+		,BIZ_CD		
+		,INST_CD		
+		,TRX_TYPE_CD		
+		,RAW_DATA		
+	) VALUES (
+		 #{intrfcId, jdbcType = VARCHAR}
+ 		,#{trxCd, jdbcType = VARCHAR}
+ 		,#{bizCd, jdbcType = VARCHAR}
+ 		,#{instCd, jdbcType = VARCHAR}
+ 		,#{trxTypeCd, jdbcType = VARCHAR}
+ 		,#{rawData}
+  	)
+	</insert>
+	
+	<update id="updateIntrfccomdt"	parameterType="eims.web.dto.table.IntrfccomdtDto">
+	UPDATE TBINTRFCCOMDT 
+	SET
+     		RAW_DATA = #{rawData}		
+   	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	AND TRX_CD = #{trxCd, jdbcType = VARCHAR}
+	AND BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+	AND INST_CD = #{instCd, jdbcType = VARCHAR}
+	AND TRX_TYPE_CD = #{trxTypeCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteIntrfccomdt"	parameterType="eims.web.dto.table.IntrfccomdtDto">
+	DELETE FROM TBINTRFCCOMDT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	AND TRX_CD = #{trxCd, jdbcType = VARCHAR}
+ 	AND BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+ 	AND INST_CD = #{instCd, jdbcType = VARCHAR}
+ 	AND TRX_TYPE_CD = #{trxTypeCd, jdbcType = VARCHAR}
+ 	</update>
+</mapper>

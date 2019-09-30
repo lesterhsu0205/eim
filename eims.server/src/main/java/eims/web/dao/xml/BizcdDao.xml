@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.BizcdDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.BizcdDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 BIZ_CD AS bizCd
+			,BIZ_CD_NM AS bizCdNm
+			,BIZ_CD_DESC AS bizCdDesc
+			,@rownum := @rownum + 1 AS rn
+<!-- 			,ROW_NUMBER() over (order by BIZ_CD) as rn  -->
+		FROM TBBIZCD
+		WHERE 1=1
+	<if test="bizCd != null and bizCd != ''">
+		AND BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bizCdNm != null and bizCdNm != ''">
+		AND BIZ_CD_NM like CONCAT('%',#{bizCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bizCdDesc != null and bizCdDesc != ''">
+		AND BIZ_CD_DESC like CONCAT('%',#{bizCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		order by BIZ_CD
+	) p, (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBBIZCD
+		WHERE 1=1
+	<if test="bizCd != null and bizCd != ''">
+		AND BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bizCdNm != null and bizCdNm != ''">
+		AND BIZ_CD_NM like CONCAT('%',#{bizCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bizCdDesc != null and bizCdDesc != ''">
+		AND BIZ_CD_DESC like CONCAT('%',#{bizCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectBizcd" resultType="eims.web.dto.table.BizcdDto">	
+	SELECT
+		 BIZ_CD AS bizCd
+		,BIZ_CD_NM AS bizCdNm
+		,BIZ_CD_DESC AS bizCdDesc
+	FROM TBBIZCD
+	WHERE BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertBizcd"	parameterType="eims.web.dto.table.BizcdDto">
+	INSERT INTO TBBIZCD (
+		 BIZ_CD		
+		,BIZ_CD_NM		
+		,BIZ_CD_DESC		
+	) VALUES (
+		 #{bizCd, jdbcType = VARCHAR}
+ 		,#{bizCdNm, jdbcType = VARCHAR}
+ 		,#{bizCdDesc, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateBizcd"	parameterType="eims.web.dto.table.BizcdDto">
+	UPDATE TBBIZCD 
+	SET
+ 		BIZ_CD_NM = #{bizCdNm, jdbcType = VARCHAR}		
+  		,BIZ_CD_DESC = #{bizCdDesc, jdbcType = VARCHAR}		
+   	WHERE BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteBizcd"	parameterType="eims.web.dto.table.BizcdDto">
+	DELETE FROM TBBIZCD
+	WHERE BIZ_CD = #{bizCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteBizcdAll">
+	DELETE FROM TBBIZCD
+	</update>
+</mapper>

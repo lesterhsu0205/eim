@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.MsglayoutbsDao">
+	
+	<select id="checkLayoutId" resultType="java.lang.Integer">
+	SELECT count(*)
+		FROM TBMSGLAYOUTBS
+	WHERE 1=1
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	<select id="selectAll" resultType="eims.web.dto.table.MsglayoutbsDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 MSG_NM AS msgNm
+			,MSG_NM_SUB AS msgNmSub
+			,MSG_VERSION AS msgVersion
+			,MSG_DSCD AS msgDscd
+			,REG_MAN_ID AS regManId
+			,REG_DTTM AS regDttm
+			,MSG_DATA_VAL AS msgDataVal
+			,MSG_DESC AS msgDesc
+			,EXTRNL_BIZ_NM AS extrnlBizNm
+			,DTO_NM AS dtoNm
+			,MSG_LAYOUT_ID AS msgLayoutId
+			,APP_TYPE_CD AS appTypeCd
+			,TRX_CD AS trxCd
+			,APP_NM AS appNm
+			,LV_1_CD AS lv1Cd
+			,LV_2_CD AS lv2Cd
+			,LV_3_CD AS lv3Cd
+			,LV_4_CD AS lv4Cd
+			,LV_5_CD AS lv5Cd
+			,TRX_DSCD AS trxDscd
+			,BIT_MAP_CRTN_YN AS bitMapCrtnYn
+			,JOB_ID AS jobId
+			,CHL_DSCD AS chlDscd
+			,ISO8583_DATA_TYPE_CD AS iso8583DataTypeCd
+			,CRTN_SEQ AS crtnSeq
+			,RSRV_FLD_VAL1 AS rsrvFldVal1
+			,RSRV_FLD_VAL2 AS rsrvFldVal2
+			,RSRV_FLD_VAL3 AS rsrvFldVal3
+			,BIT_MAP_TYPE_CD AS bitMapTypeCd
+			,WORK_STATUS_CD AS workStatusCd
+			,CUST_API_YN AS custApiYn
+			,MSG_RVS_NO AS msgRvsNo
+			,@rownum := @rownum + 1 AS rn
+			<!--  ,ROW_NUMBER() over (order by REG_DTTM desc) as rn -->
+		FROM TBMSGLAYOUTBS
+		WHERE 1=1
+	<if test="msgNm != null and msgNm != ''">
+		AND MSG_NM like CONCAT('%',#{msgNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgNmSub != null and msgNmSub != ''">
+		AND MSG_NM_SUB like CONCAT('%',#{msgNmSub, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgVersion != null and msgVersion != ''">
+		AND MSG_VERSION like CONCAT('%',#{msgVersion, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="msgDscd != null and msgDscd != ''">
+		AND MSG_DSCD like CONCAT('%',#{msgDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regManId != null and regManId != ''">
+		AND REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regDttm != null and regDttm != ''">
+		AND REG_DTTM like CONCAT('%',#{regDttm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgDataVal != null and msgDataVal != ''">
+		AND MSG_DATA_VAL like CONCAT('%',#{msgDataVal, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgDesc != null and msgDesc != ''">
+		AND MSG_DESC like CONCAT('%',#{msgDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="extrnlBizNm != null and extrnlBizNm != ''">
+		AND EXTRNL_BIZ_NM like CONCAT('%',#{extrnlBizNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="dtoNm != null and dtoNm != ''">
+		AND DTO_NM like CONCAT('%',#{dtoNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="appTypeCd != null and appTypeCd != ''">
+		AND APP_TYPE_CD like CONCAT('%',#{appTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="appNm != null and appNm != ''">
+		AND APP_NM like CONCAT('%',#{appNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv1Cd != null and lv1Cd != ''">
+		AND LV_1_CD like CONCAT('%',#{lv1Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv2Cd != null and lv2Cd != ''">
+		AND LV_2_CD like CONCAT('%',#{lv2Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+		AND LV_3_CD like CONCAT('%',#{lv3Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv4Cd != null and lv4Cd != ''">
+		AND LV_4_CD like CONCAT('%',#{lv4Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv5Cd != null and lv5Cd != ''">
+		AND LV_5_CD like CONCAT('%',#{lv5Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+		AND TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bitMapCrtnYn != null and bitMapCrtnYn != ''">
+		AND BIT_MAP_CRTN_YN like CONCAT('%',#{bitMapCrtnYn, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="jobId != null and jobId != ''">
+		AND JOB_ID like CONCAT('%',#{jobId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="chlDscd != null and chlDscd != ''">
+		AND CHL_DSCD like CONCAT('%',#{chlDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="iso8583DataTypeCd != null and iso8583DataTypeCd != ''">
+		AND ISO8583_DATA_TYPE_CD like CONCAT('%',#{iso8583DataTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="crtnSeq != null and crtnSeq != ''">
+		AND CRTN_SEQ like CONCAT('%',#{crtnSeq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="rsrvFldVal1 != null and rsrvFldVal1 != ''">
+		AND RSRV_FLD_VAL1 like CONCAT('%',#{rsrvFldVal1, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rsrvFldVal2 != null and rsrvFldVal2 != ''">
+		AND RSRV_FLD_VAL2 like CONCAT('%',#{rsrvFldVal2, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rsrvFldVal3 != null and rsrvFldVal3 != ''">
+		AND RSRV_FLD_VAL3 like CONCAT('%',#{rsrvFldVal3, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="bitMapTypeCd != null and bitMapTypeCd != ''">
+		AND BIT_MAP_TYPE_CD like CONCAT('%',#{bitMapTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="workStatusCd != null and workStatusCd != ''">
+		AND WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="custApiYn != null and custApiYn != ''">
+		AND CUST_API_YN like CONCAT('%',#{custApiYn, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="msgRvsNo != null and msgRvsNo != ''">
+		AND MSG_RVS_NO like CONCAT('%',#{msgRvsNo, jdbcType = NUMERIC},'%')
+ 	</if>
+ 	order by REG_DTTM desc
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllNotLike" resultType="eims.web.dto.table.MsglayoutbsDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 MSG_NM AS msgNm
+			,MSG_NM_SUB AS msgNmSub
+			,MSG_VERSION AS msgVersion
+			,MSG_DSCD AS msgDscd
+			,REG_MAN_ID AS regManId
+			,REG_DTTM AS regDttm
+			,MSG_DATA_VAL AS msgDataVal
+			,MSG_DESC AS msgDesc
+			,EXTRNL_BIZ_NM AS extrnlBizNm
+			,DTO_NM AS dtoNm
+			,MSG_LAYOUT_ID AS msgLayoutId
+			,APP_TYPE_CD AS appTypeCd
+			,TRX_CD AS trxCd
+			,APP_NM AS appNm
+			,LV_1_CD AS lv1Cd
+			,LV_2_CD AS lv2Cd
+			,LV_3_CD AS lv3Cd
+			,LV_4_CD AS lv4Cd
+			,LV_5_CD AS lv5Cd
+			,TRX_DSCD AS trxDscd
+			,BIT_MAP_CRTN_YN AS bitMapCrtnYn
+			,JOB_ID AS jobId
+			,CHL_DSCD AS chlDscd
+			,ISO8583_DATA_TYPE_CD AS iso8583DataTypeCd
+			,CRTN_SEQ AS crtnSeq
+			,RSRV_FLD_VAL1 AS rsrvFldVal1
+			,RSRV_FLD_VAL2 AS rsrvFldVal2
+			,RSRV_FLD_VAL3 AS rsrvFldVal3
+			,BIT_MAP_TYPE_CD AS bitMapTypeCd
+			,WORK_STATUS_CD AS workStatusCd
+			,CUST_API_YN AS custApiYn
+			,MSG_RVS_NO AS msgRvsNo
+			,@rownum := @rownum + 1 AS rn
+			<!--  ,ROW_NUMBER() over (order by REG_DTTM desc) as rn -->
+		FROM TBMSGLAYOUTBS
+		WHERE 1=1
+	<if test="msgNm != null and msgNm != ''">
+		AND MSG_NM like = #{msgNm, jdbcType = VARCHAR}
+ 	</if>
+	<if test="msgVersion != null and msgVersion != ''">
+		AND MSG_VERSION = #{msgVersion, jdbcType = NUMERIC}
+ 	</if>
+	<if test="msgDscd != null and msgDscd != ''">
+		AND MSG_DSCD = #{msgDscd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="regManId != null and regManId != ''">
+		AND REG_MAN_ID = #{regManId, jdbcType = VARCHAR}
+ 	</if>
+	<if test="regDttm != null and regDttm != ''">
+		AND REG_DTTM = #{regDttm, jdbcType = VARCHAR}
+ 	</if>
+	<if test="msgDataVal != null and msgDataVal != ''">
+		AND MSG_DATA_VAL = #{msgDataVal, jdbcType = VARCHAR}
+ 	</if>
+	<if test="msgDesc != null and msgDesc != ''">
+		AND MSG_DESC = #{msgDesc, jdbcType = VARCHAR}
+ 	</if>
+	<if test="extrnlBizNm != null and extrnlBizNm != ''">
+		AND EXTRNL_BIZ_NM = #{extrnlBizNm, jdbcType = VARCHAR}
+ 	</if>
+	<if test="dtoNm != null and dtoNm != ''">
+		AND DTO_NM = #{dtoNm, jdbcType = VARCHAR}
+ 	</if>
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+ 	</if>
+	<if test="appTypeCd != null and appTypeCd != ''">
+		AND APP_TYPE_CD = #{appTypeCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND TRX_CD = #{trxCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="appNm != null and appNm != ''">
+		AND APP_NM = #{appNm, jdbcType = VARCHAR}
+ 	</if>
+	<if test="lv1Cd != null and lv1Cd != ''">
+		AND LV_1_CD = #{lv1Cd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="lv2Cd != null and lv2Cd != ''">
+		AND LV_2_CD = #{lv2Cd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+		AND LV_3_CD = #{lv3Cd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="lv4Cd != null and lv4Cd != ''">
+		AND LV_4_CD = #{lv4Cd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="lv5Cd != null and lv5Cd != ''">
+		AND LV_5_CD = #{lv5Cd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+		AND TRX_DSCD = #{trxDscd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="bitMapCrtnYn != null and bitMapCrtnYn != ''">
+		AND BIT_MAP_CRTN_YN = #{bitMapCrtnYn, jdbcType = VARCHAR}
+ 	</if>
+	<if test="jobId != null and jobId != ''">
+		AND JOB_ID = #{jobId, jdbcType = VARCHAR}
+ 	</if>
+ 	<if test="chlDscd != null and chlDscd != ''">
+		AND CHL_DSCD = #{chlDscd, jdbcType = VARCHAR}
+ 	</if>
+ 	<if test="iso8583DataTypeCd != null and iso8583DataTypeCd != ''">
+		AND ISO8583_DATA_TYPE_CD = #{iso8583DataTypeCd, jdbcType = VARCHAR}
+ 	</if>
+ 	<if test="crtnSeq != null and crtnSeq != ''">
+		AND CRTN_SEQ like CONCAT('%',#{crtnSeq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="rsrvFldVal1 != null and rsrvFldVal1 != ''">
+		AND RSRV_FLD_VAL1 like CONCAT('%',#{rsrvFldVal1, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rsrvFldVal2 != null and rsrvFldVal2 != ''">
+		AND RSRV_FLD_VAL2 like CONCAT('%',#{rsrvFldVal2, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rsrvFldVal3 != null and rsrvFldVal3 != ''">
+		AND RSRV_FLD_VAL3 like CONCAT('%',#{rsrvFldVal3, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		<if test="bitMapTypeCd != null and bitMapTypeCd != ''">
+		AND BIT_MAP_TYPE_CD like CONCAT('%',#{bitMapTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="workStatusCd != null and workStatusCd != ''">
+		AND WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="custApiYn != null and custApiYn != ''">
+		AND CUST_API_YN like CONCAT('%',#{custApiYn, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="msgRvsNo != null and msgRvsNo != ''">
+		AND MSG_RVS_NO like CONCAT('%',#{msgRvsNo, jdbcType = NUMERIC},'%')
+ 	</if>
+ 	order by REG_DTTM desc
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBMSGLAYOUTBS
+		WHERE 1=1
+	<if test="msgNm != null and msgNm != ''">
+		AND MSG_NM like CONCAT('%',#{msgNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgVersion != null and msgVersion != ''">
+		AND MSG_VERSION like CONCAT('%',#{msgVersion, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="msgDscd != null and msgDscd != ''">
+		AND MSG_DSCD like CONCAT('%',#{msgDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regManId != null and regManId != ''">
+		AND REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regDttm != null and regDttm != ''">
+		AND REG_DTTM like CONCAT('%',#{regDttm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgDataVal != null and msgDataVal != ''">
+		AND MSG_DATA_VAL like CONCAT('%',#{msgDataVal, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgDesc != null and msgDesc != ''">
+		AND MSG_DESC like CONCAT('%',#{msgDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="extrnlBizNm != null and extrnlBizNm != ''">
+		AND EXTRNL_BIZ_NM like CONCAT('%',#{extrnlBizNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="dtoNm != null and dtoNm != ''">
+		AND DTO_NM like CONCAT('%',#{dtoNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="appTypeCd != null and appTypeCd != ''">
+		AND APP_TYPE_CD like CONCAT('%',#{appTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="appNm != null and appNm != ''">
+		AND APP_NM like CONCAT('%',#{appNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv1Cd != null and lv1Cd != ''">
+		AND LV_1_CD like CONCAT('%',#{lv1Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv2Cd != null and lv2Cd != ''">
+		AND LV_2_CD like CONCAT('%',#{lv2Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+		AND LV_3_CD like CONCAT('%',#{lv3Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv4Cd != null and lv4Cd != ''">
+		AND LV_4_CD like CONCAT('%',#{lv4Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv5Cd != null and lv5Cd != ''">
+		AND LV_5_CD like CONCAT('%',#{lv5Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+		AND TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bitMapCrtnYn != null and bitMapCrtnYn != ''">
+		AND BIT_MAP_CRTN_YN like CONCAT('%',#{bitMapCrtnYn, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="jobId != null and jobId != ''">
+		AND JOB_ID like CONCAT('%',#{jobId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="chlDscd != null and chlDscd != ''">
+		AND CHL_DSCD like CONCAT('%',#{chlDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="iso8583DataTypeCd != null and iso8583DataTypeCd != ''">
+		AND ISO8583_DATA_TYPE_CD like CONCAT('%',#{iso8583DataTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="crtnSeq != null and crtnSeq != ''">
+		AND CRTN_SEQ like CONCAT('%',#{crtnSeq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="rsrvFldVal1 != null and rsrvFldVal1 != ''">
+		AND RSRV_FLD_VAL1 like CONCAT('%',#{rsrvFldVal1, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rsrvFldVal2 != null and rsrvFldVal2 != ''">
+		AND RSRV_FLD_VAL2 like CONCAT('%',#{rsrvFldVal2, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rsrvFldVal3 != null and rsrvFldVal3 != ''">
+		AND RSRV_FLD_VAL3 like CONCAT('%',#{rsrvFldVal3, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="bitMapTypeCd != null and bitMapTypeCd != ''">
+		AND BIT_MAP_TYPE_CD like CONCAT('%',#{bitMapTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="workStatusCd != null and workStatusCd != ''">
+		AND WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="custApiYn != null and custApiYn != ''">
+		AND CUST_API_YN like CONCAT('%',#{custApiYn, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="msgRvsNo != null and msgRvsNo != ''">
+		AND MSG_RVS_NO like CONCAT('%',#{msgRvsNo, jdbcType = NUMERIC},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectMsglayoutbs" resultType="eims.web.dto.table.MsglayoutbsDto">	
+	SELECT
+		 MSG_NM AS msgNm
+		,MSG_NM_SUB AS msgNmSub
+		,MSG_VERSION AS msgVersion
+		,MSG_DSCD AS msgDscd
+		,REG_MAN_ID AS regManId
+		,REG_DTTM AS regDttm
+		,MSG_DATA_VAL AS msgDataVal
+		,MSG_DESC AS msgDesc
+		,EXTRNL_BIZ_NM AS extrnlBizNm
+		,DTO_NM AS dtoNm
+		,MSG_LAYOUT_ID AS msgLayoutId
+		,APP_TYPE_CD AS appTypeCd
+		,TRX_CD AS trxCd
+		,APP_NM AS appNm
+		,LV_1_CD AS lv1Cd
+		,LV_2_CD AS lv2Cd
+		,LV_3_CD AS lv3Cd
+		,LV_4_CD AS lv4Cd
+		,LV_5_CD AS lv5Cd
+		,TRX_DSCD AS trxDscd
+		,BIT_MAP_CRTN_YN AS bitMapCrtnYn
+		,JOB_ID AS jobId
+		,CHL_DSCD AS chlDscd
+		,ISO8583_DATA_TYPE_CD AS iso8583DataTypeCd
+		,CRTN_SEQ AS crtnSeq
+		,RSRV_FLD_VAL1 AS rsrvFldVal1
+		,RSRV_FLD_VAL2 AS rsrvFldVal2
+		,RSRV_FLD_VAL3 AS rsrvFldVal3
+		,BIT_MAP_TYPE_CD AS bitMapTypeCd
+		,SHARED_YN AS sharedYn
+		,WORK_STATUS_CD AS workStatusCd
+		,CUST_API_YN AS custApiYn
+		,MSG_RVS_NO AS msgRvsNo
+	FROM TBMSGLAYOUTBS
+	WHERE MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+ 	</select>
+
+	<insert id="insertMsglayoutbs"	parameterType="eims.web.dto.table.MsglayoutbsDto">
+	INSERT INTO TBMSGLAYOUTBS (
+		 MSG_LAYOUT_ID		
+		,MSG_NM		
+		,MSG_NM_SUB
+		,MSG_VERSION		
+		,MSG_DSCD		
+		,REG_MAN_ID		
+		,REG_DTTM		
+		,MSG_DATA_VAL		
+		,APP_TYPE_CD		
+		,MSG_DESC		
+		,EXTRNL_BIZ_NM		
+		,TRX_CD		
+		,APP_NM		
+		,LV_1_CD		
+		,LV_2_CD		
+		,LV_3_CD		
+		,DTO_NM		
+		,LV_4_CD		
+		,LV_5_CD		
+		,TRX_DSCD		
+		,BIT_MAP_CRTN_YN		
+		,JOB_ID		
+		,CHL_DSCD		
+		,ISO8583_DATA_TYPE_CD		
+		,CRTN_SEQ		
+		,RSRV_FLD_VAL1		
+		,RSRV_FLD_VAL2		
+		,RSRV_FLD_VAL3		
+		,BIT_MAP_TYPE_CD		
+		,SHARED_YN
+		,WORK_STATUS_CD
+		,CUST_API_YN
+		,MSG_RVS_NO
+	) VALUES (
+		 #{msgLayoutId, jdbcType = VARCHAR}
+ 		,#{msgNm, jdbcType = VARCHAR}
+ 		,#{msgNmSub, jdbcType = VARCHAR}
+ 		,#{msgVersion, jdbcType = NUMERIC}
+ 		,#{msgDscd, jdbcType = VARCHAR}
+ 		,#{regManId, jdbcType = VARCHAR}
+ 		,#{regDttm, jdbcType = VARCHAR}
+ 		,#{msgDataVal, jdbcType = VARCHAR}
+ 		,#{appTypeCd, jdbcType = VARCHAR}
+ 		,#{msgDesc, jdbcType = VARCHAR}
+ 		,#{extrnlBizNm, jdbcType = VARCHAR}
+ 		,#{trxCd, jdbcType = VARCHAR}
+ 		,#{appNm, jdbcType = VARCHAR}
+ 		,#{lv1Cd, jdbcType = VARCHAR}
+ 		,#{lv2Cd, jdbcType = VARCHAR}
+ 		,#{lv3Cd, jdbcType = VARCHAR}
+ 		,#{dtoNm, jdbcType = VARCHAR}
+ 		,#{lv4Cd, jdbcType = VARCHAR}
+ 		,#{lv5Cd, jdbcType = VARCHAR}
+ 		,#{trxDscd, jdbcType = VARCHAR}
+ 		,#{bitMapCrtnYn, jdbcType = VARCHAR}
+ 		,#{jobId, jdbcType = VARCHAR}
+ 		,#{chlDscd, jdbcType = VARCHAR}
+ 		,#{iso8583DataTypeCd, jdbcType = VARCHAR}
+ 		,#{crtnSeq, jdbcType = NUMERIC}
+ 		,#{rsrvFldVal1, jdbcType = VARCHAR}
+ 		,#{rsrvFldVal2, jdbcType = VARCHAR}
+ 		,#{rsrvFldVal3, jdbcType = VARCHAR}
+ 		,#{bitMapTypeCd, jdbcType = VARCHAR}
+ 		,#{sharedYn, jdbcType = VARCHAR}
+ 		,#{workStatusCd, jdbcType = VARCHAR}
+ 		,#{custApiYn, jdbcType = VARCHAR}
+ 		,#{msgRvsNo, jdbcType = NUMERIC}
+  	)
+	</insert>
+	
+	<update id="updateMsglayoutbs"	parameterType="eims.web.dto.table.MsglayoutbsDto">
+	UPDATE TBMSGLAYOUTBS 
+	SET
+ 		MSG_NM = #{msgNm, jdbcType = VARCHAR}	
+ 		,MSG_NM_SUB = #{msgNmSub, jdbcType = VARCHAR}		
+  		,MSG_VERSION = #{msgVersion, jdbcType = NUMERIC}		
+  		,MSG_DSCD = #{msgDscd, jdbcType = VARCHAR}		
+  		,REG_MAN_ID = #{regManId, jdbcType = VARCHAR}		
+  		,REG_DTTM = #{regDttm, jdbcType = VARCHAR}		
+  		,MSG_DATA_VAL = #{msgDataVal, jdbcType = VARCHAR}	
+  		,MSG_DESC = #{msgDesc, jdbcType = VARCHAR}		
+  		,EXTRNL_BIZ_NM = #{extrnlBizNm, jdbcType = VARCHAR}		
+  		,DTO_NM = #{dtoNm, jdbcType = VARCHAR}		
+  		,APP_TYPE_CD = #{appTypeCd, jdbcType = VARCHAR}		
+  		,TRX_CD = #{trxCd, jdbcType = VARCHAR}		
+  		,APP_NM = #{appNm, jdbcType = VARCHAR}		
+  		,LV_1_CD = #{lv1Cd, jdbcType = VARCHAR}		
+  		,LV_2_CD = #{lv2Cd, jdbcType = VARCHAR}		
+  		,LV_3_CD = #{lv3Cd, jdbcType = VARCHAR}		
+  		,LV_4_CD = #{lv4Cd, jdbcType = VARCHAR}		
+  		,LV_5_CD = #{lv5Cd, jdbcType = VARCHAR}		
+  		,TRX_DSCD = #{trxDscd, jdbcType = VARCHAR}	
+  		,BIT_MAP_CRTN_YN = #{bitMapCrtnYn, jdbcType = VARCHAR}		
+  		,JOB_ID = #{jobId, jdbcType = VARCHAR}	
+  		,CHL_DSCD = #{chlDscd, jdbcType = VARCHAR}	
+  		,ISO8583_DATA_TYPE_CD = #{iso8583DataTypeCd, jdbcType = VARCHAR}	
+  		,CRTN_SEQ = #{crtnSeq, jdbcType = NUMERIC}		
+  		,RSRV_FLD_VAL1 = #{rsrvFldVal1, jdbcType = VARCHAR}		
+  		,RSRV_FLD_VAL2 = #{rsrvFldVal2, jdbcType = VARCHAR}		
+  		,RSRV_FLD_VAL3 = #{rsrvFldVal3, jdbcType = VARCHAR}	
+  		,BIT_MAP_TYPE_CD = #{bitMapTypeCd, jdbcType = VARCHAR}
+  		,SHARED_YN = #{sharedYn, jdbcType = VARCHAR}
+  		,WORK_STATUS_CD = #{workStatusCd, jdbcType = VARCHAR}
+  		,CUST_API_YN = #{custApiYn, jdbcType = VARCHAR}
+ 		,MSG_RVS_NO = #{msgRvsNo, jdbcType = NUMERIC}
+   	WHERE MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteMsglayoutbs"	parameterType="eims.web.dto.table.MsglayoutbsDto">
+	DELETE FROM TBMSGLAYOUTBS
+	WHERE MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+	</update>
+	
+	<select id="selectMsglayoutEffect" resultType="eims.web.dto.table.MsgLayoutEffectDto">
+	 SELECT 
+	  C.INTRFC_ID AS intrfcId, 
+	  C.INTRFC_NM AS intrfcNm, 
+	  C.INTRFC_TYPE_CD AS intrfcType, 
+	  A.MSG_LAYOUT_ID AS msgLayoutId
+	 FROM TBINTRFCMSGLAYOUTDT A 
+		INNER JOIN TBMSGLAYOUTBS B ON A.MSG_LAYOUT_ID = B.MSG_LAYOUT_ID 
+		INNER JOIN TBINTRFCCOMBS C ON A.INTRFC_ID = C.INTRFC_ID
+	 WHERE B.MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}  
+	 	<if test="intrfcId != null and intrfcId != ''">
+		AND C.INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 		</if>
+ 		<if test="intrfcNm != null and intrfcNm != ''">
+		AND C.INTRFC_NM like CONCAT('%',#{intrfcNm, jdbcType = VARCHAR},'%')
+ 		</if>
+ 	 GROUP BY C.INTRFC_ID, C.INTRFC_NM, C.INTRFC_TYPE_CD,  A.MSG_LAYOUT_ID
+	</select>
+	
+	<select id="selectExtrnlMsgList" resultType="eims.web.dto.table.MsglayoutbsDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 MSG_NM AS msgNm
+			,MSG_NM_SUB AS msgNmSub
+			,MSG_VERSION AS msgVersion
+			,MSG_DSCD AS msgDscd
+			,REG_MAN_ID AS regManId
+			,REG_DTTM AS regDttm
+			,MSG_DATA_VAL AS msgDataVal
+			,MSG_DESC AS msgDesc
+			,EXTRNL_BIZ_NM AS extrnlBizNm
+			,DTO_NM AS dtoNm
+			,MSG_LAYOUT_ID AS msgLayoutId
+			,APP_TYPE_CD AS appTypeCd
+			,TRX_CD AS trxCd
+			,APP_NM AS appNm
+			,LV_1_CD AS lv1Cd
+			,LV_2_CD AS lv2Cd
+			,LV_3_CD AS lv3Cd
+			,LV_4_CD AS lv4Cd
+			,LV_5_CD AS lv5Cd
+			,TRX_DSCD AS trxDscd
+			,BIT_MAP_CRTN_YN AS bitMapCrtnYn
+			,JOB_ID AS jobId
+			,CHL_DSCD AS chlDscd
+			,ISO8583_DATA_TYPE_CD AS iso8583DataTypeCd
+			,CRTN_SEQ AS crtnSeq
+			,RSRV_FLD_VAL1 AS rsrvFldVal1
+			,RSRV_FLD_VAL2 AS rsrvFldVal2
+			,RSRV_FLD_VAL3 AS rsrvFldVal3
+			,BIT_MAP_TYPE_CD AS bitMapTypeCd
+			,ROW_NUMBER() over (order by REG_DTTM desc) as rn
+		FROM TBMSGLAYOUTBS
+		WHERE 1=1
+		AND CHL_DSCD = 'EXTERNAL'
+	<if test="regManId != null and regManId != ''">
+		AND REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgDataVal != null and msgDataVal != ''">
+		AND MSG_DATA_VAL like CONCAT('%',#{msgDataVal, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="extrnlBizNm != null and extrnlBizNm != ''">
+		AND EXTRNL_BIZ_NM like CONCAT('%',#{extrnlBizNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="trxDscd != null and trxDscd != ''">
+		AND TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	) p
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectExtrnlMsgListCnt" resultType="java.lang.Integer">
+		SELECT
+			 count(*) cnt
+		FROM TBMSGLAYOUTBS
+		WHERE 1=1
+		AND CHL_DSCD = 'EXTERNAL'
+	<if test="regManId != null and regManId != ''">
+		AND REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgDataVal != null and msgDataVal != ''">
+		AND MSG_DATA_VAL like CONCAT('%',#{msgDataVal, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="extrnlBizNm != null and extrnlBizNm != ''">
+		AND EXTRNL_BIZ_NM like CONCAT('%',#{extrnlBizNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="trxDscd != null and trxDscd != ''">
+		AND TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectIdSeq" resultType="java.lang.Integer">	
+ 	select 
+ 		MAX(CRTN_SEQ) from TBMSGLAYOUTBS 
+	where 1=1
+	<if test="chlDscd != null and chlDscd != ''">
+	  and CHL_DSCD = #{chlDscd, jdbcType = VARCHAR}	
+	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+	  and TRX_DSCD = #{trxDscd, jdbcType = VARCHAR}	
+	</if>
+	<if test="msgDscd != null and msgDscd != ''">
+	  and MSG_DSCD = #{msgDscd, jdbcType = VARCHAR}	
+	</if>
+	<if test="msgVersion != null and msgVersion != ''">
+	  and MSG_VERSION = #{msgVersion, jdbcType = NUMERIC}	
+	</if>
+	<if test="msgNumber != null and msgNumber != ''">
+	  and MSG_DATA_VAL = #{msgNumber, jdbcType = VARCHAR}	
+	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+	  and LV_3_CD = #{lv3Cd, jdbcType = VARCHAR}	 
+	</if>
+	<if test="fileId != null and fileId != ''">
+	  and JOB_ID = #{fileId, jdbcType = VARCHAR}	
+	</if>
+	<if test="sendSysCd != null and sendSysCd != ''">
+	  and RSRV_FLD_VAL1 = #{sendSysCd, jdbcType = VARCHAR}	
+	</if>
+	<if test="receiveSysCd != null and receiveSysCd != ''">
+	  and RSRV_FLD_VAL2 = #{receiveSysCd, jdbcType = VARCHAR}	
+	</if>
+	<if test="extrnlBizNm != null and extrnlBizNm != ''">
+	  and EXTRNL_BIZ_NM = #{extrnlBizNm, jdbcType = VARCHAR}	
+	</if>
+ 	</select>
+ 	
+ 	<select id="selectIdSeqFile" resultType="java.lang.Integer">	
+ 	select 
+ 		MAX(CRTN_SEQ) from TBMSGLAYOUTBS 
+	where 1=1
+	<if test="trxDscd != null and trxDscd != ''">
+	  and TRX_DSCD = #{trxDscd, jdbcType = VARCHAR}	
+	</if>
+	<if test="msgDscd != null and msgDscd != ''">
+	  and MSG_DSCD = #{msgDscd, jdbcType = VARCHAR}	
+	</if>
+	<if test="msgVersion != null and msgVersion != ''">
+	  and MSG_VERSION = #{msgVersion, jdbcType = NUMERIC}	
+	</if>
+	<if test="msgNumber != null and msgNumber != ''">
+	  and MSG_DATA_VAL = #{msgNumber, jdbcType = VARCHAR}	
+	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+	  and LV_3_CD = #{lv3Cd, jdbcType = VARCHAR}	 
+	</if>
+	<if test="fileId != null and fileId != ''">
+	  and JOB_ID like #{fileId, jdbcType = VARCHAR}	
+	</if>
+	<if test="sendSysCd != null and sendSysCd != ''">
+	  and RSRV_FLD_VAL1 = #{sendSysCd, jdbcType = VARCHAR}	
+	</if>
+	<if test="receiveSysCd != null and receiveSysCd != ''">
+	  and RSRV_FLD_VAL2 = #{receiveSysCd, jdbcType = VARCHAR}	
+	</if>
+	<if test="extrnlBizNm != null and extrnlBizNm != ''">
+	  and EXTRNL_BIZ_NM = #{extrnlBizNm, jdbcType = VARCHAR}	
+	</if>
+ 	</select>
+ 	
+ 	<select id="selectSameIONmInternal" resultType="java.lang.String">	
+ 	select MSG_LAYOUT_ID 
+ 	from TBMSGLAYOUTBS 
+ 	where  MSG_DATA_VAL = #{msgDataVal, jdbcType = VARCHAR} 
+ 	and CHL_DSCD='INTERNAL' 
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+ 	and MSG_LAYOUT_ID not in(#{msgLayoutId, jdbcType = VARCHAR})
+ 	</if>
+ 	</select>
+ 	<select id="selectSameIONmInternalWrapper" resultType="java.lang.String">	
+ 	select MSG_LAYOUT_ID 
+ 	from TBMSGLAYOUTBS 
+ 	where  MSG_DATA_VAL = #{msgDataVal, jdbcType = VARCHAR} 
+ 	and CHL_DSCD='INTERNAL' 
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+ 	and MSG_LAYOUT_ID not in(#{msgLayoutId, jdbcType = VARCHAR})
+ 	</if>
+ 	and MSG_DSCD not in ('IV')
+ 	</select>
+ 	<select id="selectSameIONmExternal" resultType="java.lang.String">	
+ 	select MSG_LAYOUT_ID 
+ 	from TBMSGLAYOUTBS 
+ 	where  DTO_NM = #{dtoNm, jdbcType = VARCHAR} 
+ 	and CHL_DSCD='EXTERNAL' 
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+ 	and MSG_LAYOUT_ID not in(#{msgLayoutId, jdbcType = VARCHAR})
+ 	</if>
+ 	</select>
+ 	
+</mapper>

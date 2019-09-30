@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.IntrfcsrsysdtDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.IntrfcsrsysdtDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 A.INTRFC_ID AS intrfcId
+			,A.SR_TYPE_CD AS srTypeCd
+			,A.SR_SEQ AS srSeq
+			,A.SYS_CD AS sysCd
+      		,B.SYS_NM AS sysNm
+      		,A.TRX_CD AS trxCd
+			,A.FILE_PATH AS filePath
+			,A.CRG_MAN_NM AS crgManNm
+			,@rownum := @rownum + 1 AS rn
+			,ROW_NUMBER() over (order by A.INTRFC_ID, A.SR_TYPE_CD, A.SR_SEQ, A.SYS_CD) as rn
+		FROM TBINTRFCSRSYSDT A inner join TBSRSYSBS B on A.SYS_CD = B.SYS_CD
+		WHERE 1=1 
+	<if test="intrfcId != null and intrfcId != ''">
+		AND A.INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND A.SR_TYPE_CD = #{srTypeCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="srSeq != null and srSeq != ''">
+		AND A.SR_SEQ = #{srSeq, jdbcType = NUMERIC}
+ 	</if>
+	<if test="sysCd != null and sysCd != ''">
+		AND A.SYS_CD = #{sysCd, jdbcType = VARCHAR}
+ 	</if>
+ 	<if test="trxCd != null and trxCd != ''">
+		AND A.TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="filePath != null and filePath != ''">
+		AND A.FILE_PATH like CONCAT('%',#{filePath, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="crgManNm != null and crgManNm != ''">
+		AND A.CRG_MAN_NM like CONCAT('%',#{crgManNm, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		order by A.INTRFC_ID, A.SR_TYPE_CD, A.SR_SEQ, A.SYS_CD
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBINTRFCSRSYSDT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND A.INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND A.SR_TYPE_CD = #{srTypeCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="srSeq != null and srSeq != ''">
+		AND A.SR_SEQ = #{srSeq, jdbcType = NUMERIC}
+ 	</if>
+	<if test="sysCd != null and sysCd != ''">
+		AND A.SYS_CD = #{sysCd, jdbcType = VARCHAR}
+ 	</if>
+ 	<if test="trxCd != null and trxCd != ''">
+		AND A.TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="filePath != null and filePath != ''">
+		AND A.FILE_PATH like CONCAT('%',#{filePath, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="crgManNm != null and crgManNm != ''">
+		AND A.CRG_MAN_NM like CONCAT('%',#{crgManNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectIntrfcsrsysdt" resultType="eims.web.dto.table.IntrfcsrsysdtDto">	
+	SELECT
+		 A.INTRFC_ID AS intrfcId
+		,A.SR_TYPE_CD AS srTypeCd
+		,A.SR_SEQ AS srSeq
+		,A.SYS_CD AS sysCd
+   		,B.SYS_NM AS sysNm
+   		,A.TRX_CD AS trxCd
+		,A.FILE_PATH AS filePath
+		,A.CRG_MAN_NM AS crgManNm
+	FROM TBINTRFCSRSYSDT A LEFT OUTER JOIN TBSRSYSBS B on A.SYS_CD = B.SYS_CD
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	order by A.SR_TYPE_CD desc
+ 	</select>	
+
+	<insert id="insertIntrfcsrsysdt"	parameterType="eims.web.dto.table.IntrfcsrsysdtDto">
+	INSERT INTO TBINTRFCSRSYSDT (
+		 INTRFC_ID		
+		,SR_TYPE_CD		
+		,SR_SEQ		
+		,SYS_CD		
+		,TRX_CD		
+		,FILE_PATH		
+		,CRG_MAN_NM		
+	) VALUES (
+		 #{intrfcId, jdbcType = VARCHAR}
+ 		,#{srTypeCd, jdbcType = VARCHAR}
+ 		,#{srSeq, jdbcType = NUMERIC}
+ 		,#{sysCd, jdbcType = VARCHAR}
+ 		,#{trxCd, jdbcType = VARCHAR}
+ 		,#{filePath, jdbcType = VARCHAR}
+ 		,#{crgManNm, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateIntrfcsrsysdt"	parameterType="eims.web.dto.table.IntrfcsrsysdtDto">
+	UPDATE TBINTRFCSRSYSDT 
+	SET
+     	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	AND SR_TYPE_CD = #{srTypeCd, jdbcType = VARCHAR}
+	AND SR_SEQ = #{srSeq, jdbcType = VARCHAR}
+	AND SYS_CD = #{sysCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteIntrfcsrsysdt"	parameterType="eims.web.dto.table.IntrfcsrsysdtDto">
+	DELETE FROM TBINTRFCSRSYSDT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</update>
+</mapper>

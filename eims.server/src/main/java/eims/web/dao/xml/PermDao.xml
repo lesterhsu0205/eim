@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.PermDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.PermDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 PERM_ID AS permId
+			,PERM_NM AS permNm
+			,PERM_DESC AS permDesc
+			,PERM_TYPE_CD AS permTypeCd
+			,@rownum := @rownum + 1 AS rn
+ <!-- 			,ROW_NUMBER() over (order by PERM_ID) as rn  -->
+		FROM TBPERMBS
+		WHERE 1=1
+	<if test="permId != null and permId != ''">
+		AND PERM_ID like CONCAT('%',#{permId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="permNm != null and permNm != ''">
+		AND PERM_NM like CONCAT('%',#{permNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="permDesc != null and permDesc != ''">
+		AND PERM_DESC like CONCAT('%',#{permDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="permTypeCd != null and permTypeCd != ''">
+		AND PERM_TYPE_CD like CONCAT('%',#{permTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		order by PERM_ID
+	) p, (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBPERMBS
+		WHERE 1=1
+	<if test="permId != null and permId != ''">
+		AND PERM_ID like CONCAT('%',#{permId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="permNm != null and permNm != ''">
+		AND PERM_NM like CONCAT('%',#{permNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="permDesc != null and permDesc != ''">
+		AND PERM_DESC like CONCAT('%',#{permDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="permTypeCd != null and permTypeCd != ''">
+		AND PERM_TYPE_CD like CONCAT('%',#{permTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectPerm" resultType="eims.web.dto.table.PermDto">	
+	SELECT
+		 PERM_ID AS permId
+		,PERM_NM AS permNm
+		,PERM_DESC AS permDesc
+		,PERM_TYPE_CD AS permTypeCd
+	FROM TBPERMBS
+	WHERE PERM_ID = #{permId, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertPerm"	parameterType="eims.web.dto.table.PermDto">
+	INSERT INTO TBPERMBS (
+		 PERM_ID		
+		,PERM_NM		
+		,PERM_DESC		
+		,PERM_TYPE_CD		
+	) VALUES (
+ 		 #{permId, jdbcType = VARCHAR}
+ 		,#{permNm, jdbcType = VARCHAR}
+ 		,#{permDesc, jdbcType = VARCHAR}
+ 		,#{permTypeCd, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updatePerm"	parameterType="eims.web.dto.table.PermDto">
+	UPDATE TBPERMBS 
+	SET
+  		PERM_NM = #{permNm, jdbcType = VARCHAR}, 
+  		PERM_DESC = #{permDesc, jdbcType = VARCHAR}, 
+  		PERM_TYPE_CD = #{permTypeCd, jdbcType = VARCHAR}
+	WHERE PERM_ID = #{permId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deletePerm"	parameterType="java.lang.String">
+	DELETE FROM TBPERMBS
+	WHERE PERM_ID = #{permId, jdbcType = VARCHAR}
+	</update>
+	
+	<select id="selectPermListByRole" resultType="eims.web.dto.table.PermDto">
+	SELECT
+		 PERM_ID AS permId
+		,PERM_NM AS permNm
+		,PERM_DESC AS permDesc
+		,PERM_TYPE_CD AS permTypeCd
+	FROM TBPERMBS
+	WHERE PERM_ID IN (
+		SELECT
+			PERM_ID
+		FROM TBROLEPERMRL
+		WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	) order by PERM_ID
+	</select>
+	
+</mapper>

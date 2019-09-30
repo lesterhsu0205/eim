@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.ExtrnlinstcdDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.ExtrnlinstcdDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 INST_CD AS instCd
+			,INST_CD_NM AS instCdNm
+			,INST_DSTNCTN_VAL AS instDstnctnVal
+			,INST_CD_DESC AS instCdDesc
+			,@rownum := @rownum + 1 AS rn
+			<!-- ,ROW_NUMBER() over (order by INST_CD, INST_DSTNCTN_VAL) as rn  -->
+		FROM TBEXTRNLINSTCD
+		WHERE 1=1
+	<if test="instCd != null and instCd != ''">
+		AND INST_CD like CONCAT('%',#{instCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCdNm != null and instCdNm != ''">
+		AND INST_CD_NM like CONCAT('%',#{instCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instDstnctnVal != null and instDstnctnVal != ''">
+		AND INST_DSTNCTN_VAL like CONCAT('%',#{instDstnctnVal, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCdDesc != null and instCdDesc != ''">
+		AND INST_CD_DESC like CONCAT('%',#{instCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		order by INST_CD, INST_DSTNCTN_VAL
+	) p, (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBEXTRNLINSTCD
+		WHERE 1=1
+	<if test="instCd != null and instCd != ''">
+		AND INST_CD like CONCAT('%',#{instCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCdNm != null and instCdNm != ''">
+		AND INST_CD_NM like CONCAT('%',#{instCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instDstnctnVal != null and instDstnctnVal != ''">
+		AND INST_DSTNCTN_VAL like CONCAT('%',#{instDstnctnVal, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCdDesc != null and instCdDesc != ''">
+		AND INST_CD_DESC like CONCAT('%',#{instCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectExtrnlinstcd" resultType="eims.web.dto.table.ExtrnlinstcdDto">	
+	SELECT
+		 INST_CD AS instCd
+		,INST_CD_NM AS instCdNm
+		,INST_DSTNCTN_VAL AS instDstnctnVal
+		,INST_CD_DESC AS instCdDesc
+	FROM TBEXTRNLINSTCD
+	WHERE INST_CD = #{instCd, jdbcType = VARCHAR}
+	AND   INST_DSTNCTN_VAL = #{instDstnctnVal, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertExtrnlinstcd"	parameterType="eims.web.dto.table.ExtrnlinstcdDto">
+	INSERT INTO TBEXTRNLINSTCD (
+		 INST_CD		
+		,INST_CD_NM		
+		,INST_DSTNCTN_VAL		
+		,INST_CD_DESC		
+	) VALUES (
+		 #{instCd, jdbcType = VARCHAR}
+ 		,#{instCdNm, jdbcType = VARCHAR}
+ 		,#{instDstnctnVal, jdbcType = VARCHAR}
+ 		,#{instCdDesc, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateExtrnlinstcd"	parameterType="eims.web.dto.table.ExtrnlinstcdDto">
+	UPDATE TBEXTRNLINSTCD 
+	SET
+ 		INST_CD_NM = #{instCdNm, jdbcType = VARCHAR}		
+   		,INST_CD_DESC = #{instCdDesc, jdbcType = VARCHAR}		
+   	WHERE INST_CD = #{instCd, jdbcType = VARCHAR}
+	AND   INST_DSTNCTN_VAL = #{instDstnctnVal, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteExtrnlinstcd"	parameterType="eims.web.dto.table.ExtrnlinstcdDto">
+	DELETE FROM TBEXTRNLINSTCD
+	WHERE INST_CD = #{instCd, jdbcType = VARCHAR}
+	AND   INST_DSTNCTN_VAL = #{instDstnctnVal, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteExtrnlinstcdAll">
+	DELETE FROM TBEXTRNLINSTCD
+	</update>
+</mapper>

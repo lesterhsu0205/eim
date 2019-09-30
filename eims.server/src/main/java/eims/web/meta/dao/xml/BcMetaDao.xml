@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.meta.dao.BcMetaDao">
+
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			DAWARE.DA#V_TERM_2
+		WHERE 1=1
+	</select>
+	
+	<select id="selectAll" resultType="eims.web.dto.table.BcMetaDto">	
+	SELECT
+	  STD_AREA_NM as stdAreaNm,
+	  DIC_PHY_NM as dicPhyNm,
+	  DIC_LOG_NM as dicLogNm,
+	  DATA_TYPE_NM as dataTypeNm,
+	  DATA_TYPE_CD as dataTypeCd,
+	  DATA_LEN as dataLen,
+	  DATA_SCALE as dataScale,
+	  DIC_DESC as dicDesc
+	FROM 
+	  DAWARE.DA#V_TERM_2
+	WHERE 1=1
+	AND std_area_id in (#{tobeAreaId, jdbcType = VARCHAR},#{appAreaId, jdbcType = VARCHAR})
+	</select>
+	
+	<select id="selectTobe" resultType="eims.web.dto.table.BcMetaDto">	
+	SELECT
+	  STD_AREA_NM as stdAreaNm,
+	  DIC_PHY_NM as dicPhyNm,
+	  DIC_LOG_NM as dicLogNm,
+	  DATA_TYPE_NM as dataTypeNm,
+	  DATA_TYPE_CD as dataTypeCd,
+	  DATA_LEN as dataLen,
+	  DATA_SCALE as dataScale,
+	  DIC_DESC as dicDesc
+	FROM 
+	  DAWARE.DA#V_TERM_2
+	WHERE 1=1
+	AND std_area_id = #{tobeAreaId, jdbcType = VARCHAR}
+	AND AVAL_ST_DT > to_char(sysdate-3/24, 'YYYYMMDDHH24MISS')
+	</select>
+	
+	<select id="selectTobeAll" resultType="eims.web.dto.table.BcMetaDto">	
+	SELECT
+	  STD_AREA_NM as stdAreaNm,
+	  DIC_PHY_NM as dicPhyNm,
+	  DIC_LOG_NM as dicLogNm,
+	  DATA_TYPE_NM as dataTypeNm,
+	  DATA_TYPE_CD as dataTypeCd,
+	  DATA_LEN as dataLen,
+	  DATA_SCALE as dataScale,
+	  DIC_DESC as dicDesc
+	FROM 
+	  DAWARE.DA#V_TERM_2
+	WHERE 1=1
+	AND std_area_id = #{tobeAreaId, jdbcType = VARCHAR}
+	</select>
+	
+	<select id="selectApp" resultType="eims.web.dto.table.BcMetaDto">	
+	SELECT
+	  STD_AREA_NM as stdAreaNm,
+	  DIC_PHY_NM as dicPhyNm,
+	  DIC_LOG_NM as dicLogNm,
+	  DATA_TYPE_NM as dataTypeNm,
+	  DATA_TYPE_CD as dataTypeCd,
+	  DATA_LEN as dataLen,
+	  DATA_SCALE as dataScale,
+	  DIC_DESC as dicDesc
+	FROM 
+	  DAWARE.DA#V_TERM_2
+	WHERE 1=1
+	AND std_area_id = #{appAreaId, jdbcType = VARCHAR}
+	AND NEW_DIC_PHY_NM != DIC_PHY_NM
+	AND AVAL_ST_DT > to_char(sysdate-3/24, 'YYYYMMDDHH24MISS')
+	</select>
+	
+	<select id="selectAppAll" resultType="eims.web.dto.table.BcMetaDto">	
+	SELECT
+	  STD_AREA_NM as stdAreaNm,
+	  DIC_PHY_NM as dicPhyNm,
+	  DIC_LOG_NM as dicLogNm,
+	  DATA_TYPE_NM as dataTypeNm,
+	  DATA_TYPE_CD as dataTypeCd,
+	  DATA_LEN as dataLen,
+	  DATA_SCALE as dataScale,
+	  DIC_DESC as dicDesc
+	FROM 
+	  DAWARE.DA#V_TERM_2
+	WHERE 1=1
+	AND std_area_id = #{appAreaId, jdbcType = VARCHAR}
+	AND NEW_DIC_PHY_NM != DIC_PHY_NM
+	</select>
+	
+	<select id="selectAppCode" resultType="eims.web.dto.table.BcMetaAppCdDto">	
+	select 
+	  CD_VAL as cdVal,
+	  CD_VAL_NM as cdValNm,
+	  P_CD_ID as pCdId,
+	  P_CD_VAL_ID as pCdValId,
+	  CD_VAL_ID as cdValId
+	from DAWARE.V_STD_CD_VAL_2 where 
+	std_area_id=#{stdAreaId, jdbcType = VARCHAR}
+	and P_CD_VAL_ID = #{pCdValId, jdbcType = VARCHAR}
+	</select>
+	
+	<select id="selectSrSysCode" resultType="eims.web.dto.table.BcMetaSysCdDto">	
+	select 
+	  CD_VAL as cdVal,
+	  CD_VAL_NM as cdValNm,
+	  CD_VAL_DESC as cdValDesc
+	from DAWARE.V_STD_CD_VAL_2 
+	where std_area_id=#{stdAreaId, jdbcType = VARCHAR} 
+	and cd_id=#{cdId, jdbcType = VARCHAR}
+	</select>
+</mapper>
