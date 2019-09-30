@@ -1,0 +1,24 @@
+{
+	"namespace": "manageRole",
+	"messages": {
+		"titleHeader": "Role Management",
+		"titleDesc": "This is the page that manage roles.",
+		"roleId": "Role Id",
+		"roleNm": "Role Name",
+		"roleDesc" : "Role Description",
+		"menuId": "Menu Id",
+		"menuNm": "Menu Name",
+		"permId": "Permission Id",
+		"permNm": "Permission Name",
+		"descPlaceHolder": "Please enter the role description.",
+		"emptyRoleId": "Please enter the role id.",
+		"emptyRoleId2": "Please select the role id.",
+		"emptyRoleNm": "Please enter the role name.",
+		"roleList": "Role List",
+		"roleDetail": "Role Detail",
+		"menuList": "Menu Access",
+		"permList": "Permission Information",
+		"menuAddModalHeaer": "Add Menu Access",
+		"check": "Use Status"
+    }
+}

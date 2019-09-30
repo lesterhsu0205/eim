@@ -1,0 +1,44 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<h2 class="bw-tt a-center" ng-style="{ 'min-width':vm.width+'px'}">
+			{{::vm.text.modalHeader}}
+			<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+		</h2>
+		
+		<bc-tool-wrap>
+			<right>
+				<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+				<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+			</right>
+		</bc-tool-wrap>
+		
+		<section class="search-wrap clr">
+			<ul class="unit w-100 col-3 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label w-40">{{::vm.text.deploySysCd}}</label>
+						<input type="search" class="bw-input w-60" ng-model="vm.searchParam.deploySysCd" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label w-40">{{::vm.text.deploySysNm}}</label>
+						<input type="search" class="bw-input w-60" ng-model="vm.searchParam.deploySysNm" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<bc-tool-wrap style="margin-top:10px"></bc-tool-wrap>
+		<section id="gridWrap">
+			<div class="w-100" ng-style="{ height: vm.gridHeight }"
+				bc-grid="vm.deploySysOptions" data-page="true" data-page-click="vm.pageBtnClick">
+			</div>
+		</section>
+		
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt" ng-click="vm.closeModal(true)">{{::vm.text.select}}</button>
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.cancel}}</button>
+		</div>
+	</div>
+</div>

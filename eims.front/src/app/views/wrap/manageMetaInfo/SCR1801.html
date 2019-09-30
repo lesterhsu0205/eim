@@ -1,0 +1,59 @@
+<div>
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	
+	<bc-tool-wrap>
+		<right>
+			<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+			<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+			<button type="button" class="bw-btn b-ctr" zabara="searchWrap_main">
+				<i class="bxd bxd-toggle zabara"></i>
+			</button>
+		</right>
+	</bc-tool-wrap>
+
+	<div>
+		<section class="search-wrap clr" id="searchWrap_main">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label" ng-class="{'wp-220': vm.user.locale === 'en', 'wp-160': vm.user.locale === 'ko'}">{{::vm.text.metaEngNm}}</label>
+						<input type="search" class="bw-input" 
+						ng-class="{'wc-220': vm.user.locale === 'en', 'wc-160': vm.user.locale === 'ko'}"
+						ng-model="vm.searchParam.metaEngNm" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-160">{{::vm.text.metaKorNm}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);" 
+						ng-model="vm.searchParam.metaKorNm" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<bc-tool-wrap>
+			<left>
+				<select class="bw-input ipt-select w-s" ng-model="vm.select.pageSize" ng-change="vm.change()">
+					<option ng-repeat="item in vm.codes.GRID_PAGE_SIZE" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+				</select>
+				<label>전체 {{vm.options.recordsCount}}건</label>
+			</left>
+			<right>
+				<button type="button" class="bw-btn bxd bxd-exchange " ng-show="vm.user.roleId === 'Administrator'" ng-click="vm.syncMetaData()" title="{{::vm.text.sync}}"></button>
+			</right>
+		
+		</bc-tool-wrap>
+		<section id="gridWrap">
+			<div class="w-100" ng-style="{ height: vm.gridHeight }" 
+				bc-grid="vm.options" data-page="true" data-page-click="vm.pageBtnClick">
+			</div>
+		</section>
+	</div>
+</div>

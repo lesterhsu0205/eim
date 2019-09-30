@@ -1,0 +1,552 @@
+<div id="mciInterfaceWrap">
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	
+	<bc-tool-wrap>
+		<right>
+			<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch();"></button>
+			<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.getIntrfccoms(true);"></button>
+			<button type="button" class="bw-btn b-ctr" zabara="searchWrap_main">
+				<i class="bxd bxd-toggle zabara"></i>
+			</button>
+		</right>
+	</bc-tool-wrap>
+	
+	<div>
+		<section class="search-wrap clr" id="searchWrap_main" >
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.intrfcId}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);" 
+						ng-model="vm.searchParam.intrfccoms.intrfcId" 
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.intrfcNm}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);" 
+						ng-model="vm.searchParam.intrfccoms.intrfcNm" 
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.intrfcNmSub}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);" 
+						ng-model="vm.searchParam.intrfccoms.intrfcNmSub" 
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.lvCds}}</label>
+						<i class="bxd bxd-search h-20" title="{{::vm.text.search}}"  ng-click="vm.searchApplicationCodes()"></i>
+						<input type="text" class="bw-input" style="width:calc(100% - 160px);" ng-model="vm.searchParam.intrfccoms.lv1Cd" disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.msgLayoutId}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);" 
+						ng-model="vm.searchParam.intrfccoms.msgLayoutId"
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.workStatusCd}}</label>
+						<select class="bw-input ipt-select" style="width:calc(100% - 140px);"
+							ng-options="item.cdVal as item.cdValNm for item in vm.codes.WORK_STATUS_CD"
+							ng-model="vm.searchParam.intrfccoms.workStatusCd">
+							<option value="">{{::vm.text.all}}</option>
+						</select>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.regManId}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);" 
+						ng-model="vm.searchParam.intrfccoms.regManId"
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+						<i class="bxd bxd-search h-20" title="{{::vm.text.search}}" ng-show="vm.user.roleId === 'Administrator'" ng-click="vm.openRegManPopup()"></i>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.sysCdS}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);" 
+						ng-model="vm.searchParam.intrfccoms.sysCdS"
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+						<i class="bxd bxd-search h-20" title="{{::vm.text.search}}"  ng-click="vm.openSysCdSPopup()"></i>
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.sysCdR}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);" 
+						ng-model="vm.searchParam.intrfccoms.sysCdR"
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+						<i class="bxd bxd-search h-20" title="{{::vm.text.search}}"  ng-click="vm.openSysCdRPopup()"></i>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.trxCd}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);" 
+						ng-model="vm.searchParam.intrfccoms.trxCd"
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.viewId}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);" 
+						ng-model="vm.searchParam.intrfccoms.viewId"
+						ng-keypress="$event.which === 13 && [vm.getIntrfccoms(true), vm.blur($event)]">
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<bc-tool-wrap>
+			<left>
+				<select class="bw-input ipt-select w-s" ng-model="vm.select.pageSize" ng-change="vm.changePageSize()">
+					<option ng-repeat="item in vm.codes.GRID_PAGE_SIZE" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+				</select>
+				<label>{{::vm.text.all}} {{vm.inferfaceMainGrid.recordsCount}}{{::vm.text.cnt}}</label>
+			</left>
+			<right>				
+				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.exportDefinition()"><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDefinition}}</button>
+				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup2()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-down"></i>{{::vm.text.importDefinition}}</button>
+				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.xlsExport()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDesign}}</button>
+				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDesign}}</button>
+				<button type="button" class="bw-btn bxd bxd-rocket" ng-click="vm.deployAllInterface()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDesign}}</button>		
+				<button type="button" class="bw-btn bxd bxd-add" title="{{::vm.text.add}}" ng-click="vm.add()" ng-show="vm.user.perm.insert"></button>
+				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
+					<i class="bxd bxd-toggle zabara"></i>
+				</button>
+			</right>
+		
+		</bc-tool-wrap>
+		  
+	    <section id="gridWrap">
+	    	<div class="w-100" ng-style="{ height: vm.gridHeight }" 
+				bc-grid="vm.inferfaceMainGrid" data-page="true" data-page-click="vm.pageBtnClick"></div>
+		</section>
+	</div>
+	
+	<div id="interfacePdf">
+		<bc-tool-wrap>
+			<right>
+				<button type="button" class="bw-btn bxd bxd-login" ng-show="vm.isAdd" title="{{::vm.text.copyInterface}}" ng-click="vm.openInterfacePopup()"></button>
+				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit && vm.user.perm.update" title="{{::vm.text.cancel}}" ng-click = "vm.cancel()"></button>
+				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit && vm.user.perm.update" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit && vm.detail.intrfcId && vm.user.perm.update" title="{{::vm.text.modifiy}}" ng-click="vm.onEditMode()"></button>
+			</right>
+		</bc-tool-wrap>
+		<bc-tool-wrap style="background:white; border-top: 1px solid #eeeeee !important; cursor:pointer;" 
+			zabara="interfaceDetailInfo" ng-click="vm.onClickZabara('interfaceDetailGrid')">
+			<div class="bw-accordion">
+				<h3 class="c-label1">
+					<span style="font-size:12px;font-weight:normal;">{{::vm.text.interfaceDetail}}</span>
+				</h3>
+			</div>
+			<right>
+				<button type="button" class="bw-btn">
+					<i id="interfaceDetailInfoZabara" class="bxd bxd-arrow-down zabara" style="transform: rotate(180deg);"></i>
+				</button>
+			</right>
+		</bc-tool-wrap>
+		<div id="interfaceDetailInfo" style="width: 100%; display: none; background: #F9F9F9;">
+			<section class="search-wrap clr" id="searchWrap_detail" style="border-bottom:0px;">
+				<ul class="unit w-100 col-2 clr">
+					<li class="w-33">
+						<div class="input-wrap asterisk clr disabled" ng-class="{'bg-w': vm.isAdd}">
+							<label class="bw-label wp-150">{{::vm.text.intrfcId}}</label>
+							<input type="text" class="bw-input" style="width:calc(100% - 170px);" ng-model="vm.detail.intrfcId" disabled>
+							<i class="bxd bxd-search h-20" title="{{::vm.text.search}}" 
+								ng-if="vm.isAdd"
+								ng-click="vm.openInterfaceIdCreatePopup()"></i>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-150">{{::vm.text.intrfcNm}}</label>
+							<input type="search" class="bw-input" style="width:calc(100% - 150px);" ng-model="vm.detail.intrfcNm">
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-150">{{::vm.text.intrfcNmSub}}</label>
+							<input type="search" class="bw-input" style="width:calc(100% - 150px);" ng-model="vm.detail.intrfcNmSub">
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr disabled">
+							<label class="bw-label wp-150">{{::vm.text.lvCds}}</label>
+							<input type="text" class="bw-input" style="width:calc(100% - 150px);" ng-model="vm.detail.lv1Cd" disabled>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr disabled">
+							<label class="bw-label wp-150">{{::vm.text.workStatusCd}}</label>
+							<select class="bw-input" style="width:calc(100% - 150px);"
+								ng-options="item.cdVal as item.cdValNm for item in vm.codes.WORK_STATUS_CD"
+								ng-model="vm.detail.workStatusCd" disabled>
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-150">{{::vm.text.trxTypeDscd}}</label>
+							<select class="bw-input ipt-select" style="width:calc(100% - 150px);"
+								ng-options="item.cdVal as item.cdValNm for item in vm.codes.TRX_TYPE_DSCD"
+								ng-model="vm.detail.trxTypeDscd">
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr disabled">
+							<label class="bw-label wp-150">{{::vm.text.regManId}}</label>
+							<input type="text" class="bw-input" style="width:calc(100% - 150px);"
+								ng-model="vm.detail.regManId" disabled>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-150">{{::vm.text.syncAsyncDscd}}</label>
+							<select class="bw-input ipt-select" style="width:calc(100% - 150px);"
+								ng-options="item.cdVal as item.cdValNm for item in vm.codes.SYNC_DSCD"
+								ng-model="vm.detail.syncAsyncDscd">
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label" ng-class="{'wp-210': vm.user.locale === 'en', 'wp-150': vm.user.locale === 'ko'}">{{::vm.text.msgTrnsfrmYn}}</label>
+							<select class="bw-input ipt-select" ng-class="{'wc-210': vm.user.locale === 'en', 'wc-150': vm.user.locale === 'ko'}"
+								ng-options="item.cdVal as item.cdValNm for item in vm.codes.YN_CD"
+								ng-model="vm.detail.msgTrnsfrmYn" ng-change="[vm.refreshMappingGrid()]">
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-150">{{::vm.text.rspsYn}}</label>
+							<select class="bw-input ipt-select" style="width:calc(100% - 150px);"
+								ng-options="item.cdVal as item.cdValNm for item in vm.codes.YN_CD"
+								ng-model="vm.detail.rspsYn">
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-150">{{::vm.text.viewId}}</label>
+							<input type="search" class="bw-input" style="width:calc(100% - 150px);" ng-model="vm.detail.viewId">
+						</div>
+					</li>
+					<li class="w-99">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-150">{{::vm.text.intrfDesc}}</label>
+							<input type="search" class="bw-input" style="width:calc(100% - 150px);"
+								ng-model="vm.detail.mciDto.intrfDesc">
+						</div>
+					</li>
+				</ul>
+			</section>
+			
+			<section class="search-wrap clr" style="border-top:0px;">
+				<bc-tool-wrap>
+					<li class="w-33">
+						 {{::vm.text.receiveSendSys2}}
+					</li>
+				</bc-tool-wrap>
+				<div ng-class="{'w-100': true, 'hide-btn-wrap': !vm.isEdit}" style="height: 81px; border-bottom: 0;" bc-grid="vm.interfaceDetailGrid"></div>
+				
+				<bc-tool-wrap style="margin-top:10px">
+					<li class="w-33">
+						 {{::vm.text.detailAttr}}
+					</li>
+				</bc-tool-wrap>
+				<section id="searchWrap_timeout" class="search-wrap clr">
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-140">{{::vm.text.timeout}}</label>
+							<input type="search" class="bw-input" style="width:calc(100% - 140px);" 
+								ng-model="vm.detail.mciDto.timeOut">
+						</div>
+					</li>
+				</section>
+			</div>
+
+			<bc-tool-wrap style="background:white; border-top: 1px solid #eeeeee !important; cursor:pointer;" 
+					zabara="sndSysMsgInfo" ng-click="vm.onClickZabara('sndReqLayoutGrid','sndResLayoutGrid')" scroll>
+				<div class="bw-accordion">
+					<h3 class="c-label2">
+						<span style="font-size:12px;font-weight:normal;">{{::vm.text.sendSysMsgInfo}}<i ng-if="vm.detail.sendSysCd" style="margin: 0 4px;font-style: normal;">- {{vm.detail.sendSysCd}} ({{vm.detail.sendSysNm}}) </i></span>
+					</h3>
+				</div>
+				<right>
+					<button type="button" class="bw-btn">
+						<i id="sndSysMsgInfoZabara" class="bxd bxd-arrow-down zabara" style="transform: rotate(180deg);" ></i>
+					</button>
+				</right>
+			</bc-tool-wrap>
+		</section>
+		
+		<div id="sndSysMsgInfo" style="width: 100%; display: none; background: #F9F9F9;">
+			<section class="search-wrap clr">
+				<bc-tool-wrap>
+					<li class="w-33">
+						{{::vm.text.reqMsg}}
+					</li>
+					<right>
+						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('sndReqLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>
+						<button ng-show="vm.isEdit" type="button" title="{{::vm.text.add}}" class="bw-btn bxd bxd-add" ng-click="vm.addMsgLayoutToSndRcvMsg('sndReqLayoutGrid')"></button>
+						<button ng-show="vm.isEdit" type="button" title="{{::vm.text.up}}" class="bw-btn bxd bxd-toggle"
+							ng-click="vm.moveSndReqLayoutRow('up','sndReqLayoutGrid')"></button>
+						<button ng-show="vm.isEdit" type="button" title="{{::vm.text.down}}" class="bw-btn bxd bxd-toggle" style="transform: rotateZ(180deg)"
+							ng-click="vm.moveSndReqLayoutRow('down','sndReqLayoutGrid')"></button>
+					</right>
+				</bc-tool-wrap>
+				<div class="w-100" style="height:105px;" bc-grid="vm.sndReqLayoutGrid"></div>
+				
+				<bc-tool-wrap style="margin-top:10px">
+					<li class="w-33">
+						{{::vm.text.resMsg}}
+
+					</li>
+					<right>
+						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('sndResLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>
+						<button ng-show="vm.isEdit && !vm.useSndReqToResLayoutGrid" type="button" title="{{::vm.text.add}}" class="bw-btn bxd bxd-add" ng-click="vm.addMsgLayoutToSndRcvMsg('sndResLayoutGrid')"></button>
+						<button ng-show="vm.isEdit && !vm.useSndReqToResLayoutGrid" type="button" title="{{::vm.text.up}}" class="bw-btn bxd bxd-toggle"
+							ng-click="vm.moveSndReqLayoutRow('up','sndResLayoutGrid')"></button>
+						<button ng-show="vm.isEdit && !vm.useSndReqToResLayoutGrid" type="button" title="{{::vm.text.down}}" class="bw-btn bxd bxd-toggle" style="transform: rotateZ(180deg)"
+							ng-click="vm.moveSndReqLayoutRow('down','sndResLayoutGrid')"></button>
+					</right>
+				</bc-tool-wrap>
+				<div class="w-100" style="height:105px;" bc-grid="vm.sndResLayoutGrid"></div>
+			</section>
+		</div>
+		
+		<bc-tool-wrap style="background:white; border-top: 1px solid #eeeeee !important; cursor:pointer;" 
+			zabara="rcvSysMsgInfo" ng-click="vm.onClickZabara('rcvReqLayoutGrid','rcvResLayoutGrid')" scroll>
+			<div class="bw-accordion">
+				<h3 class="c-label3">
+					<span style="font-size:12px;font-weight:normal;">{{::vm.text.recSysMsgInfo}}<i ng-if="vm.detail.receiveSysCd" style="margin: 0 4px;font-style: normal;">- {{vm.detail.receiveSysCd}} ({{vm.detail.receiveSysNm}})</i></span>
+				</h3>
+			</div>
+			<right>
+				<button type="button" class="bw-btn">
+					<i id="rcvSysMsgInfoZabara" class="bxd bxd-arrow-down zabara" style="transform: rotate(180deg);"></i>
+				</button>
+			</right>
+		</bc-tool-wrap>
+		
+		<div id="rcvSysMsgInfo" style="width: 100%; display: none; background: #F9F9F9;"> 
+			<section class="search-wrap clr">
+				<bc-tool-wrap>
+					<li class="w-33">
+						{{::vm.text.reqMsg}}
+
+					</li>
+					<right>
+						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('rcvReqLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>
+						<button ng-show="vm.isEdit && !vm.useSndReqLayoutGrid" type="button" title="{{::vm.text.add}}" class="bw-btn bxd bxd-add" ng-click="vm.addMsgLayoutToSndRcvMsg('rcvReqLayoutGrid')"></button>
+						<button ng-show="vm.isEdit && !vm.useSndReqLayoutGrid" type="button" title="{{::vm.text.up}}" class="bw-btn bxd bxd-toggle"
+							ng-click="vm.moveSndReqLayoutRow('up','rcvReqLayoutGrid')"></button>
+						<button ng-show="vm.isEdit && !vm.useSndReqLayoutGrid" type="button" title="{{::vm.text.down}}" class="bw-btn bxd bxd-toggle" style="transform: rotateZ(180deg)"
+							ng-click="vm.moveSndReqLayoutRow('down','rcvReqLayoutGrid')"></button>
+					</right>
+				</bc-tool-wrap>
+				<div class="w-100" style="height:105px;" bc-grid="vm.rcvReqLayoutGrid"></div>
+				
+				<bc-tool-wrap style="margin-top:10px">
+					<li class="w-33">
+						{{::vm.text.resMsg}}
+	
+					</li>
+					<right>
+						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('rcvResLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>
+						<button ng-show="vm.isEdit && !vm.useSndResLayoutGrid" type="button" title="{{::vm.text.add}}" class="bw-btn bxd bxd-add" ng-click="vm.addMsgLayoutToSndRcvMsg('rcvResLayoutGrid')"></button>
+						<button ng-show="vm.isEdit && !vm.useSndResLayoutGrid" type="button" title="{{::vm.text.up}}" class="bw-btn bxd bxd-toggle"
+							ng-click="vm.moveSndReqLayoutRow('up','rcvResLayoutGrid')"></button>
+						<button ng-show="vm.isEdit && !vm.useSndResLayoutGrid" type="button" title="{{::vm.text.down}}" class="bw-btn bxd bxd-toggle" style="transform: rotateZ(180deg)"
+							ng-click="vm.moveSndReqLayoutRow('down','rcvResLayoutGrid')"></button>
+					</right>
+				</bc-tool-wrap>
+				<div class="w-100" style="height:105px;" bc-grid="vm.rcvResLayoutGrid"></div>
+			</section>
+		</div>
+		
+		
+		<bc-tool-wrap ng-show="vm.detail.msgTrnsfrmYn==='Y'"
+			style="background:white; border-top: 1px solid #eeeeee !important; cursor:pointer;"
+			zabara="msgMapping"
+			ng-click="vm.onClickZabara('sndMsgMapSrcGrid','sendMsgMapTrgGrid','rcvMsgMapSrcGrid','rcvMsgMapTrgGrid')" scroll>
+			<div class="bw-accordion">
+				<h3 class="c-label4">
+					<span style="font-size:12px;font-weight:normal;">{{::vm.text.msgMapping}}</span>
+				</h3>
+			</div>
+			<right>
+				<button type="button" class="bw-btn">
+			<i id="msgMappingZabara" class="bxd bxd-arrow-down zabara" style="transform: rotate(180deg);"></i>
+				</button>
+			</right>
+		</bc-tool-wrap>
+		
+		<div id="msgMapping" style="width: 100%; display: none; background: #F9F9F9;"
+			 ng-show="vm.detail.msgTrnsfrmYn==='Y'">
+			<section class="search-wrap clr">
+				<bc-tool-wrap>
+					<li class="w-33">
+						{{::vm.text.reqMsgMapping}}
+						<label class="check-wrap">
+							<input type="checkbox" ng-model="vm.useRequestMsgScroll"/> {{::vm.text.scrollSync}}
+						</label>
+					</li>
+					<right>
+						<label style="padding: 0 10px;" class="chr-c-orange" ng-show="vm.detail.msgLayoutTranYn === 'Y'">{{::vm.text.confirmChangedMsg}}</label>
+						<button ng-show="vm.isEdit" type="button" class="bw-btn-txt2 no-line-height" ng-click="vm.mappingConfirm('REQUEST')">{{::vm.text.mappingVerification}}</button>
+						<button ng-show="vm.isEdit" type="button" class="bw-btn-txt2 no-line-height" ng-click="vm.mapping('REQUEST')">{{::vm.text.oneToOnemapping}}</button>
+					</right>
+				</bc-tool-wrap>
+				
+				<ul class="w-100" display="none" style="display: inline-block;">
+					<li class="w-40">
+						<div class="grid-group-header">
+							{{::vm.text.srcMsg}} 
+							<span ng-show="vm.detail.sendSysCd"> - {{vm.detail.sendSysCd}} ({{vm.detail.sendSysNm}})</span>
+						</div>
+						<div style="height:272px;" 
+							bc-grid="vm.sndMsgMapSrcGrid" id="sndMsgMapSrcGrid"></div>
+					</li>
+					<li class="w-60">
+						<div class="grid-group-header">
+							<span style="margin-right: 45%;">
+								{{::vm.text.targetMsg}}
+								<span ng-show="vm.detail.receiveSysCd"> - {{vm.detail.receiveSysCd}} ({{vm.detail.receiveSysNm}})</span>
+							</span>
+							<span>{{::vm.text.mappingInfo}}</span>
+						</div>
+						<div style="height:272px;" 
+							bc-grid="vm.sendMsgMapTrgGrid" id="sendMsgMapTrgGrid"></div>
+					</li>
+				</ul>
+				
+				<bc-tool-wrap style="margin-top:10px">
+					<li class="w-33">
+						{{::vm.text.resMsgMapping}}
+						<label class="check-wrap">
+							<input type="checkbox" ng-model="vm.useResponseMsgScroll"/> {{::vm.text.scrollSync}}
+						</label>
+					</li>
+					<right>
+						<label style="padding: 0 10px;" class="chr-c-orange" ng-show="vm.detail.msgLayoutTranYn === 'Y'">{{::vm.text.confirmChangedMsg}}</label>
+						<button ng-show="vm.isEdit" type="button" class="bw-btn-txt2 no-line-height" ng-click="vm.mappingConfirm('RESPONSE')">{{::vm.text.mappingVerification}}</button>
+						<button ng-show="vm.isEdit" type="button" class="bw-btn-txt2 no-line-height" ng-click="vm.mapping('RESPONSE')">{{::vm.text.oneToOnemapping}}</button>
+					</right>
+				</bc-tool-wrap>
+
+				<ul class="w-100" style="display: inline-block;">
+					<li class="w-40">
+						<div class="grid-group-header">
+							{{::vm.text.srcMsg}} 
+							<span ng-show="vm.detail.receiveSysCd"> - {{vm.detail.receiveSysCd}} ({{vm.detail.receiveSysNm}})</span>
+						</div>
+						<div class="w-100" style="height:272px;" 
+							bc-grid="vm.rcvMsgMapSrcGrid" id="rcvMsgMapSrcGrid"></div>
+					</li>
+					<li class="w-60">
+						<div class="grid-group-header">
+							<span style="margin-right: 45%;">
+								{{::vm.text.targetMsg}}
+								<span ng-show="vm.detail.sendSysCd"> - {{vm.detail.sendSysCd}} ({{vm.detail.sendSysNm}})</span>
+							</span>
+							<span>{{::vm.text.mappingInfo}}</span>
+						</div>
+						<div class="w-100" style="height:272px;" 
+							bc-grid="vm.rcvMsgMapTrgGrid" id="rcvMsgMapTrgGrid"></div>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+	<div>
+		<bc-tool-wrap style="background:white; border-top: 1px solid #eeeeee !important; cursor:pointer;"
+			zabara="deployInterface"
+			ng-click="vm.onClickZabara('deployTargetSysGrid','refHistoryGrid')" scroll>
+			<div class="bw-accordion">
+				<h3 class="c-label5">
+					<span style="font-size:12px;font-weight:normal;">{{::vm.text.deploy}}</span>
+				</h3>
+			</div>
+			<right>
+				<div class='bw-btn w-auto' ng-show='vm.detail.intrfcId && !vm.isEdit'>
+					<label style="float: left;" class="check-wrap" ng-show="vm.detail.msgLayoutTranYn === 'Y' && vm.detail.msgTrnsfrmYn === 'Y'">
+						<input style="vertical-align: middle;" type="checkbox" ng-model="vm.compulsionDeployYn" ng-click="vm.stopPropagation($event)"/> {{::vm.text.forceDeploy}}
+					</label>
+					<button type="button" style="margin-right: -10px;" class="bw-btn bxd bxd-rocket" 
+						title="{{::vm.text.deploy}}" ng-click="vm.deployInterface($event)"></button>
+				</div>
+				<button type="button" class="bw-btn">
+					<i id="deployInterfaceZabara" class="bxd bxd-arrow-down zabara" style="transform: rotate(180deg);"></i>
+				</button>
+			</right>
+		</bc-tool-wrap>
+		
+		<div id="deployInterface" style="width: 100%; display: none; background: #F9F9F9;">
+			<section class="search-wrap clr">
+				<bc-tool-wrap>
+					<li class="w-33">
+						{{::vm.text.deployTargetSystem}}
+					</li>
+					<right ng-show="vm.isEdit">
+						<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.openDeploySystemPopup()"></button>
+					</right>
+				</bc-tool-wrap>
+				<div class="w-100" style="height: 177px;"
+					bc-grid="vm.deployTargetSysGrid"></div>
+				
+				<bc-tool-wrap>
+					<li class="w-33">
+						{{::vm.text.deployResultCd}}
+					</li>
+				</bc-tool-wrap>
+				
+				<section class="search-wrap add-bd2-t clr">
+					<ul class="unit w-100 col-2 clr">
+						<li class="w-100">
+							<textarea class="w-form bw-textarea bg-w" readonly>{{vm.selectedIntrfcdeploysysdtDto.resultMessage}}</textarea>
+						</li>
+					</ul>
+				</section>
+				
+				<bc-tool-wrap>
+					<li class="w-33">
+						{{::vm.text.deployHistory}}
+					</li>
+				</bc-tool-wrap>
+				
+				<div class="w-100" style="height: 153px; " 
+						bc-grid="vm.refHistoryGrid"></div>
+			</section>
+		</div>
+	</div>
+	
+	<div style="margin-bottom: 100px;"></div>
+</div>

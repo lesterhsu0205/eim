@@ -1,0 +1,122 @@
+<div>
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	
+	<bc-tool-wrap>
+		<right>
+			<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+			<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+			<button type="button" class="bw-btn b-ctr" zabara="searchWrap_main">
+				<i class="bxd bxd-toggle zabara"></i>
+			</button>
+		</right>
+	</bc-tool-wrap>
+
+	<div>
+		<section class="search-wrap clr" id="searchWrap_main">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-160">{{::vm.text.instCd}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);" 
+						ng-model="vm.searchParam.instCd" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-160">{{::vm.text.instCdNm}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);" 
+						ng-model="vm.searchParam.instCdNm" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<bc-tool-wrap>
+			<left>
+				<select class="bw-input ipt-select w-s" ng-model="vm.select.pageSize" ng-change="vm.change()">
+					<option ng-repeat="item in vm.codes.GRID_PAGE_SIZE" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+				</select>
+				<label>{{::vm.text.all}} {{vm.options.recordsCount}}{{::vm.text.cnt}}</label>
+			</left>
+			<right>
+				<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()" ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.insert"></button>
+				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
+					<i class="bxd bxd-toggle zabara"></i>
+				</button>
+			</right>
+		
+		</bc-tool-wrap>
+		<section id="gridWrap">
+			<div class="w-100" ng-style="{ height: vm.gridHeight }" 
+				bc-grid="vm.options" data-page="true" data-page-click="vm.pageBtnClick">
+			</div>
+		</section>
+	</div>
+	
+	<div>
+		<bc-tool-wrap>
+			<right ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.update">
+				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
+				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit" title="{{::vm.text.cancel}}" ng-click="vm.cancel()"></button>
+				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit"title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+			</right>
+		</bc-tool-wrap>
+		<section class="search-wrap clr" id="searchWrap">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap asterisk clr" id="none-edit">
+						<label class="bw-label wp-160">{{::vm.text.instCd}}</label>
+						<input type="search" class="bw-input" style="width:calc(100% - 160px);" ng-model="vm.selectedExtrnlinst.instCd">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap asterisk clr">
+						<label class="bw-label wp-160">{{::vm.text.instCdNm}}</label>
+						<input type="search" class="bw-input required" style="width:calc(100% - 160px);" ng-model="vm.selectedExtrnlinst.instCdNm">
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap asterisk clr">
+						<label class="bw-label wp-160">{{::vm.text.instDstnctnVal}}</label>
+						<select class="bw-input ipt-select w-s" style="width:calc(100% - 160px);" ng-model="vm.selectedExtrnlinst.instDstnctnVal">
+							<option ng-repeat="item in vm.codes.EXT_INST_TYPE" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+						</select>
+					</div>
+				</li>
+				<li class="w-100">
+					<div class="input-wrap fix-txtarea h-half p-rel clr">
+						<label class="bw-label wp-160">{{::vm.text.instCdDesc}}</label>
+						<div class="txt-wrap2 fix-size f-r" style="width:calc(100% - 160px);">
+							<textarea class="bw-textarea" placeholder="{{::vm.text.descPlaceHolder}}" disabled ng-model="vm.selectedExtrnlinst.instCdDesc"></textarea>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</section>
+	</div>
+	
+	<bc-modal modal="vm.alert" dim="true">
+		<div style="width: 400px; height: 100px;">
+			<h2 class="bw-tt a-center">{{vm.text.alertBody}}</h2>
+			<div class="btn-wrap add-mg">
+				<button type="button" class="bw-btn-txt" ng-click="vm.closeAlert()">{{::vm.text.alertConfirm}}</button>
+			</div>
+		</div>
+	</bc-modal>
+	<bc-modal modal="vm.confirm" dim="true">
+		<div style="width: 400px; height: 100px;">
+			<h2 class="bw-tt a-center">{{::vm.text.confirmTextDelete}}</h2>
+			<div class="btn-wrap add-mg">
+				<button type="button" class="bw-btn-txt" ng-click="vm.closeConfirm(true)">{{::vm.text.confirmOk}}</button>
+				<button type="button" class="bw-btn-txt on" ng-click="vm.closeConfirm(false)">{{::vm.text.confirmCancel}}</button>
+			</div>
+		</div>
+	</bc-modal>
+</div>

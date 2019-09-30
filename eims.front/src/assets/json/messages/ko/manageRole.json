@@ -1,0 +1,24 @@
+{
+	"namespace": "manageRole",
+	"messages": {
+		"titleHeader": "역할 관리",
+		"titleDesc": "역할정보를 관리하는 페이지입니다.",
+		"roleId": "역할ID",
+		"roleNm": "역할명",
+		"roleDesc" : "역할설명",
+		"menuId": "메뉴ID",
+		"menuNm": "메뉴명",
+		"permId": "권한ID",
+		"permNm": "권한명",
+		"descPlaceHolder": "내용을 적어주세요.",
+		"emptyRoleId": "역할ID를 입력해주세요.",
+		"emptyRoleId2": "역할ID를 선택해주세요.",
+		"emptyRoleNm": "역할명을 입력해주세요.",
+		"roleList": "역할리스트",
+		"roleDetail": "역할정보상세",
+		"menuList": "메뉴접근권한",
+		"permList": "권한정보",
+		"menuAddModalHeaer": "메뉴 권한 추가",
+		"check": "사용여부"
+    }
+}

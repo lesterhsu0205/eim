@@ -1,0 +1,24 @@
+{
+	"namespace": "menu",
+	"messages": {
+		"MENU2000": "Telegram Management",
+		"MENU2010": "Telegram Management",
+		"MENU3100": "Interface Management",
+		"MENU3110": "MCA Interface Management",
+		"MENU3120": "EAI Interface Management",
+		"MENU3130": "FEP Interface Management",
+		"MENU3140": "CC Interface Management",
+		"MENU4000": "Configuration Management",
+		"MENU4010": "Deploy System Management",
+		"MENU4020": "Send/Receive System Management",
+		"MENU4030": "Application Management",
+		"MENU4060": "Institution Code Management",
+		"MENU4070": "Meta Information Management",
+		"MENU5000": "History Management",
+		"MENU5010": "Action History Management",
+		"MENU1000": "Configuration",
+		"MENU1010": "User Management",
+		"MENU1020": "Role Management",
+		"MENU1030": "Permission Management"
+	}
+}

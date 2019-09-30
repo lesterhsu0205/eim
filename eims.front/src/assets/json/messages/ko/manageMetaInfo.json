@@ -1,0 +1,26 @@
+{
+	"namespace": "manageMetaInfo",
+    "messages": {
+		"titleHeader": "메타정보 관리",
+		"titleDesc": "메타정보를 관리하는 페이지입니다.",
+		"metaEngNm": "메타 영문명 (변수명)",
+		"metaKorNm": "메타 영문 Full Name",
+		"metaLen": "길이",
+		"decimalLen": "scale",
+		"dataTypeNm": "타입",
+		"intrfcId" : "인터페이스 ID",
+		"intrfcNm" : "인터페이스 명",
+		"intrfcType" : "인터페이스 타입",
+		"msgId" : "전문 ID",
+		"influenceModal": "영향도 분석",
+		"influence": "영향도",
+		"sync": "동기화",
+		"syncMeta": "메타정보가 최신화 되었습니다.",
+		"msgIdCreate": "전문 ID 생성",
+		"sendRevDesc" : "송/수신 구분",
+		"inOutDesc": "입/출력 구분",
+		"selectInterfaceId": "인터페이스를 선택해주세요.",
+		"selectSystem" : "송수신구분값을 선택해주세요.",
+		"selectInout" : "입출력구분값을 선택해주세요."
+    }
+}

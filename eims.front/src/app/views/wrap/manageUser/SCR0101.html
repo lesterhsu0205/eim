@@ -1,0 +1,131 @@
+<div>
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	
+	<bc-tool-wrap ng-show="vm.user.roleId === 'Administrator'">
+		<right>
+			<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+			<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+			<button type="button" class="bw-btn b-ctr" zabara="searchWrap_main">
+				<i class="bxd bxd-toggle zabara"></i>
+			</button>
+		</right>
+	</bc-tool-wrap>
+
+	<div>
+		<section class="search-wrap clr" id="searchWrap_main" ng-show="vm.user.roleId === 'Administrator'">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.userId}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);" 
+						ng-model="vm.searchParam.userId" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.userNm}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);" 
+						ng-model="vm.searchParam.userNm" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<bc-tool-wrap>
+			<left>
+				<select class="bw-input ipt-select w-s" ng-model="vm.select.pageSize" ng-change="vm.change()">
+					<option ng-repeat="item in vm.codes.GRID_PAGE_SIZE" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+				</select>
+				<label>{{::vm.text.all}} {{vm.options.recordsCount}}{{::vm.text.cnt}}</label>
+			</left>
+			<right>
+				<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()" ng-show="vm.user.perm.insert && vm.user.roleId === 'Administrator'"></button>
+				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
+					<i class="bxd bxd-toggle zabara"></i>
+				</button>
+			</right>
+		
+		</bc-tool-wrap>
+		<section id="gridWrap">
+			<div class="w-100" ng-style="{ height: vm.gridHeight }" 
+				bc-grid="vm.options" data-page="true" data-page-click="vm.pageBtnClick">
+			</div>
+		</section>
+	</div>
+	
+	<div>
+		<bc-tool-wrap>
+			<right ng-show="vm.user.perm.update && (vm.user.roleId === 'Administrator' || vm.selectedUser.userId === vm.user.userId)">
+				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit && vm.selectedUser.userId" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
+				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit" title="{{::vm.text.cancel}}" ng-click="vm.cancel()"></button>
+				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+			</right>
+		</bc-tool-wrap>
+		<section class="search-wrap clr" id="searchWrap">
+			<ul class="unit w-100 col-3 clr">
+				<li class="w-33">
+					<div class="input-wrap asterisk clr" id="none-edit">
+						<label class="bw-label wp-140">{{::vm.text.userId}}</label>
+						<input type="search" class="bw-input" style="width:calc(100% - 140px);" ng-model="vm.selectedUser.userId" disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap asterisk clr">
+						<label class="bw-label wp-140">{{::vm.text.userNm}}</label>
+						<input type="search" class="bw-input required" style="width:calc(100% - 140px);" ng-model="vm.selectedUser.userNm" disabled>
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap  clr">
+						<label class="bw-label wp-140">{{::vm.text.email}}</label>
+						<input type="search" class="bw-input required" style="width:calc(100% - 140px);" ng-model="vm.selectedUser.email" disabled>
+					</div>
+				</li>
+			</ul>
+			<ul class="unit w-100 col-3 clr">
+				<li class="w-33">
+					<div class="input-wrap  clr">
+						<label class="bw-label wp-140">{{::vm.text.dutyNm}}</label>
+						<input type="search" class="bw-input required" style="width:calc(100% - 140px);" ng-model="vm.selectedUser.dutyNm" disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap  clr">
+						<label class="bw-label wp-140">{{::vm.text.deptNm}}</label>
+						<input type="search" class="bw-input required" style="width:calc(100% - 140px);" ng-model="vm.selectedUser.deptNm" disabled>
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap asterisk clr none-edit" id="none-edit2">
+						<label class="bw-label wp-140">{{::vm.text.roleId}}</label>
+						<input type="text" class="bw-input none-edit" style="width:calc(100% - 150px);" ng-model="vm.selectedUser.roleId" disabled>
+						<i class="bxd bxd-search h-20" style="width:10px;" title="{{::vm.text.search}}" ng-click="vm.openRoleId()" ng-if="vm.isEdit"></i>
+					</div>
+				</li>
+			</ul>
+			<ul class="unit w-100 col-3 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.password}}</label>
+						<input type="password" class="bw-input" style="width:calc(100% - 140px);" 
+							ng-model="vm.selectedUser.userPwd" disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.passwordConfirm}}</label>
+						<input type="password" class="bw-input" style="width:calc(100% - 140px);" 
+							ng-model="vm.selectedUser.userPwdConfirm" disabled>
+					</div>
+				</li>
+			</ul>
+		</section>
+	</div>
+</div>

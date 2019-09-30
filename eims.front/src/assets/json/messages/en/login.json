@@ -1,0 +1,8 @@
+{
+	"namespace": "login",
+    "messages": {
+      "userId": "Id",
+      "userPassword": "Password",
+      "signIn": "Login"
+    }
+}

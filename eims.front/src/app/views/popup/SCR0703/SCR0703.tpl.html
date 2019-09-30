@@ -1,0 +1,85 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<div ng-style="{ 'min-width':vm.width+'px'}">
+			<h2 class="bw-tt a-center" ng-show="!vm.data.definition">
+				{{::vm.text.interfaceImport}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			<h2 class="bw-tt a-center" ng-show="vm.data.definition">
+				{{::vm.text.interfaceImport2}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			
+			<bc-tool-wrap></bc-tool-wrap>
+			
+			<section class="search-wrap clr">
+				<ul class="unit w-100 col-2 clr">
+					<li class="w-80">
+						<div class="input-wrap fix-txtarea p-rel clr h-half">
+							<label class="bw-label wp-160" ng-show="!vm.data.definition">{{::vm.text.interfaceFile}}</label>
+							<label class="bw-label wp-160" ng-show="vm.data.definition">{{::vm.text.interfaceFile2}}</label>
+							<div class="txt-wrap2 fix-size f-r" style="width:calc(100% - 160px);height: 75px;">
+								<textarea class="bw-textarea filenames" readonly></textarea>
+							</div>
+						</div>
+					</li>
+					<li class="w-20">
+						<div class="bw-btn f-l" style="margin-left: 10px;">
+							<input type="file" class="bw-input w-60" style="display:none;" accept=".xlsx" multiple="multiple">
+							<button type="button" class="bw-btn-txt2" ng-click="vm.openFile()" style="height: 95px;">{{::vm.text.fileSelection}}</button>
+						</div>
+						<div class="bw-btn f-l" style="margin-left: 10px;" ng-show="!vm.data.definition">
+							<button type="button" class="bw-btn-txt2" ng-click="vm.sendFile()" style="height: 95px;">{{::vm.text.upload}}</button>
+						</div>
+						<div class="bw-btn f-l" style="margin-left: 10px;" ng-show="vm.data.definition">
+							<button type="button" class="bw-btn-txt2" ng-click="vm.sendFile2()" style="height: 95px;">{{::vm.text.upload}}</button>
+						</div>
+					</li>
+				</ul>
+			</section>
+			
+			<bc-tool-wrap class="a-left" style="margin-top:10px">
+				<div class='bw-btn'>
+				<label class="bw-label">{{::vm.text.uploadConfirmResult}}</label>
+				
+					<!-- <button type="button" class="bw-btn-txt2 no-line-height" 
+						style="background-color:red;border:0;color:white;" disabled>{{::vm.text.uploadConfirmResult}}</button>
+					<label class="wp-100" style="margin-left:10px">{{vm.uploadResult}}</label> -->
+				</div>
+			</bc-tool-wrap>
+			<div style="padding:0;margin:0;height: 304px;border: 1px solid #e6e6e6;overflow:auto;">
+				<div ng-repeat="item in vm.testList" ng-show="!vm.isError">
+					<bc-tool-wrap style="background:white; border-top: 1px solid #eeeeee !important; cursor:pointer;" ng-click="vm.toggle($index, item.isError)" >
+						<div class="bw-accordion">
+							<h3 class="c-label1" ng-show="item.isError" style="margin: 0;">
+								<span style="font-size:12px;font-weight:normal;">
+									<a style="font-size:12px;font-weight:normal;margin-right:10px;color:#f31f90;">{{item.error}}</a>
+									{{item.fileName}}
+								</span>
+							</h3>
+							<h3 class="c-label4" ng-show="!item.isError" style="cursor: default; margin: 0;">
+								<span style="font-size:12px;font-weight:normal;">
+									<a style="font-size:12px;font-weight:normal;margin-right:10px;color:#2667bb;">{{item.done}}</a>
+									{{item.fileName}}
+								</span>
+							</h3>
+						</div>
+					</bc-tool-wrap>
+			
+					<div id="file{{$index}}" style="width: 100%; display: none; border-top: 1px solid #eeeeee; text-align: left; padding: 10px;"> 
+						<textarea class="bw-textarea" style="border-radius:0px; height: 100px;" readonly>{{item.fileConts}}</textarea>
+					</div>
+				</div>
+				
+				<div class="txt-wrap2 w-100 f-r" style="margin:0px" ng-show="vm.isError">
+					<textarea class="bw-textarea" 
+						style="border-radius:0px" 
+						ng-model="vm.uploadResultMsg" readonly></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.close}}</button>
+		</div>
+	</div>
+</div>

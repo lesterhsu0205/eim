@@ -1,0 +1,21 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<div ng-style="{ 'min-width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.permList}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+		</div>
+		
+		<section id="gridWrap">
+			<div class="w-100" style="height:153px;"
+				bc-grid="vm.permOptions">
+			</div>
+		</section>
+		
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt" ng-click="vm.closeModal(true)">{{::vm.text.confirmOk}}</button>
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.confirmCancel}}</button>
+		</div>
+	</div>
+</div>

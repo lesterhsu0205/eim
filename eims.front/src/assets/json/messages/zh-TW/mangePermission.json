@@ -1,0 +1,16 @@
+{
+	"namespace": "mangePermission",
+    "messages": {
+		"titleHeader": "Permission Management",
+		"titleDesc": "This is the page that manage permissions.",
+		"permId": "Permission Id",
+		"permNm": "Permission Name",
+		"permDesc": "Description",
+		"permTypeCd": "Permission Code",
+		"descPlaceHolder": "Please enter the description.",
+		"emptyId": "Please enter the permission id.",
+		"emptyNm": "Please enter the permission name.",
+		"emptyCd": "Please enter the permission code.",
+		"useYn": "Use Status"
+    }
+}

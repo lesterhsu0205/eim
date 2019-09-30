@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="" />
+
+    <meta name="apple-mobile-web-app-title" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+	<link rel="stylesheet" href="assets/bxdi/styles.css" />
+	<link rel="stylesheet" href="assets/css/style.css" />
+	<link rel="stylesheet" href="assets/css/w2ui-1.5.rc1.css" />
+	<link rel="stylesheet" href="assets/css/admin-grid.css" /> 
+    <link rel="stylesheet" href="assets/bxuip-angular.js-ui/dist/assets/css/bx-ui.min.css" />
+    <link rel="stylesheet" href="assets/bxuip-angular.js-ui/dist/assets/theme/bx-theme-blackdiamond.css" />
+    <link rel="stylesheet" href="assets/js/jquery-ui/jquery-ui.css" />
+	
+</head>
+<body ng-app="app" class="theme3">
+    <ui-view></ui-view>
+
+	<!-- IE Array find prototype -->
+	<script type="text/javascript" src="assets/js/bxjs/bxInit.js"></script>
+	
+	<!-- jquery 등록 -->
+	<script type="text/javascript" src="assets/js/jquery/jquery.min.js"></script>
+
+	<!-- app 내부 common source 추가. -->
+	<script type="text/javascript" src="common_bundle.js"></script>
+	<script type="text/javascript" src="app/app.config.js"></script>
+	<script type="text/javascript" src="app/app.js"></script>
+	
+	<!-- app 내부 common service 추가. -->
+	<script type="text/javascript" src="app/common/service/http.service.js"></script>
+	<script type="text/javascript" src="app/common/service/util.service.js"></script>
+	<script type="text/javascript" src="app/common/service/user.service.js"></script>
+	<script type="text/javascript" src="app/common/service/code.service.js"></script>
+	<script type="text/javascript" src="app/common/service/message.service.js"></script>
+	<script type="text/javascript" src="app/common/service/grid.service.js"></script>
+	<script type="text/javascript" src="app/common/service/popup.service.js"></script>
+	<script type="text/javascript" src="app/common/service/meta.service.js"></script>
+		
+	<!-- app 내부 common directive 추가. -->
+	<script type="text/javascript" src="app/common/directive/header/header.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/sidebar/sidebar.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/lnb/lnb.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/accordion/accordion.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/accordion/bind/bind.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/modal/modal.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/grid/grid.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/grid/pagenation/pagenation.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/toolWrap/toolWrap.directive.js"></script>
+	<script type="text/javascript" src="app/common/directive/zabara/zabara.directive.js"></script>
+	
+	<!-- app 내부 modal controller 추가. -->
+	<script type="text/javascript" src="app/views/popup/SCR0102/SCR0102.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0202/SCR0202.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0302/SCR0302.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0402/SCR0402.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0502/SCR0502.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0503/SCR0503.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0504/SCR0504.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0505/SCR0505.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0702/SCR0702.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0703/SCR0703.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0704/SCR0704.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0706/SCR0706.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0707/SCR0707.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0708/SCR0708.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR0902/SCR0902.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR1202/SCR1202.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR1302/SCR1302.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR1402/SCR1402.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR1602/SCR1602.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR1802/SCR1802.controller.js"></script>
+	<script type="text/javascript" src="app/views/popup/SCR1803/SCR1803.controller.js"></script>
+	
+	<!-- jquery plguin 및 확장 lib 추가. -->
+	<script type="text/javascript" src="assets/js/w2ui/w2ui.js"></script>
+	<script type="text/javascript" src="assets/js/pdf/jspdf.min.js"></script>
+	<script type="text/javascript" src="assets/js/pdf/html2canvas.min.js"></script>
+	<script type="text/javascript" src="assets/js/bxjs/bxMsg.js"></script>
+	<script type="text/javascript" src="assets/js/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="assets/js/jquery/jquery.cookie.min.js"></script>
+	<script type="text/javascript" src="assets/js/ui-bootstrap/ui-bootstrap-tpls-2.5.0.min.js"></script>
+</body>
+</html>

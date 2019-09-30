@@ -1,0 +1,16 @@
+{
+	"namespace": "mangePermission",
+    "messages": {
+		"titleHeader": "권한 관리",
+		"titleDesc": "사용자 권한을 관리하는 페이지입니다.",
+		"permId": "권한ID",
+		"permNm": "권한명",
+		"permDesc": "설명",
+		"permTypeCd": "권한코드",
+		"descPlaceHolder": "내용을 적어주세요.",
+		"emptyId": "권한 ID를 입력해주세요.",
+		"emptyNm": "권한명을 입력해주세요.",
+		"emptyCd": "권한코드를 입력해주세요.",
+		"useYn": "사용여부"
+    }
+}

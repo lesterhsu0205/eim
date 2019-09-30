@@ -1,0 +1,16 @@
+{
+	"namespace": "manageCommSystem",
+    "messages": {
+		"titleHeader": "Send/Receive System Management",
+		"titleDesc": "This is the page that manage send/receive systems.",
+		"sysCd": "Send/Receive System Code",
+		"sysNm": "Send/Receive System Name",
+		"sysCdDesc": "Description",
+		"sysSearch": "Send/Receive System Search",
+		"shortSysCd":"System Code",
+		"shortSysNm":"System Name",
+		"descPlaceHolder": "Please enter the description.",
+		"emptySysCd": "Please enter the send/receive system code.",
+		"emptySysNm": "Please enter the send/receive system name."
+    }
+}

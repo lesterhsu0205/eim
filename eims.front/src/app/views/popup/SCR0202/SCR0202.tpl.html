@@ -1,0 +1,43 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<h2 class="bw-tt a-center" ng-style="{ 'min-width':vm.width+'px'}">
+			{{::vm.text.roleSearch}}
+			<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+		</h2>
+		
+		<bc-tool-wrap>
+			<right>
+				<button type="button" class="bw-btn alert-reset bxd bxd-reset" ng-click="vm.resetSearch()"></button>
+				<button type="button" class="bw-btn bxd bxd-search" ng-click="vm.search()"></button>
+			</right>
+		</bc-tool-wrap>
+		
+		<section class="search-wrap clr">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-50">
+					<div class="input-wrap clr">
+						<label class="bw-label w-40">{{::vm.text.roleId}}</label>
+						<input type="search" class="bw-input w-60" ng-model="vm.searchParam.roleId" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-50">
+					<div class="input-wrap clr">
+						<label class="bw-label  w-40">{{::vm.text.roleNm}}</label>
+						<input type="search" class="bw-input w-60" ng-model="vm.searchParam.roleNm" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<section id="gridWrap">
+			<div class="w-100" ng-style="{ height: vm.gridHeight }"
+				bc-grid="vm.roleOptions" data-page="true" data-page-click="vm.pageBtnClick">
+			</div>
+		</section>
+		
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt" ng-click="vm.closeModal(true)">{{::vm.text.confirmOk}}</button>
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.confirmCancel}}</button>
+		</div>
+	</div>
+</div>

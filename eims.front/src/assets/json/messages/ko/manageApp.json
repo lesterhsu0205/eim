@@ -1,0 +1,18 @@
+{
+	"namespace": "manageApp",
+	"messages": {
+		"titleHeader": "어플리케이션 관리",
+		"titleDesc": "어플리케이션 관리하는 페이지입니다.",
+		"appCode": "어플리케이션 코드",
+		"appCodeNm": "어플리케이션 코드명",
+		"appCodeDetail": "어플리케이션 코드 상세",
+		"appCd": "코드",
+		"appCdNm": "코드명",
+		"lvCd":"레벨코드",
+		"appCdDesc" : "설명",
+		"emptyAppCode": "어플리케이션 코드를 입력해주세요.",
+		"emptyAppCodeNm": "어플리케이션 코드명을 입력해주세요.",
+		"emptyLvCd": "레벨코드를 입력해주세요."
+    }
+    
+}

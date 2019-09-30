@@ -1,0 +1,18 @@
+<div class="bw-accordion">
+	<div ng-repeat="item in items" ng-show="!item.hidden">
+		<h3 class="clr-bd-t" ng-click="toggle($index)">
+			<i class="{{item.icon}}"></i>
+			{{item.label}}
+		</h3>
+		<div class="bw-sub" ng-class="{hide: !item.selected}">
+			<ul>
+				<li id="{{::children.id}}" ng-repeat="children in item.children"
+					ng-show="!children.hidden"
+					ng-click="click($event, children)">
+					{{children.label}}
+				</li>
+			</ul>
+		</div>
+	</div>
+	<ng-transclude></ng-transclude>
+</div>

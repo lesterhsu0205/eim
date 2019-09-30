@@ -1,0 +1,70 @@
+<div>
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	
+	<div class="left-box">
+		<h3 class="bw-stt add-mg-t">
+			<p class="desc">{{::vm.text.appCode}}</p>
+		</h3>
+		<div>
+			<bc-tool-wrap>
+				<left>
+					<label>{{::vm.text.all}} {{vm.options.recordsCount}}{{::vm.text.cnt}}</label>
+				</left>
+				<right ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.insert">	
+					<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()"></button>
+				</right>
+			</bc-tool-wrap>
+			<section id="gridWrap">
+				<div class="w-100" style="height: 500px;" bc-grid="vm.options"></div>
+			</section>
+		</div>
+	</div>
+	
+	<div class="right-box">
+		<h3 class="bw-stt add-mg-t">
+			<p class="desc">{{::vm.text.appCodeDetail}}</p>
+		</h3>
+		<div>
+			<bc-tool-wrap>
+				<right ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.update">
+					<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
+					<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit" title="{{::vm.text.cancel}}" ng-click="vm.cancel()"></button>
+					<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+				</right>
+			</bc-tool-wrap>
+			<section class="search-wrap clr" id="searchWrap" style="height: 500px;" >
+				<ul class="unit w-100 col-2 clr">
+					<li class="w-100">
+						<div class="input-wrap asterisk clr" id="none-edit">
+							<label class="bw-label w-40">{{::vm.text.appCode}}</label>
+							<input type="search" class="bw-input w-60" ng-model="vm.selectedAppCd.appCd" disabled>
+						</div>
+					</li>
+					<li class="w-100">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label w-40">{{::vm.text.appCodeNm}}</label>
+							<input type="search" class="bw-input required w-60" ng-model="vm.selectedAppCd.appCdNm" disabled>
+						</div>
+					</li>
+					<li class="w-100">
+						<div class="input-wrap asterisk clr disabled">
+							<label class="bw-label w-40">{{::vm.text.lvCd}}</label>
+							<select class="bw-input w-60" ng-model="vm.selectedAppCd.lvCd" disabled>
+								<option ng-repeat="item in vm.codes.LEVEL_CD" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+							</select>
+						</div>
+					</li>
+					<li class="w-100">
+						<div class="input-wrap clr">
+							<label class="bw-label w-40">{{::vm.text.appCdDesc}}</label>
+							<input type="search" class="bw-input required w-60" ng-model="vm.selectedAppCd.appCdDesc" disabled>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+</div>

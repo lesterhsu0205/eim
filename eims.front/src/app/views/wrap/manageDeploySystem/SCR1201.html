@@ -1,0 +1,115 @@
+<div>
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	
+	<bc-tool-wrap>
+		<right>
+			<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+			<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+			<button type="button" class="bw-btn b-ctr" zabara="searchWrap_main">
+				<i class="bxd bxd-toggle zabara"></i>
+			</button>
+		</right>
+	</bc-tool-wrap>
+
+	<div>
+		<section class="search-wrap clr" id="searchWrap_main">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-170">{{::vm.text.deploySysCd}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 170px);" 
+						ng-model="vm.searchParam.deploySysCd" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-170">{{::vm.text.deploySysNm}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 170px);" 
+						ng-model="vm.searchParam.deploySysNm" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<bc-tool-wrap>
+			<left>
+				<select class="bw-input ipt-select w-s" ng-model="vm.select.pageSize" ng-change="vm.change()">
+					<option ng-repeat="item in vm.codes.GRID_PAGE_SIZE" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+				</select>
+				<label>{{::vm.text.all}} {{vm.options.recordsCount}}{{::vm.text.cnt}}</label>
+			</left>
+			<right>
+				<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()" ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.insert"></button>
+				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
+					<i class="bxd bxd-toggle zabara"></i>
+				</button>
+			</right>
+		
+		</bc-tool-wrap>
+		<section id="gridWrap">
+			<div class="w-100" ng-style="{ height: vm.gridHeight }" 
+				bc-grid="vm.options" data-page="true" data-page-click="vm.pageBtnClick">
+			</div>
+		</section>
+	</div>
+	
+	<div>
+		<bc-tool-wrap>
+			<right ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.update">
+				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
+				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit" title="{{::vm.text.cancel}}" ng-click="vm.cancel()"></button>
+				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+			</right>
+		</bc-tool-wrap>
+		<section class="search-wrap clr" id="searchWrap">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap asterisk clr" id="none-edit">
+						<label class="bw-label wp-170">{{::vm.text.deploySysCd}}</label>
+						<input type="search" class="bw-input" style="width:calc(100% - 170px);" ng-model="vm.selectedDeploySys.deploySysCd"
+								disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap asterisk clr">
+						<label class="bw-label wp-170">{{::vm.text.deploySysNm}}</label>
+						<input type="search" class="bw-input required" style="width:calc(100% - 170px);" ng-model="vm.selectedDeploySys.deploySysNm"
+								disabled>
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap asterisk clr" id="none-edit2">
+						<label class="bw-label wp-170">{{::vm.text.deploySysGrpCd}}</label>
+						<select class="bw-input ipt-select" style="width:calc(100% - 170px); background-color: transparent;" ng-model="vm.selectedDeploySys.deploySysGrpCd" disabled>
+							<option ng-repeat="item in vm.codes.DEPLOY_SYS_DSCD" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+						</select>
+					</div>
+				</li>
+				<li class="w-100">
+					<div class="input-wrap asterisk clr">
+						<label class="bw-label wp-170">{{::vm.text.deploySysUrl}}</label>
+						<input type="search" class="bw-input" style="width:calc(100% - 170px);" ng-model="vm.selectedDeploySys.deploySysUrl"
+							disabled>
+					</div>
+				</li>
+				<li class="w-100">
+					<div class="input-wrap fix-txtarea h-half p-rel clr">
+						<label class="bw-label wp-170">{{::vm.text.deploySysDesc}}</label>
+						<div class="txt-wrap2 fix-size f-r" style="width:calc(100% - 170px);">
+							<textarea class="bw-textarea" placeholder="{{::vm.text.deploySysDescPlaceHolder}}" disabled
+										ng-model="vm.selectedDeploySys.deploySysDesc">
+							</textarea>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</section>
+	</div>
+</div>

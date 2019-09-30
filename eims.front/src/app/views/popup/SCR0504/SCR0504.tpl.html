@@ -1,0 +1,94 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex }">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<div ng-style="{ 'width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.msgLayoutModalHeaer}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			
+			<bc-tool-wrap></bc-tool-wrap>
+			
+			<section class="search-wrap clr">
+				<ul class="unit w-100 clr">
+					<li class="w-30">
+						<div class="input-wrap asterisk clr editable">
+							<label class="bw-label wp-140">{{::vm.text.chlDscd}}</label>
+							<select class="bw-input ipt-select" 
+								style="width:calc(100% - 140px);"
+								ng-options="item.cdVal as item.cdValNm for item in vm.syncDscdList"
+								ng-model="vm.addMsg.chlDscd"
+								ng-change="vm.setMsgOption()">
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap asterisk clr editable">
+							<label class="bw-label wp-140">{{::vm.text.trxDscd}}</label>
+							<select class="bw-input ipt-select" 
+								style="width:calc(100% - 140px);"
+								ng-options="item.cdVal as item.cdValNm for item in vm.tranDscdAllList"
+								ng-model="vm.addMsg.trxDscd"
+								ng-change="vm.setMsgOption()">
+							</select>
+						</div>
+					</li>
+					<li class="w-34">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-140">{{::vm.text.msgType}}</label>
+							<select class="bw-input ipt-select" 
+								style="width:calc(100% - 140px);"
+								ng-options="item.cdVal as item.cdValNm for item in vm.msgTypes"
+								ng-model="vm.addMsg.msgDscd">
+							</select>
+						</div>
+					</li>
+				</ul>
+				<ul class="unit w-100 clr">
+					<li class="w-50" ng-show="vm.addMsg.chlDscd == 'INTERNAL' &&  vm.addMsg.trxDscd == 'ONLINE'">
+						<div class="input-wrap asterisk clr">
+								<label class="bw-label wp-140">{{::vm.text.msgLayoutId}}</label>
+								<input type="text" class="bw-input"	style="width:calc(100% - 160px);" ng-model="vm.addMsg.msgLayoutId" disabled>
+							<i class="bxd bxd-search h-20" title="{{::vm.text.search}}" ng-click="vm.makeMsgLayoutId()"></i>
+						</div>
+					</li>
+					<li class="w-50" ng-show="vm.addMsg.chlDscd == 'EXTERNAL' || vm.addMsg.trxDscd == 'BATCH' ">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-140">{{::vm.text.msgLayoutId}}</label>
+							<input type="text" class="bw-input"	style="width:calc(100% - 160px);" ng-model="vm.addMsg.msgLayoutId">						
+						</div>
+					</li>
+					<li class="w-50">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-140">{{::vm.text.lvCdsStr}}</label>
+							<input type="text" class="bw-input" style="width:calc(100% - 160px);" ng-model="vm.addMsg.lv1Cd" disabled>
+							<i class="bxd bxd-search h-20" title="{{::vm.text.search}}" ng-click="vm.selectApplication()"></i>
+						</div>
+					</li>
+				</ul>
+				<ul class="unit w-100 clr">
+					<li class="w-33" ng-show="vm.addMsg.chlDscd == 'EXTERNAL' && vm.addMsg.trxDscd == 'ONLINE' && vm.addMsg.msgDscd == 'IV'">
+						<div class="input-wrap clr">
+							<label class="bw-label" ng-class="{'wp-180': vm.user.locale === 'en', 'wp-140': vm.user.locale === 'ko'}">{{::vm.text.msgDataVal}}</label>
+							<input type="search" class="bw-input"
+							ng-class="{'wc-180': vm.user.locale === 'en', 'wc-140': vm.user.locale === 'ko'}"
+								ng-model="vm.addMsg.msgDataVal">
+						</div>
+					</li>
+					<li class="w-33" ng-show="vm.addMsg.trxDscd == 'BATCH'">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-140">{{::vm.text.fileId}}</label>
+							<input type="search" class="bw-input"
+								style="width:calc(100% - 140px);"
+								ng-model="vm.addMsg.fileId">
+						</div>
+					</li>
+				</ul>
+			</section>
+		</div>
+		
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt" ng-click="vm.closeModal(true)">{{::vm.text.create}}</button>
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.cancel}}</button>
+		</div>
+	</div>
+</div>

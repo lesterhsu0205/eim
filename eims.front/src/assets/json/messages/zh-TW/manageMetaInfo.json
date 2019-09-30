@@ -1,0 +1,26 @@
+{
+	"namespace": "manageMetaInfo",
+    "messages": {
+		"titleHeader": "Meta Information Management",
+		"titleDesc": "This is the page that manage meta informations.",
+		"metaEngNm": "Meta English Name (Variable Name)",
+		"metaKorNm": "Meta English Full Name",
+		"metaLen": "Length",
+		"decimalLen": "Scale",
+		"dataTypeNm": "Type",
+		"intrfcId" : "Interface Id",
+		"intrfcNm" : "Interface Name",
+		"intrfcType" : "Interface Type",
+		"msgId" : "Message Id",
+		"influenceModal": "Impact Analysis",
+		"influence": "Impact",
+		"sync": "Synchronization",
+		"syncMeta": "Meta information is up to date.",
+		"msgIdCreate": "Telegram ID Create",
+		"sendRevDesc" : "Send/Recv",
+		"inOutDesc" :"Input/Ouput",
+		"selectInterfaceId": "Please select interface ID.",
+		"selectSystem" : "Please select Send/Recv Value.",
+		"selectInout" : "Please select Input/Ouput Value."
+    }
+}

@@ -1,0 +1,30 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<div ng-style="{ 'width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.deployTargetSysList}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			<bc-tool-wrap>
+				<left>{{::vm.text.deployTargetSystem}}</left>
+				<right style="margin-right: 10px;">{{vm.deployDesd}}</right>
+			</bc-tool-wrap>
+			<div class="w-100" style="height:250px;" bc-grid="vm.options"></div>
+			
+			<bc-tool-wrap>
+				<left>{{::vm.text.deployResultCd}}</left>
+			</bc-tool-wrap>
+				
+			<section class="search-wrap add-bd2-t clr">
+				<ul class="unit w-100 col-2 clr">
+					<li class="w-100">
+						<textarea class="w-form bw-textarea bg-w" readonly>{{vm.selectedIntrfcdeploysysdtDto.message}}</textarea>
+					</li>
+				</ul>
+			</section>
+		</div>
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt" ng-click="vm.closeModal(false)">{{::vm.text.close}}</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,98 @@
+<div>
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	<div class="left-box">
+		<h3 class="bw-stt add-mg-t">
+		<p class="desc">{{::vm.text.roleList}}</p>
+		</h3>
+		<div>
+			<bc-tool-wrap>
+				<left>
+					<label>{{::vm.text.all}} {{vm.roleOptions.recordsCount}}{{::vm.text.cnt}}</label>
+				</left>
+				<right ng-show="vm.user.perm.insert">
+					<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()"></button>
+				</right>
+			
+			</bc-tool-wrap>
+			<section id="gridWrap">
+				<div class="w-100"  style="height: 175px;"  
+					bc-grid="vm.roleOptions" data-page="true" data-page-click="vm.pageBtnClick">
+				</div>
+			</section>
+			
+		</div>
+		<h3 class="bw-stt add-mg-t">
+			<p class="desc">{{::vm.text.roleDetail}}</p>
+		</h3>
+		<div>
+			<bc-tool-wrap>
+				<right ng-show="vm.user.perm.update">
+					<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
+					<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit" title="{{::vm.text.cancel}}" ng-click="vm.cancel()"></button>
+					<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+				</right>
+			</bc-tool-wrap>
+			<section class="search-wrap clr" id="searchWrap">
+				<ul class="unit w-100 col-2 clr">
+					<li class="w-50">
+						<div class="input-wrap asterisk clr" id="none-edit" >
+							<label class="bw-label wp-140">{{::vm.text.roleId}}</label>
+							<input type="search" class="bw-input " style="width:calc(100% - 140px);" ng-model="vm.selectedRole.roleId" disabled>
+						</div>
+					</li>
+					<li class="w-50">
+						<div class="input-wrap asterisk clr">
+							<label class="bw-label wp-140">{{::vm.text.roleNm}}</label>
+							<input type="search" class="bw-input required" style="width:calc(100% - 140px);" ng-model="vm.selectedRole.roleNm" disabled>
+						</div>
+					</li>
+					<li class="w-100">
+						<div class="input-wrap fix-txtarea p-rel clr">
+							<label class="bw-label wp-140">{{::vm.text.roleDesc}}</label>
+							<div class="txt-wrap2 fix-size f-r" style="width:calc(100% - 140px);">
+								<textarea class="bw-textarea" placeholder="{{::vm.text.descPlaceHolder}}" ng-model="vm.selectedRole.roleDesc" disabled></textarea>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+	
+	<div class="right-box">
+		<h3 class="bw-stt add-mg-t">
+			<p class="desc">{{::vm.text.menuList}}</p>
+		</h3>
+		<div>
+			<bc-tool-wrap>
+				<right ng-show="vm.user.perm.update">
+					<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.onClickAddMenu()"></button>
+				</right>
+			</bc-tool-wrap>
+			<section id="gridWrap">
+				<div class="w-100" style="height:220px;" 
+					bc-grid="vm.menuOptions" >
+				</div>
+			</section>
+		</div>
+		<h3 class="bw-stt add-mg-t">
+			<p class="desc">{{::vm.text.permList}}</p>
+		</h3>
+		<div>
+			<bc-tool-wrap>
+				<right ng-show="vm.user.perm.update">
+					<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.onClickAddPerm()"></button>
+				</right>
+			</bc-tool-wrap>
+			<section id="gridWrap">
+				<div class="w-100" style="height:220px;" 
+					bc-grid="vm.permOptions">
+				</div>
+			</section>
+		</div>
+		
+	</div>
+</div>

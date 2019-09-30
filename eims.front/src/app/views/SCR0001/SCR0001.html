@@ -1,0 +1,31 @@
+ <div class="login-wrap">
+	<section class="login-container">
+		<h1>{{::vm.appName}}</h1>
+		<form class="login">
+			<ul>
+				<li>
+					<bx-input type="text" class="bw-input ipt-login" 
+								placeholder="{{::vm.text.userId}}" ng-model="vm.user.userId" ></bx-input>
+				</li>
+				<li>
+					
+					<bx-input type="password" class="bw-input ipt-login"  
+						placeholder="{{::vm.text.userPassword}}" ng-model="vm.user.userPassword"></bx-input>
+				</li>
+				
+				<li>
+					<select class="bw-input ipt-select"
+							style="text-indent:0 !important;padding-left: 10px"
+							ng-options="item.value as item.label for item in vm.selectItems" 
+							ng-model="vm.user.locale">
+					</select>
+				</li>
+				
+				<li>
+					<button class="bw-btn-txt no-line-height" ng-click="vm.signIn()">{{::vm.text.signIn}}</button>
+				</li>
+			</ul>
+		</form>
+		<p class="bw-copyright">2019 © LINEBANK</p>
+	</section>
+</div>

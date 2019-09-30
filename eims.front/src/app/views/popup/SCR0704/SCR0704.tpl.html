@@ -1,0 +1,182 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px', 'right': vm.right+'px'}">
+		<div ng-style="{ 'width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.msgLayoutDetailView}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			
+			<bc-tool-wrap>
+				<left>
+					<label class="bw-label">{{::vm.text.msgRvsNo}}  : {{vm.selectedMsg.msgRvsNo}}</label>
+				</left>
+			</bc-tool-wrap>
+			<section class="search-wrap clr" id="searchWrap">
+			<ul class="unit w-100 col-3 clr">
+				<li class="w-33">
+					<div class="input-wrap asterisk clr editable">
+						<label class="bw-label wp-160">{{::vm.text.chlDscd}}</label>
+						<select class="bw-input" 
+							style="width:calc(100% - 160px);"
+							ng-options="item.cdVal as item.cdValNm for item in vm.codes.CHL_DSCD"
+							ng-model="vm.selectedMsg.chlDscd"
+							disabled>
+						</select>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap asterisk clr editable">
+						<label class="bw-label wp-160">{{::vm.text.trxDscd}}</label>
+						<select class="bw-input" 
+							style="width:calc(100% - 160px);"
+							ng-options="item.cdVal as item.cdValNm for item in vm.codes.TRAN_DSCD"
+							ng-model="vm.selectedMsg.trxDscd"
+							disabled>
+						</select>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap asterisk clr editable">
+						<label class="bw-label wp-160">{{::vm.text.msgType}}</label>
+						<select class="bw-input" 
+							style="width:calc(100% - 160px);"
+							ng-options="item.cdVal as item.cdValNm for item in vm.msgTypes"
+							ng-model="vm.selectedMsg.msgDscd"
+							disabled>
+						</select>
+					</div>
+				</li>
+			</ul>
+			<ul class="unit w-100 col-3 clr">
+				<li class="w-33">
+					<div class="input-wrap asterisk clr editable">
+						<label class="bw-label wp-160">{{::vm.text.msgLayoutId}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.msgLayoutId" disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr editable">
+						<label class="bw-label wp-160">{{::vm.text.msgName}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.msgNm" disabled>
+					</div>
+				</li>
+				<li class="w-33" ng-show="vm.selectedMsg.chlDscd == 'EXTERNAL'">
+					<div class="input-wrap asterisk clr editable">
+						<label class="bw-label wp-160">{{::vm.text.msgVersion}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.msgVersion" disabled>
+					</div>
+				</li>
+				<li class="w-33" ng-if="vm.selectedMsg.chlDscd == 'EXTERNAL' && vm.selectedMsg.trxDscd === 'ONLINE' && vm.selectedMsg.msgDscd === 'IV'">
+					<div class="input-wrap clr editable" >
+						<label class="bw-label wp-160">{{::vm.text.msgDataVal}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.msgDataVal" disabled>
+					</div>
+				</li>
+				<li class="w-33" ng-show="vm.selectedMsg.chlDscd == 'INTERNAL'">
+					<div class="input-wrap clr editable">
+						<label class="bw-label wp-160">{{::vm.text.dtoNm}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.msgDataVal">
+					</div>
+				</li>
+				<li class="w-33" ng-show="vm.selectedMsg.trxDscd === 'BATCH'">
+					<div class="input-wrap asterisk clr editable">
+						<label class="bw-label wp-160">{{::vm.text.fileId}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.jobId" disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap asterisk clr disabled" style="background-color:white">
+						<label class="bw-label wp-160">{{::vm.text.lvCdsStr}}</label>						
+						<input type="text" class="bw-input" style="width:calc(100% - 180px);"
+							ng-model="vm.selectedMsg.lv1Cd" disabled />
+					</div>
+				</li>
+				<li class="w-33" ng-show="vm.selectedMsg.chlDscd == 'EXTERNAL'">
+					<div class="input-wrap clr editable">
+						<label class="bw-label wp-160">{{::vm.text.dtoNm}}</label>
+						<input type="text" class="bw-input" style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.dtoNm"
+							disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr editable">
+						<label class="bw-label wp-160">{{::vm.text.msgRegister}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.regManId"
+							disabled>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr editable">
+						<label class="bw-label wp-160">{{::vm.text.msgRegisterDt}}</label>
+						<input type="text" class="bw-input"
+							style="width:calc(100% - 160px);"
+							ng-model="vm.selectedMsg.regDttmString"
+							disabled>
+					</div>
+				</li>
+				<li class="w-33" ng-show="vm.selectedMsg.chlDscd == 'INTERNAL' && vm.selectedMsg.trxDscd === 'ONLINE' && vm.selectedMsg.msgDscd === 'IV'">
+					<div class="input-wrap clr editable">
+						<label class="bw-label" ng-class="{'wp-210': vm.user.locale === 'en', 'wp-160': vm.user.locale === 'ko'}">{{::vm.text.custApiYn}}</label>
+						<input type="text" class="bw-input"
+							ng-class="{'wc-210': vm.user.locale === 'en', 'wc-160': vm.user.locale === 'ko'}"
+							ng-model="vm.selectedMsg.custApiYn"
+							disabled>
+					</div>
+				</li>
+			</ul>
+			
+			<ul class="unit w-100 col-1 clr" style="height:75px;">
+				<li class="w-100" style="height:75px;">
+					<div class="input-wrap fix-txtarea p-rel clr" style="height:75px;">
+						<label class="bw-label wp-160" style="height:75px;line-height: 70px;">{{::vm.text.msgDesc}}</label>
+						<div class="txt-wrap2 fix-size f-r" style="width:calc(100% - 160px);height:75px;">
+							<textarea class="bw-textarea" 
+									style="height:55px;"
+									ng-model="vm.selectedMsg.msgDesc"
+									disabled>
+							</textarea>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</section>
+			
+			<bc-tool-wrap>
+				<left>
+					<div class='bw-btn'>
+						<label class="bw-label">Layouts</label>
+						<label class="bw-label" style="padding-left : 20px;">{{::vm.text.totalLength}}  : {{vm.msgLength}}</label>	
+					</div>
+				</left>
+				<right>
+					<button type="button" class="bw-btn bxd bxd-login" ng-show="vm.isEdit" ng-click="vm.impactAnalysis()"></button>
+					<button type="button" class="bw-btn bxd bxd-add" ng-show="vm.isEdit" ng-click="vm.addDetailRow()"></button>
+					<button type="button" class="bw-btn bxd bxd-del" ng-show="vm.isEdit" ng-click="vm.deleteDetailRow()"></button>
+					<button type="button" class="bw-btn bxd bxd-toggle" ng-show="vm.isEdit" ng-click="vm.upDetailRow()"></button>
+					<button type="button" class="bw-btn bxd bxd-toggle" ng-show="vm.isEdit" style="transform: rotateZ(180deg)" ng-click="vm.downDetailRow()"></button>
+				</right>
+			</bc-tool-wrap>
+			<section id="msgDetailWrap">
+				<div class="w-100" style="height:350px;" bc-grid="vm.msgDetailOptions"></div>
+			</section>
+		</div>
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.close}}</button>
+		</div>
+	</div>
+</div>

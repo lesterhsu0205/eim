@@ -1,0 +1,123 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px', 'right': vm.right+'px'}">
+		<div ng-style="{ 'width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.msgSearch}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			
+			<bc-tool-wrap>
+				<right>
+					<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+					<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+				</right>
+			</bc-tool-wrap>
+			
+			<section class="search-wrap clr">
+				<ul class="unit w-100 col-3 clr">
+					<li class="w-33">
+						<div class="input-wrap clr editable">
+							<label class="bw-label wp-220">{{::vm.text.msgLayoutId}}</label>
+							<input type="search" class="bw-input wc-220" ng-model="vm.searchParam.msgLayoutId" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.msgName}}</label>
+							<input type="search" class="bw-input wc-220" ng-model="vm.searchParam.msgNm" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.lvCdsStr}}</label>
+							<i class="bxd bxd-search h-20" title="{{::vm.text.search}}" ng-click="vm.openApplicationCodeModalForSearchParam()"><a></a></i>
+							<input type="text" class="bw-input wc-240"  ng-model="vm.searchParam.lv1Cd" disabled>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr editable">
+							<label class="bw-label wp-220">{{::vm.text.chlDscd}}</label>
+							<select class="bw-input ipt-select wc-220" 
+								ng-options="item.cdVal as item.cdValNm for item in vm.chlDscdList"
+								ng-model="vm.searchParam.chlDscd">
+								<option value=""></option>
+							</select>
+						</div>
+					</li>
+					
+					<li class="w-33" ng-show="!vm.data.trxDscdFilter">
+						<div class="input-wrap clr editable">
+							<label class="bw-label wp-220">{{::vm.text.trxDscd}}</label>
+							<select class="bw-input ipt-select wc-220" 
+								ng-options="item.cdVal as item.cdValNm for item in vm.tranDscdList"
+								ng-model="vm.searchParam.trxDscd">
+								<option value=""></option>
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.msgRegister}}</label>
+							<input type="search" class="bw-input wc-240" ng-model="vm.searchParam.regManId" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+							<i class="bxd bxd-search h-20" title="{{::vm.text.search}}" ng-click="vm.openRegManPopup()"></i>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.msgType}}</label>
+							<select class="bw-input ipt-select wc-220" 
+								ng-options="item.cdVal as item.cdValNm for item in vm.msgTypeList"
+								ng-model="vm.searchParam.msgDscd">
+								<option value=""></option>
+							</select>
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.msgDataVal}}/{{::vm.text.dtoNm}}</label>
+							<input type="search" class="bw-input wc-220"
+								ng-model="vm.searchParam.msgDataVal" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.msgVersion}}</label>
+							<input type="search" class="bw-input wc-220"
+								ng-model="vm.searchParam.msgVersion" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.fileId}}</label>
+							<input type="search" class="bw-input wc-220" 
+							ng-model="vm.searchParam.jobId" 
+							ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						</div>
+					</li>
+					<li class="w-33">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-220">{{::vm.text.workStatusCd}}</label>
+							<select class="bw-input ipt-select wc-220"
+								ng-options="item.cdVal as item.cdValNm for item in vm.workStatusList"
+								ng-model="vm.searchParam.workStatusCd">
+								<option value="">{{::vm.text.all}}</option>
+							</select>
+						</div>
+					</li>
+				</ul>
+			</section>
+			
+			<bc-tool-wrap style="margin-top:16px"></bc-tool-wrap>
+			<section id="gridWrap">
+				<div class="w-100" ng-style="{ height: vm.gridHeight }"
+					bc-grid="vm.msgOptions" data-page="true" data-page-click="vm.pageBtnClick">
+				</div>
+			</section>
+			
+			<div class="btn-wrap add-mg">
+				<button type="button" class="bw-btn-txt" ng-click="vm.closeModal(true)">{{::vm.text.select}}</button>
+				<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.cancel}}</button>
+			</div>
+		</div>
+	</div>
+</div>
