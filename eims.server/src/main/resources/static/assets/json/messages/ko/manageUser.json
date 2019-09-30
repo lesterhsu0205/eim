@@ -1,0 +1,25 @@
+{
+	"namespace": "manageUser",
+	"messages": {
+		"titleHeader": "사용자 관리",
+		"titleDesc": "사용자를 관리하는 페이지입니다.",
+		"userId": "사용자ID",
+		"userNm": "사용자명",
+		"email": "이메일",
+		"dutyNm": "직급",
+		"deptNm": "부서명",
+		"password": "비밀번호",
+		"passwordConfirm": "비밀번호 확인",
+		"userSearch": "사용자 조회",
+		"roleId": "역할ID",
+		"roleSearch": "역할조회",
+		"descPlaceHolder": "내용을 적어주세요.",
+		"emptyUserId": "사용자ID를 입력해주세요.",
+		"emptyUserNm": "사용자명을 입력해주세요.",
+		"emptyRoleId": "역할을 입력해주세요.",
+		"emptyUserPwd": "비밀번호를 입력해주세요.",
+		"notMatchPwd": "비밀번호와 비밀번호 확인이 일치하지 않습니다.",
+		"roleNm": "역할명",
+		"roleDesc" : "역할설명"
+    }
+}

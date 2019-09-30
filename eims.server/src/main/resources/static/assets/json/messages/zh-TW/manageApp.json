@@ -1,0 +1,18 @@
+{
+	"namespace": "manageApp",
+	"messages": {
+		"titleHeader": "Application Management",
+		"titleDesc": "This is the page that manage applications.",
+		"appCode": "Application Code",
+		"appCodeNm": "Application Code Name",
+		"appCodeDetail": "Application Code Detail",
+		"appCd": "Code",
+		"appCdNm": "Code Name",
+		"lvCd":"Level Code",
+		"appCdDesc" : "Description",
+		"emptyAppCode": "Please enter the application code.",
+		"emptyAppCodeNm": "Please enter the application code Name.",
+		"emptyLvCd": "Please enter the level code."
+    }
+    
+}

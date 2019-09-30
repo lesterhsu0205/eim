@@ -1,0 +1,45 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<div ng-style="{ 'min-width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.msgImport}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			
+			<bc-tool-wrap></bc-tool-wrap>
+			
+			<section class="search-wrap clr">
+				<ul class="unit w-100 col-2 clr">
+					<li class="w-90">
+						<div class="input-wrap clr">
+							<label class="bw-label wp-140">{{::vm.text.msgFile}}</label>
+							<input type="file" id='importFile' class="bw-input w-60" style="width:calc(100% - 140px);" accept=".xlsx" ng-click="vm.reset()">
+						</div>
+					</li>
+					<li class="w-10">
+						<div class='bw-btn'>
+							<button type="button" class="bw-btn-txt2" ng-click="vm.sendFile()">{{::vm.text.upload}}</button>
+						</div>
+					</li>
+				</ul>
+			</section>
+			
+			<bc-tool-wrap class="a-left" style="margin-top:10px">
+				<div class='bw-btn'>
+					<button type="button" class="bw-btn-txt2 no-line-height" style="border:0;" disabled>{{::vm.text.uploadResult}}</button>
+					<label class="wp-100" style="margin-left:10px">{{vm.uploadResult}}</label>
+				</div>
+			</bc-tool-wrap>
+			<div class="input-wrap" style="padding:0;margin:0">
+				<div class="txt-wrap2 w-100 f-r" style="margin:0px">
+					<textarea class="bw-textarea" 
+						style="border-radius:0px"
+						ng-model="vm.uploadResultMsg" readonly></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.close}}</button>
+		</div>
+	</div>
+</div>

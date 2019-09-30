@@ -1,0 +1,149 @@
+@charset "utf-8";
+
+.wrap {
+	width: 100%;
+	height: 100%;
+}
+
+.app-wrap {
+	width: 100%;
+	height: 100%;
+}
+
+/* header */
+.header-wrap {
+	height: 50px;
+	line-height: 50px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+	background: #5c6bc0;
+	color: #fff;
+}
+
+.header-wrap .logo {
+	float: left;
+	padding-left: 50px;
+	max-width: 150px;
+}
+
+.header-wrap .right-menu {
+	float: right;
+}
+
+.header-wrap .right-menu .item {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+/* side */
+.sidebar-wrap{
+	max-width: 300px;
+	width: 20%;
+	float: left;
+	height: 100%;
+	position: relative;
+	box-shadow: 1px 0px #bdbdbd;
+}
+
+.sidebar-wrap.icon-wrap {
+	max-width: 50px;
+}
+
+.sidebar-wrap .collapse-btn-wrap {
+	background: indianred;
+}
+
+/* accordion */
+.accordion-wrap {
+	padding-left: 10px;
+}
+
+.accordion-wrap .accordion-item {
+	padding-top: 5px;
+}
+
+.accordion-wrap .accordion-item .selected {
+	background: #ebebeb;
+}
+
+.accordion-wrap .accordion-item.has-children .selected {
+	background: #5c6bc0;
+}
+
+/* content */
+.content-wrap {
+	padding-left: 10px;
+}
+
+/* dim */
+
+.dim {
+	position: fixed;
+	width: 100%;
+	height: 100%;	
+	background: rgba(0,0,0,0.4);
+	top: 0px;
+}
+
+/* modal */
+.modal-wrap {
+	position: absolute;
+}
+
+/* pagenation */
+.pagenation {
+	text-align: center;
+}
+
+.pagenation .page {
+	display: inline-block;
+	margin-right: 10px;
+	line-height: 20px;
+	font-size: 15px;
+	min-width: 20px;
+}
+
+.pagenation .page.active {
+	background: #5c6bc0;
+	color: #fff;
+}
+
+/* search data wrap */
+.search-data-wrap > li.active{
+	background: #ebebeb;
+}
+
+/* lnb */
+
+.lnb-wrap .lnb-item-wrap {
+	width: calc(100% - 200px);
+	line-height: 60px;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.lnb-wrap .btn-wrap{
+	width: 200px;
+	display: inline-block;
+	position: absolute;
+    height: 60px;
+    line-height: 60px;
+}
+
+.lnb-wrap .btn-wrap button{
+	display: inline-block;
+    width: 49%;
+}
+
+.lnb-wrap ul{
+	white-space: nowrap;
+}
+
+.lnb-wrap li{
+	display: inline-block;
+	min-width: 100px;
+	height: 60px;
+}
+
+
+
+

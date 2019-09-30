@@ -1,0 +1,16 @@
+{
+	"namespace": "manageTrxCode",
+    "messages": {
+		"titleHeader": "거래코드 관리",
+		"titleDesc": "거래코드를 관리하는 페이지입니다.",
+		"trxCd": "거래코드",
+		"trxCdNm": "거래코드명",
+		"trxCdDesc": "설명",
+		"trxCdSearch": "거래코드 관리",
+		"mngSysCd": "시스템코드",
+		"descPlaceHolder": "내용을 적어주세요.",
+		"emptyTrxCd": "거래코드를 입력해주세요.",
+		"emptyTrxCdNm": "거래코드명을 입력해주세요.",
+		"emptyMngSysCd": "시스템코드를 입력해주세요."
+    }
+}

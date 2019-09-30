@@ -1,0 +1,14 @@
+{
+	"namespace": "manageActionHistory",
+    "messages": {
+		"titleHeader": "Action 이력 관리",
+		"titleDesc": "Action 이력을 관리하는 페이지입니다.",
+		"hstDscd": "구분",
+		"itemId": "ID",
+		"workCttCd": "작업내용",
+		"workDttm": "일시",
+		"userId": "사용자ID",
+		"itemDesc" : "설명",
+		"influenceModal": "영향도 분석 결과"
+    }
+}

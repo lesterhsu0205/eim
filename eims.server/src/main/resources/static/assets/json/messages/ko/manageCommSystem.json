@@ -1,0 +1,16 @@
+{
+	"namespace": "manageCommSystem",
+    "messages": {
+		"titleHeader": "송수신시스템 관리",
+		"titleDesc": "송수신 시스템을 관리하는 페이지입니다.",
+		"sysCd": "송수신시스템코드",
+		"sysNm": "송수신시스템명",
+		"sysCdDesc": "설명",
+		"sysSearch": "송수신시스템 조회",
+		"shortSysCd":"시스템 코드",
+		"shortSysNm":"시스템명",
+		"descPlaceHolder": "내용을 적어주세요.",
+		"emptySysCd": "송수신시스템코드를 입력해주세요.",
+		"emptySysNm": "송수신시스템명을 입력해주세요."
+    }
+}

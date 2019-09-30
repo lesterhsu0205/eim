@@ -1,0 +1,14 @@
+{
+	"namespace": "manageActionHistory",
+    "messages": {
+		"titleHeader": "Action History Management",
+		"titleDesc": "This is the page that manage action histories.",
+		"hstDscd": "Division",
+		"itemId": "Id",
+		"workCttCd": "Work Content",
+		"workDttm": "Date And Time",
+		"userId": "User Id",
+		"itemDesc" : "Description",
+		"influenceModal": "Impact Analysis Result"
+    }
+}

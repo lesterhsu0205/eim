@@ -1,0 +1,84 @@
+<div>
+	<h3 class="bw-stt add-mg-t">
+		{{::vm.text.titleHeader}}
+		<p class="desc">{{::vm.text.titleDesc}}</p>
+	</h3>
+	
+	<bc-tool-wrap>
+		<right>
+			<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+			<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+			<button type="button" class="bw-btn b-ctr" zabara="searchWrap_main">
+				<i class="bxd bxd-toggle zabara"></i>
+			</button>
+		</right>
+	</bc-tool-wrap>
+
+	<div>
+		<section class="search-wrap clr" id="searchWrap_main">
+			<ul class="unit w-100 col-2 clr">
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.hstDscd}}</label>
+						<select class="bw-input ipt-select" style="width:calc(100% - 140px);" ng-model="vm.searchParam.hstDscd">
+							<option value="">{{::vm.text.all}}</option>
+							<option ng-repeat="item in vm.codes.HISTORY_DSCD" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+						</select>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.itemId}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 140px);"  
+						ng-model="vm.searchParam.itemId" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.workCttCd}}</label>
+						<select class="bw-input ipt-select" style="width:calc(100% - 140px);" style="width:calc(100% - 140px);" ng-model="vm.searchParam.workCttCd">
+							<option value="">{{::vm.text.all}}</option>
+							<option ng-repeat="item in vm.codes.ACTION_STAT_CD" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+						</select>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">{{::vm.text.userId}}</label>
+						<input type="search" class="bw-input" 
+						style="width:calc(100% - 160px);"  
+						ng-model="vm.searchParam.userId" 
+						ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						<i class="bxd bxd-search h-20" title="{{::vm.text.search}}"  ng-click="vm.openUserId()"></i>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">FROM</label>
+						<bx-datepicker class="bw-input" ng-model="vm.searchParam.workDtFrom"></bx-datepicker>
+					</div>
+				</li>
+				<li class="w-34">
+					<div class="input-wrap clr">
+						<label class="bw-label wp-140">TO</label>
+						<bx-datepicker class="bw-input" ng-model="vm.searchParam.workDtTo"></bx-datepicker>
+					</div>
+				</li>
+			</ul>
+		</section>
+		
+		<bc-tool-wrap>
+			<left>
+				<select class="bw-input ipt-select w-s" ng-model="vm.select.pageSize" ng-change="vm.change()">
+					<option ng-repeat="item in vm.codes.GRID_PAGE_SIZE" value="{{item.cdVal}}">{{item.cdValNm}}</option>
+				</select>
+				<label>{{::vm.text.all}} {{vm.options.recordsCount}}{{::vm.text.cnt}}</label>
+			</left>
+		</bc-tool-wrap>
+		<div class="w-100" ng-style="{ height: vm.gridHeight }" 
+			bc-grid="vm.options" data-page="true" data-page-click="vm.pageBtnClick">
+		</div>
+	</div>
+</div>

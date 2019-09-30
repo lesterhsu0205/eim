@@ -1,0 +1,36 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px', 'right': vm.right+'px'}">
+		<div ng-style="{ 'width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.msgLayoutDiff}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			
+			<section id="gridWrap">
+				<div class="w-100" ng-style="{ height: vm.gridHeight }" 
+					bc-grid="vm.deployOptions" data-page="true" data-page-click="vm.pageBtnClick">
+				</div>
+			</section>
+			
+			<section class="search-wrap clr" style="padding:0">
+				<bc-tool-wrap></bc-tool-wrap>
+				<ul class="w-100" style="display: inline-block;">
+					<li class="w-50">
+						<div style="margin: 8px;">{{::vm.text.deployVersion}} <span style="margin-left: 10px;">{{::vm.text.msgRvsNo}}  : {{vm.oldVersionOptions.msgRvsNo}}</span></div>
+						<div style="height:350px;" 
+							bc-grid="vm.oldVersionOptions" id="oldVersionOptions"></div>
+					</li>
+					<li class="w-50">
+						<div style="margin: 8px;">{{::vm.text.currentVersion}} <span style="margin-left: 10px;">{{::vm.text.msgRvsNo}}  : {{vm.currentVersionOptions.msgRvsNo}}</span></div>
+						<div style="height:350px;" 
+							bc-grid="vm.currentVersionOptions" id="currentVersionOptions"></div>
+					</li>
+				</ul>
+			</section>
+		</div>
+		
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.close}}</button>
+		</div>
+	</div>
+</div>

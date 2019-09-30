@@ -1,0 +1,16 @@
+{
+	"namespace": "manageTrxCode",
+    "messages": {
+		"titleHeader": "Transaction Code Management",
+		"titleDesc": "This is the page that manage transaction codes.",
+		"trxCd": "Transaction Code",
+		"trxCdNm": "Transaction Code Name",
+		"trxCdDesc": "Description",
+		"trxCdSearch": "Transaction Code Search",
+		"mngSysCd": "System Code",
+		"descPlaceHolder": "Please enter the description.",
+		"emptyTrxCd": "Please enter the transaction code.",
+		"emptyTrxCdNm": "Please enter the transaction code name.",
+		"emptyMngSysCd": "Please enter the system code."
+    }
+}

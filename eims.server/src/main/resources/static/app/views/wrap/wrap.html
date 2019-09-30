@@ -1,0 +1,45 @@
+<div class="wrap">
+	<bc-header></bc-header>
+	<bc-sidebar items="vm.accordionItems" is-icon="vm.isIcon">
+		<!-- side content view -->
+		<side-content>
+		
+			<!-- accordion -->
+			<bc-accordion items="vm.accordionItems" ng-show="!vm.isIcon" click="vm.click()">
+				<button type="button" class="bw-btn-fold fix-btm" id="menu_close"
+							ng-click="vm.toggle()">
+						<i class="i-30 bw-btn bxd bxd-arrow-left"></i>
+				</button>
+			</bc-accordion>
+		
+			<!-- icon -->
+			<aside class="asside" ng-show="vm.isIcon">
+				<ul class="fav">
+					<li class="bw-btn"
+						ng-repeat="item in vm.accordionItems"
+						ng-show="!item.hidden"
+						ng-click="" ng-mouseover = "vm.hover($index)">
+						<i class="{{::item.icon}}"></i>
+						<div class="sub-menu hover-effect">
+					        <ul>
+					           <a><li class="menu-item" ng-click="vm.hoverClick(hover)" ng-repeat="hover in vm.hoverItems">{{::hover.label}}</li></a>
+					        </ul>
+					    </div>
+					</li>
+				</ul>
+				<button type="button" class="bw-btn-fold fix-btm" id="menu_close"
+							ng-click="vm.toggle()">
+						<i class="i-30 bw-btn bxd bxd-arrow-right"></i>
+				</button>	
+			</aside>
+		</side-content>
+		
+		<!-- sub content view -->		
+		<sub-content>
+			<bc-lnb items="vm.lnbItems"></bc-lnb>
+			<section class="main-contents" id="main-contents">
+				<ui-view></ui-view>
+			</section>
+		</sub-content>
+	</bc-sidebar>
+</div>

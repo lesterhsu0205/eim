@@ -1,0 +1,25 @@
+{
+	"namespace": "manageUser",
+	"messages": {
+		"titleHeader": "User Management",
+		"titleDesc": "This is the page that manage users.",
+		"userId": "User Id",
+		"userNm": "User Name",
+		"email": "Email",
+		"dutyNm": "Position",
+		"deptNm": "Department Name",
+		"password": "Password",
+		"passwordConfirm": "Confirm Password",
+		"userSearch": "User Search",
+		"roleId": "Role Id",
+		"roleSearch": "Role Search",
+		"descPlaceHolder": "Please enter the description.",
+		"emptyUserId": "Please enter the user id.",
+		"emptyUserNm": "Please enter the user name.",
+		"emptyRoleId": "Please enter the role.",
+		"emptyUserPwd": "Please enter the password.",
+		"notMatchPwd": "Password does not match.",
+		"roleNm": "Role Name",
+		"roleDesc" : "Role Description"
+    }
+}

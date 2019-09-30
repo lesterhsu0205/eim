@@ -1,0 +1,81 @@
+<div class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px', 'right': vm.right+'px'}">
+		<div ng-style="{ 'width':vm.width+'px'}">	
+			<h2 class="bw-tt a-center">
+					{{::vm.text.interfaceSearch}}
+					<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+				</h2>
+				
+				<bc-tool-wrap>
+					<right>
+						<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+						<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+					</right>
+				</bc-tool-wrap>
+				
+				<section class="search-wrap clr">
+					<ul class="unit w-100 col-2 clr">
+						<li class="w-33">
+							<div class="input-wrap clr">
+								<label class="bw-label wp-140">{{::vm.text.intrfcId}}</label>
+								<input type="search" class="bw-input" style="width:calc(100% - 140px);" ng-model="vm.searchParam.intrfcId" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+							</div>
+						</li>
+						<li class="w-33">
+							<div class="input-wrap clr">
+								<label class="bw-label  wp-140">{{::vm.text.intrfcNm}}</label>
+								<input type="search" class="bw-input" style="width:calc(100% - 140px);" ng-model="vm.searchParam.intrfcNm" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+							</div>
+						</li>
+						<li class="w-33">
+							<div class="input-wrap clr">
+								<label class="bw-label wp-140">{{::vm.text.trxTypeDscd}}</label>
+								<select class="bw-input ipt-select" 
+									style="width:calc(100% - 140px);"
+									ng-options="item.cdVal as item.cdValNm for item in vm.codes.TRAN_DSCD"
+									ng-model="vm.searchParam.trxDscd">
+									<option value="">{{::vm.text.all}}</option>
+								</select>
+							</div>
+						</li>
+						<li class="w-33">
+							<div class="input-wrap clr">
+								<label class="bw-label wp-140">{{::vm.text.lvCds}}</label>
+								<i class="bxd bxd-search h-20" title="{{::vm.text.search}}"  ng-click="vm.searchApplicationCodes()"></i>
+								<input type="text" class="bw-input" style="width:calc(100% - 160px);" ng-model="vm.searchParam.lv1Cd" disabled>
+							</div>
+						</li>
+						<li class="w-33" ng-show="vm.data.intrfcTypeCd == 'EAI_I' ">
+							<div class="input-wrap clr">
+								<label class="bw-label wp-140">{{::vm.text.intrfcWayCd}}</label>
+								<select class="bw-input ipt-select" style="width:calc(100% - 140px);"
+									ng-options="item.cdVal as item.cdValNm for item in vm.codes.INTRFC_WAY_CD"
+									ng-model="vm.searchParam.intrfcWayCd">
+									<option value="">{{::vm.text.all}}</option>
+								</select>
+							</div>
+						</li>
+						<li class="w-33">
+							<div class="input-wrap clr">
+								<label class="bw-label wp-140">{{::vm.text.regManId}}</label>
+								<input type="search" class="bw-input" style="width:calc(100% - 160px);" ng-model="vm.searchParam.regManId" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+								<i class="bxd bxd-search h-20" title="{{::vm.text.search}}"  ng-click="vm.openRegManPopup()"></i>
+							</div>
+						</li>
+					</ul>
+				</section>
+				
+				<bc-tool-wrap style="margin-top:10px"></bc-tool-wrap>
+				<section id="gridWrap">
+					<div class="w-100" ng-style="{ height: vm.gridHeight }"
+						bc-grid="vm.intrfcOptions" data-page="true" data-page-click="vm.pageBtnClick">
+					</div>
+				</section>
+			
+			<div class="btn-wrap add-mg">
+				<button type="button" class="bw-btn-txt" ng-click="vm.closeModal(true)">{{::vm.text.confirmOk}}</button>
+				<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.close}}</button>
+			</div>
+		</div>
+	</div>
+</div>

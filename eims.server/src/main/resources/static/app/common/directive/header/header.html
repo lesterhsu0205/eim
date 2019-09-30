@@ -1,0 +1,17 @@
+<header class="header-wrap">
+	<section class="header-main">
+		<h1 class="logo"><a style="cursor: default;">LineBank</a></h1>
+		<section class="header-tool">
+			<ul class="bw-util">
+			
+				<li ng-repeat="item in iconItems">
+					<i class="{{item.icon}}" ng-show="item.icon"></i>
+					<span class="bw-input" style="cursor: default;">{{::item.label}}</span>		
+				</li>
+				<li>
+					<button type="button" class="bw-btn bxd bxd-logout" title="logout" ng-click="logout()"></button>
+				</li>
+			</ul>
+		</section>
+	</section>
+</header>

@@ -1,0 +1,16 @@
+{
+	"namespace": "manageExtInstCode",
+    "messages": {
+		"titleHeader": "기관코드 관리",
+		"titleDesc": "기관코드를 관리하는 페이지입니다.",
+		"instCd": "기관코드",
+		"instCdNm": "기관코드명",
+		"instCdDesc": "설명",
+		"instDstnctnVal": "기관구분",
+		"instCdSearch": "대외 기관조회",
+		"descPlaceHolder": "내용을 적어주세요.",
+		"emptyInstCd": "기관코드를 입력해주세요.",
+		"emptyInstCdNm": "기관코드명을 입력해주세요.",
+		"emptyInstDstnctnVal": "기관구분을 입력해주세요."
+    }
+}

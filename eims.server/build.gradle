@@ -1,0 +1,45 @@
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+//배포시 주석처리
+apply plugin: 'application'
+
+ 
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+
+//배포시 주석풀기
+//	providedRuntime fileTree(dir: 'lib', include: 'spring-boot-starter-tomcat-1.4.2.RELEASE.jar')
+}
+
+sourceCompatibility = 1.8
+
+//배포시 주석처리
+mainClassName = 'eims.ApplicationMain'
+
+war {
+	baseName = 'eims.server'
+    version = '1.0.0'
+    archiveName = 'ROOT.war'
+}
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+
+task copyDaoXml(type: Copy) {
+    from 'src/main/java/eims/web/dao/xml'
+    into 'build/classes/java/main/eims/web/dao/xml'
+}
+
+task copyDaoXml2(type: Copy) {
+    from 'src/main/java/eims/web/meta/dao/xml'
+    into 'build/classes/java/main/eims/web/meta/dao/xml'
+}
+
+processResources.dependsOn('copyDaoXml')
+processResources.dependsOn('copyDaoXml2')

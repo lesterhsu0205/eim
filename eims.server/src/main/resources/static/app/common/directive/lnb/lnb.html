@@ -1,0 +1,20 @@
+<section class="main-tab" id="lnbWrap">
+	
+	<ul class="tab-list" id="lnb">
+		<li id="{{item.id}}" ng-repeat="item in items" ng-click="click($event, item, $index)">
+			<p>{{::item.label}}</p>
+			<button type="button" class="bw-btn bxd bxd-round-close"></button>
+			<span class="after"></span>
+			<span class="before"></span>
+		</li>
+	</ul>
+	
+	<div class="btn-util" id="lnbBtnWrap">
+		<button id="lnbLeftBtn" type="button" class="bw-btn" disabled ng-click="prev()">
+			<i class="bxd bxd-arrow-left"></i>
+		</button>
+		<button id="lnbRightBtn" type="button" disabled class="bw-btn on" ng-click="post()">
+			<i class="bxd bxd-arrow-right"></i>
+		</button>
+	</div>
+</section>

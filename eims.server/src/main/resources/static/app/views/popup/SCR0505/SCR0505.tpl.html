@@ -1,0 +1,71 @@
+<div id="meta-impact-poopup" class="dim" ng-style="{'z-index':vm.zIndex}">
+	<div class="simple-modal-wrap" ng-style="{ 'top':vm.top+'px', 'left': vm.left+'px'}">
+		<div ng-style="{ 'min-width':vm.width+'px'}">
+			<h2 class="bw-tt a-center">
+				{{::vm.text.msgIdCreate}}
+				<button type="button" class="bw-btn bxd bxd-close" style="position:absolute;right:32px" ng-click="vm.closeModal(false)"></button>
+			</h2>
+			
+			<bc-tool-wrap>
+				<right>
+					<button type="button" class="bw-btn alert-reset bxd bxd-reset" title="{{::vm.text.resetSearch}}" ng-click="vm.resetSearch()"></button>
+					<button type="button" class="bw-btn bxd bxd-search" title="{{::vm.text.search}}" ng-click="vm.search()"></button>
+				</right>
+			</bc-tool-wrap>
+			
+			<section class="search-wrap clr">
+				<ul class="unit w-100 col-2 clr">
+					<li class="w-50">
+						<div class="input-wrap clr">
+							<label class="bw-label w-40">{{::vm.text.intrfcId}}</label>
+							<input type="search" class="bw-input w-60" ng-model="vm.searchParam.intrfcId" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						</div>
+					</li>
+					<li class="w-50">
+						<div class="input-wrap clr">
+							<label class="bw-label  w-40">{{::vm.text.intrfcNm}}</label>
+							<input type="search" class="bw-input w-60" ng-model="vm.searchParam.intrfcNm" ng-keypress="$event.which === 13 && [vm.search(), vm.blur($event)]">
+						</div>
+					</li>
+				</ul>
+			</section>
+			
+			<section id="gridWrap">
+				<div class="w-100" ng-style="{ height: vm.gridHeight }"
+					bc-grid="vm.intrfcOptions" data-page="true" data-page-click="vm.pageBtnClick">
+				</div>
+			</section>
+		</div>
+		<section class="search-wrap clr">
+			<ul class="unit w-100 clr">
+				<li class="w-33">
+					<div class="input-wrap asterisk clr">	
+						<label class="bw-label wp-140">{{::vm.text.sendRevDesc}}</label>
+						<select class="bw-input ipt-select" 
+							style="width:calc(100% - 140px);"
+							ng-options="item.cdVal as item.cdValNm for item in vm.sysMsgList"
+							ng-model="vm.sysMsg"
+							ng-change="vm.setSysMsg()"
+							>
+						</select>
+					</div>
+				</li>
+				<li class="w-33">
+					<div class="input-wrap asterisk clr">	
+						<label class="bw-label wp-140">{{::vm.text.inOutDesc}}</label>
+						<select class="bw-input ipt-select" 
+							style="width:calc(100% - 140px);"
+							ng-options="item.cdVal as item.cdValNm for item in vm.inoutMsgList"
+							ng-model="vm.inoutMsg"
+							>
+						</select>
+					</div>
+				</li>
+			</ul>
+		</section>
+		<div class="btn-wrap add-mg">
+			<button type="button" class="bw-btn-txt" ng-click="vm.makeMsg()">{{::vm.text.create}}</button>
+			<button type="button" class="bw-btn-txt on" ng-click="vm.closeModal(false)">{{::vm.text.cancel}}</button>
+		</div>
+	</div>
+</div>

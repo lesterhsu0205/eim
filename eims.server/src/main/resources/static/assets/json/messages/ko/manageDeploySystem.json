@@ -1,0 +1,22 @@
+{
+	"namespace": "manageDeploySystem",
+    "messages": {
+		"titleHeader": "배포 시스템 관리",
+		"titleDesc": "배포 시스템을 관리하는 페이지입니다.",
+		"modalHeader" : "배포 대상 시스템 조회",
+		"deploySysCd": "배포시스템코드",
+		"deploySysNm": "배포시스템명",
+		"deploySysGrpCd": "구분",
+		"deploySysUrl": "배포시스템URL",
+		"deploySysDesc": "설명",
+		"deploySys" : "배포시스템",
+		"deploySysDescPlaceHolder": "내용을 적어주세요.",
+		"emptyDeploySysCd": "배포시스템코드를 입력해주세요.",
+		"emptyDeploySysNm": "배포시스템명을 입력해주세요.",
+		"emptyDeploySysGrpCd": "구분 값을 입력해주세요.",
+		"emptydeploySysUrl": "배포시스템URL을 입력해주세요.",
+		"deployVersion": "배포버전",
+		"deployDttm": "배포일시",
+		"currentVersion": "현재버전"
+    }
+}

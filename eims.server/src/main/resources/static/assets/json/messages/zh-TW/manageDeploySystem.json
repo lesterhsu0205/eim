@@ -1,0 +1,22 @@
+{
+	"namespace": "manageDeploySystem",
+    "messages": {
+		"titleHeader": "Deployment System Management",
+		"titleDesc": "This is the page that manage deployment systems.",
+		"modalHeader" : "Deployment System Search",
+		"deploySysCd": "Deployment System Code",
+		"deploySysNm": "Deployment System Name",
+		"deploySysGrpCd": "Division",
+		"deploySysUrl": "Deployment System Url",
+		"deploySysDesc": "Description",
+		"deploySys" : "Deployment System",
+		"deploySysDescPlaceHolder": "Please enter the description.",
+		"emptyDeploySysCd": "Please enter the deployment system code.",
+		"emptyDeploySysNm": "Please enter the deployment system name.",
+		"emptyDeploySysGrpCd": "Please enter the division.",
+		"emptydeploySysUrl": "Please enter the deployment system url.",
+		"deployVersion": "Deployed Version",
+		"deployDttm": "Deployment Date",
+		"currentVersion": "Current Version"
+    }
+}

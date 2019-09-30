@@ -1,0 +1,16 @@
+{
+	"namespace": "manageExtInstCode",
+    "messages": {
+		"titleHeader": "Institution Code Management",
+		"titleDesc": "This is the page that manage institution codes.",
+		"instCd": "Institution Code",
+		"instCdNm": "Institution Code Name",
+		"instCdDesc": "Description",
+		"instDstnctnVal": "Institution Division",
+		"instCdSearch": "External Institution Search",
+		"descPlaceHolder": "Please enter the description.",
+		"emptyInstCd": "Please enter the institution code.",
+		"emptyInstCdNm": "Please enter the institution code name.",
+		"emptyInstDstnctnVal": "Please enter the institution division."
+    }
+}
