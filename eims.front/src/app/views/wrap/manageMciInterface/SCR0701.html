@@ -131,9 +131,7 @@
 			<right>				
 				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.exportDefinition()"><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDefinition}}</button>
 				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup2()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-down"></i>{{::vm.text.importDefinition}}</button>
-				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.xlsExport()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDesign}}</button>
-				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDesign}}</button>
-				<button type="button" class="bw-btn bxd bxd-rocket" ng-click="vm.deployAllInterface()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDesign}}</button>		
+				<button type="button" class="bw-btn bxd bxd-rocket" ng-click="vm.deployAllInterface()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i></button>		
 				<button type="button" class="bw-btn bxd bxd-add" title="{{::vm.text.add}}" ng-click="vm.add()" ng-show="vm.user.perm.insert"></button>
 				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
 					<i class="bxd bxd-toggle zabara"></i>

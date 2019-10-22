@@ -182,7 +182,7 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 
 		ExcelUtils.writeValue(sheet, writeLine, "Y", getCodeValue("SYNC_DSCD_FEP", intrfcDto.getSyncAsyncDscd(), "ko"));// 동기구분
 		if(intrfcDto.getFepDto().getTimeOut() == null) {
-			intrfcDto.getFepDto().setTimeOut("10"); 
+			intrfcDto.getFepDto().setTimeOut("null"); 
 		}
 		ExcelUtils.writeValue(sheet, writeLine, "AA", intrfcDto.getFepDto().getTimeOut());
 
@@ -286,7 +286,10 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "X", intrfcDto.getEaiDto().getRecvDbQuery());// 수신DBTO 쿼리문
 
 		// 상세정보
-		ExcelUtils.writeValue(sheet, writeLine, "O", getCodeValue("SYNC_DSCD", intrfcDto.getSyncAsyncDscd(), "ko"));// 동기구분		
+		ExcelUtils.writeValue(sheet, writeLine, "O", getCodeValue("SYNC_DSCD", intrfcDto.getSyncAsyncDscd(), "ko"));// 동기구분	
+		if(intrfcDto.getEaiDto().getTimeOut() == null) {
+			intrfcDto.getEaiDto().setTimeOut("null"); 
+		}
 		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getEaiDto().getTimeOut());// 타임아웃
 		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getRspsYn());// 응답여부		
 		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getMsgTrnsfrmYn());// 전문변환여부
@@ -314,7 +317,7 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "M", getCodeValue("SYNC_DSCD", intrfcDto.getSyncAsyncDscd(), "ko"));// 동기구분
 		// ExcelUtils.writeValue(sheet, writeLine, "N", getCodeValue("TRX_TYPE_DSCD", intrfcDto.getTrxTypeDscd(), "ko"));// 거래유형
 		if(intrfcDto.getMciDto().getTimeOut() == null) {
-			intrfcDto.getMciDto().setTimeOut("10"); 
+			intrfcDto.getMciDto().setTimeOut("null"); 
 		}
 		ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getMciDto().getTimeOut());// 타임아웃
 		ExcelUtils.writeValue(sheet, writeLine, "N", intrfcDto.getRspsYn());// 응답여부		

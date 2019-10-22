@@ -962,7 +962,6 @@ class SCR0501Controller {
 		this.selectedMsg.custApiYn = 'N';
 		this.selectedMsg.workStatusCd = 'WORKING';
 		this.selectedMsg.regManId = this.user.userId;
-
 		this._onEdit();
 	}
 	
@@ -1248,7 +1247,9 @@ class SCR0501Controller {
 		this._onEdit();
 	}
 	
-	_onEdit(){
+	_onEdit(){		
+		this.noncoreSys = this.getNoncoreSysCodes();
+
 		const editData = this.selectedData;
 		
 		if(this.user.roleId != 'Administrator' && editData && editData.msgDscd == 'STH'){

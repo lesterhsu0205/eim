@@ -325,9 +325,6 @@
 				<bc-tool-wrap>
 					<li class="w-33">
 						{{::vm.text.reqMsg}}
-						<label class="check-wrap" ng-show="vm.isEdit && vm.detail.msgTrnsfrmYn !== 'N'">
-							<input type="checkbox" ng-model="vm.useSndReqLayoutGrid" ng-click="vm.setIoCopy()"/> {{::vm.text.useSendSysMsg}}
-						</label>
 					</li>
 					<right>
 						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('rcvReqLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>
@@ -343,9 +340,6 @@
 				<bc-tool-wrap style="margin-top:10px">
 					<li class="w-33">
 						{{::vm.text.resMsg}}
-						<label class="check-wrap" ng-show="vm.isEdit && vm.detail.msgTrnsfrmYn !== 'N'">
-							<input type="checkbox" ng-model="vm.useSndResLayoutGrid" ng-click="vm.setIoCopy()"/> {{::vm.text.useSendSysMsg}}
-						</label>
 					</li>
 					<right>
 						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('rcvResLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>

@@ -1467,7 +1467,7 @@ class SCR0801Controller {
 		};
 		this.setSysCd('SEND', '', '');
 		this.setSysCd('RECEIVE', '', '');
-
+		this.detail.eaiDto.timeOut = 60;
 		this.detail.workStatusCd = 'WORKING';
 		this.detail.regManId  = this.user.userId;
 		this.isAdd = true;
@@ -1778,6 +1778,7 @@ class SCR0801Controller {
 			w2ui[this.rcvReqLayoutGrid.name].showColumn('delete');
 			w2ui[this.rcvResLayoutGrid.name].showColumn('delete');
 		}
+		w2ui[this.deployTargetSysGrid.name].showColumn('edit');
 	}
 	
 	offEditMode(){
@@ -2456,6 +2457,12 @@ class SCR0801Controller {
 												v.deploySysSeq = index + 1;
 												return v;
 											});
+
+		if (detail.intrfcWayCd == 'APTOAP') {
+			if(_.isEmpty(detail.eaiDto.timeOut) || detail.eaiDto.timeOut == null || detail.eaiDto.timeOut == '' || !$.isNumeric(detail.eaiDto.timeOut)) {
+				detail.eaiDto.timeOut = 60;
+			}
+		}
 		
 		const requestPromise = this.isAdd 
 					? this.httpService.post('/intrfccoms', detail) 
@@ -2598,7 +2605,6 @@ class SCR0801Controller {
 				return false;
 			} 	
 
-			alert(intrfccoms.execEnvDscd);
 			if(_.isEmpty(intrfccoms.execEnvDscd)){
 				this.openAlert(this.text.emptyExecEnvDscd);
 				return false;

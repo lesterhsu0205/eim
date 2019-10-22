@@ -2346,6 +2346,9 @@ public class IntrfccomService {
 				if (eaiDto.getEncTargetYn() == null || eaiDto.getEncTargetYn().equals("")) {
 					eaiDto.setEncTargetYn("N");
 				}
+				if(!deployDtoHist.getExecEnvDscd().isEmpty()) {
+					info.setExecEnvDscd(deployDtoHist.getExecEnvDscd());
+				}
 			}
 
 			info.setEaiDetailDto(eaiDto);
@@ -2384,6 +2387,7 @@ public class IntrfccomService {
 			info.setContextUrl(deployDtoHist.getContextUrl());
 			info.setRequestMediaType(deployDtoHist.getRequestMediaType());
 			info.setResponseMediaType(deployDtoHist.getResponseMediaType());
+
 		}
 	}
 

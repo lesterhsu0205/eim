@@ -157,8 +157,6 @@
 			<right>				
 				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.exportDefinition()" ><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDefinition}}</button>
 				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup2()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDefinition}}</button>
-				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.xlsExport()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDesign}}</button>
-				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDesign}}</button>
 				<button type="button" class="bw-btn bxd bxd-add" title="{{::vm.text.add}}" ng-click="vm.add()" ng-show="vm.user.perm.insert"></button>
 				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
 					<i class="bxd bxd-toggle zabara"></i>
@@ -565,9 +563,6 @@
 					<li class="w-33">
 						<span ng-show="vm.detail.trxDscd == 'BATCH'">{{::vm.text.fileMsg}}</span>
 						<span ng-show="vm.detail.trxDscd != 'BATCH'">{{::vm.text.reqMsg}}</span>
-						<label class="check-wrap" ng-show="vm.isEdit && vm.detail.msgTrnsfrmYn !== 'N'">
-							<input type="checkbox" ng-model="vm.useSndReqLayoutGrid" ng-click="vm.setIoCopy()"/> {{::vm.text.useSendSysMsg}}
-						</label>
 					</li>
 					<right>
 						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('rcvReqLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>
@@ -583,9 +578,6 @@
 				<bc-tool-wrap style="margin-top:10px" ng-show="vm.detail.trxDscd != 'BATCH'">
 					<li class="w-33">
 						{{::vm.text.resMsg}}
-						<label class="check-wrap" ng-show="vm.isEdit && vm.detail.msgTrnsfrmYn !== 'N'">
-							<input type="checkbox" ng-model="vm.useSndResLayoutGrid" ng-click="vm.setIoCopy()"/> {{::vm.text.useSendSysMsg}}
-						</label>
 					</li>
 					<right>
 						<button type="button" class="bw-btn bxd bxd-zoom-in" ng-click="vm.openTotalMsgPopup('rcvResLayoutGrid')" title="{{::vm.text.totalMsgDetail}}"></button>

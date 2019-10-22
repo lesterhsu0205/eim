@@ -2378,6 +2378,10 @@ class SCR0701Controller {
 												v.deploySysSeq = index + 1;
 												return v;
 											});
+	
+		if( _.isEmpty(detail.mciDto.timeOut) || detail.mciDto.timeOut == null || detail.mciDto.timeOut == '' || !$.isNumeric(detail.mciDto.timeOut) ) {
+			detail.mciDto.timeOut = 60;
+		}
 		
 		const requestPromise = this.isAdd 
 					? this.httpService.post('/intrfccoms', detail) 

@@ -700,7 +700,7 @@ class SCR0901Controller {
 					return;
 				}
 				
-				if(e.column === 10){
+				if(e.column === 7){
 					const record = w2ui[e.target].get(e.recid);
 					let mappingTypeCd = record.mappingTypeCd;
 					
@@ -741,7 +741,7 @@ class SCR0901Controller {
 					return;
 				}
 				
-				if(e.column === 10){
+				if(e.column === 7){
 					const record = w2ui[e.target].get(e.recid);
 					let mappingTypeCd = record.mappingTypeCd;
 					
@@ -779,12 +779,12 @@ class SCR0901Controller {
 				const grid = w2ui[e.target];
 				const record = grid.get(e.recid);
 			
-				if(e.column === 9){
+				if(e.column === 6){
 					record.srcData = '';
 					record.mappingTypeCd = e.value_new;
 					record.w2ui && record.w2ui.changes && delete record.w2ui.changes.srcData;
 					grid.refreshCell(e.recid, 'srcData');
-				}else if(e.column === 10) {
+				}else if(e.column === 7) {
 					record.srcData = e.value_new;
 				}
 			}
@@ -817,7 +817,7 @@ class SCR0901Controller {
 					return;
 				}
 				
-				if(e.column === 10){
+				if(e.column === 7){
 					const record = w2ui[e.target].get(e.recid);
 					let mappingTypeCd = record.mappingTypeCd;
 					
@@ -859,8 +859,8 @@ class SCR0901Controller {
 					e.preventDefault();
 					return;
 				}
-				
-				if(e.column === 10){
+				  
+				if(e.column === 7){
 					const record = w2ui[e.target].get(e.recid);
 					let mappingTypeCd = record.mappingTypeCd;
 					
@@ -898,12 +898,12 @@ class SCR0901Controller {
 				const grid = w2ui[e.target];
 				const record = grid.get(e.recid);
 			
-				if(e.column === 9){
+				if(e.column === 6){
 					record.srcData = '';
 					record.mappingTypeCd = e.value_new;
 					record.w2ui && record.w2ui.changes && delete record.w2ui.changes.srcData;
 					grid.refreshCell(e.recid, 'srcData');
-				}else if(e.column === 10) {
+				}else if(e.column === 7) {
 					record.srcData = e.value_new;
 				}
 			}
@@ -1478,7 +1478,7 @@ class SCR0901Controller {
 		this.detail.httpMethod = 'GET';
 		this.detail.requestMediaType = 'application/json';
 		this.detail.responseMediaType = 'application/json';
-		
+		this.detail.fepDto.timeOut = 60;
 		this.isAdd = true;
 		this._onEdit();
 		this._openIntrfaceDetailZabara();
@@ -2483,7 +2483,12 @@ class SCR0901Controller {
 												v.deploySysSeq = index + 1;
 												return v;
 											});
-		
+					
+		if (detail.intrfcWayCd == 'APTOAP') {
+			if(_.isEmpty(detail.fepDto.timeOut) || detail.fepDto.timeOut == null || detail.fepDto.timeOut == '' || !$.isNumeric(detail.fepDto.timeOut) ) {
+				detail.fepDto.timeOut = 60;
+			}
+		}
 		const requestPromise = this.isAdd 
 					? this.httpService.post('/intrfccoms', detail) 
 					: this.httpService.put('/intrfccoms', detail);

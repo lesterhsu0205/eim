@@ -181,7 +181,7 @@ class WrapController {
 			});
 		});
 		
-		//accordionMenuList.push(this.addedMenu);
+		accordionMenuList.push(this.addedMenu);
 		
 		return accordionMenuList; 
 	}
