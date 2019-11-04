@@ -3,6 +3,24 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="eims.web.dao.MsglayoutbsDao">
+	 	
+ 	<select id="selectDeployList" resultType="eims.web.dto.table.IntrfcdeployhisthsDto">
+	 select 
+	 	A.INTRFC_ID AS intrfcId, 
+	 	A.RAW_DATA AS rawData
+	 from
+	 TBINTRFCDEPLOYHISTHS A,
+	 (
+	  select
+	    INTRFC_ID ,COUNT(1) AS version
+	  from
+	    TBINTRFCDEPLOYHISTHS 
+	  where
+	    DEPLOY_RESULT_CD LIKE 'SUCCESS%' 
+	  GROUP BY INTRFC_ID
+	  ) as B 
+	  WHERE A.INTRFC_ID = B.INTRFC_ID AND A.DEPLOY_VERSION = B.version
+	</select>
 	
 	<select id="checkLayoutId" resultType="java.lang.Integer">
 	SELECT count(*)
@@ -743,6 +761,5 @@
  	<if test="msgLayoutId != null and msgLayoutId != ''">
  	and MSG_LAYOUT_ID not in(#{msgLayoutId, jdbcType = VARCHAR})
  	</if>
- 	</select>
- 	
+ 	</select> 
 </mapper>

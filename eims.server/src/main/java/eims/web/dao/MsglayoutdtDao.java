@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import eims.web.dto.table.IntrfcdeployhisthsDto;
 import eims.web.dto.table.MsglayoutdtDto;
 
 @Mapper
@@ -25,5 +26,7 @@ public interface MsglayoutdtDao {
 	int deleteMsglayoutdt(@Param("msgLayoutId") String msgLayoutId);
 	
 	List<String> selectSameIONmChildNm(@Param("childDtoNm") String childDtoNm, 
-			@Param("msgLayoutId") String msgLayoutId) ;
+			@Param("msgLayoutId") String msgLayoutId);
+	
+	
 }

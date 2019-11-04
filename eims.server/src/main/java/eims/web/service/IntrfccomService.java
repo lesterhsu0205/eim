@@ -3,6 +3,7 @@ package eims.web.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import eims.ServiceContext;
 import eims.web.constants.BxCode;
+import eims.web.constants.BxConstants;
 import eims.web.constants.BxMessages;
 import eims.web.dao.AppcdDao;
 import eims.web.dao.BizcdDao;
@@ -198,7 +200,7 @@ public class IntrfccomService {
 
 		int totalCount = intrfccombsDao.selectFebAllCnt(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm,
 				msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd,
-				syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR, msgLayoutId, trxTypeDscd,viewId);
+				syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR, msgLayoutId, trxTypeDscd, viewId);
 
 		List<IntrfccombsListDto> intrfccombsList = intrfccombsDao.selectFebAll(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd,
 				workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd,
@@ -1639,7 +1641,7 @@ public class IntrfccomService {
 					deplInfo.setDeployUrl(deploySys.getDeployUrl());
 					deplInfo.setJsonData(deployJson);
 					deplInfoList.add(deplInfo);
-				}
+				} 
 			} catch (Exception e) {
 
 				StringBuilder deplSysBuilder = new StringBuilder();
@@ -1980,12 +1982,26 @@ public class IntrfccomService {
 				logger.error("{}", e);
 				logger.error("===========================!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			}
-			// IntrfccombsDto status = intrfccombsDao.selectIntrfccombs(in.getIntrfcId());
-			// status.setWorkStatusCd(BxCode.WorkStatusCd.DEPLOY_COMP.toString());
-			// intrfccombsDao.updateIntrfccombs(status);
-		}
 
+			if(BxConstants.Default.IS_SERVER) {
+				//String deployPath = "C:\\linebank\\temp\\";
+				String deployPath = "/logs/jboss/opseim01_18080/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
+				String deployFileName = deployPath + inUi.getIntrfcId() + ".json";
+				File deployFile = new File(deployFileName);
+				FileWriter writer = null;
+				try {
+					writer = new FileWriter(deployFile, false);
+					writer.write(JsonUtils.objectToJson(in));
+					writer.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					logger.error("{}", e);
+				}
+			}
+		}  		 
+		
 		uiResponse.setIntrfcDeployResponse(intrfcDeployResponse);
+		
 		return uiResponse;
 	}
 

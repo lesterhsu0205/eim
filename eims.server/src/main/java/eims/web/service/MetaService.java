@@ -1,19 +1,19 @@
 package eims.web.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,7 +24,6 @@ import eims.web.constants.BxCode;
 import eims.web.constants.BxConstants;
 import eims.web.constants.BxMessages;
 import eims.web.dao.MetabsDao;
-import eims.web.dto.table.BcMetaDto;
 import eims.web.dto.table.MetaEffectDto;
 import eims.web.dto.table.MetaInterfaceDto;
 import eims.web.dto.table.MetabsDto;
@@ -436,86 +435,25 @@ public class MetaService {
 		logger.debug("----- syncMetaSchedule END -----");
 	}
 		
-	/*
-	@Transactional(transactionManager="transactionManager", propagation=Propagation.REQUIRES_NEW)
-	@Scheduled(cron = "0 5 3 * * *")
-	public void syncMetaScheduleInit() {
-		
-		String scheduledFlag = System.getProperty("eims.scheduled.flag") ;
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	@Scheduled(cron = "0 7,17,27,37,47,57 * * * *")
+	public void uploadGitSchedule() throws IOException {	    
 
-		if(scheduledFlag != null && scheduledFlag.equals("true")) {
-			try {
-				
-				logger.error("MetaInit start!");
-
-				String tobeAreaId = "6C5D465E52366C8BE0536541E60AEE45";
-				String appAreaId = "6C5CA247225D6C57E0536541E60AE15F";
-
-				metabsDao.deleteMetaAll();
-
-				List<BcMetaDto> selectMetaListTobe = bcMetaDao.selectTobeAll(tobeAreaId);
-				List<BcMetaDto> selectMetaListApp = bcMetaDao.selectAppAll(appAreaId);
-				MetabsDto eimsMetaDto;
-				int cnt = 0;
-
-				List<MetabsDto> tobeArrayList = new ArrayList<MetabsDto>();
-				List<MetabsDto> appArrayList = new ArrayList<MetabsDto>();
-
-				for (BcMetaDto bcMeta : selectMetaListTobe) {
-					eimsMetaDto = new MetabsDto();
-					String camelCase = StringUtils.converStringToCamel(bcMeta.getDicPhyNm());
-
-					eimsMetaDto.setMetaEngNm(camelCase);
-					eimsMetaDto.setMetaKorNm(bcMeta.getDicLogNm());
-					eimsMetaDto.setDataTypeNm(typeCheck(bcMeta.getDataTypeNm(), bcMeta.getDataScale()));
-					eimsMetaDto.setMetaLen(bcMeta.getDataLen());
-					eimsMetaDto.setDecimalLen(bcMeta.getDataScale());
-					tobeArrayList.add(eimsMetaDto); 
-				}
-
-				for (BcMetaDto bcMeta : selectMetaListApp) {
-					eimsMetaDto = new MetabsDto();
-					String camelCase = StringUtils.converStringToCamel(bcMeta.getDicPhyNm());
-
-					eimsMetaDto.setMetaEngNm(camelCase);
-					eimsMetaDto.setMetaKorNm(bcMeta.getDicLogNm());
-					eimsMetaDto.setDataTypeNm(typeCheck(bcMeta.getDataTypeNm(), bcMeta.getDataScale()));
-					eimsMetaDto.setMetaLen(bcMeta.getDataLen());
-					eimsMetaDto.setDecimalLen(bcMeta.getDataScale());
-					appArrayList.add(eimsMetaDto);
-				}
-
-				for (MetabsDto app : appArrayList) {
-
-					try {
-						metabsDao.insertMetabs(app);
-					} catch (DuplicateKeyException e) {
-						metabsDao.updateMetabs(app);
-						System.out.println("[ERROR1] " + e.getMessage());
-					}
-
-				}
-
-				for (MetabsDto tobe : tobeArrayList) {
-
-					try {
-						metabsDao.insertMetabs(tobe);
-					} catch (DuplicateKeyException e) {
-						metabsDao.updateMetabs(tobe);
-						System.out.println("[ERROR2] " + e.getMessage());
-					}
-
-				}
-
-			} catch (Exception e) {
-				logger.error("{}", e);
+		if(BxConstants.Default.IS_SERVER) { 		
+			logger.error("----- uploadGitSchedule START -----");
+			Runtime runtime = Runtime.getRuntime();
+			Process process = runtime.exec("/logs/jboss/opseim01_18080/eims_logs/deploy/lbtw_deploy_interface/git_upload.sh");
+			InputStream is = process.getInputStream();
+			InputStreamReader isr = new  InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String line;
+			while((line  = br.readLine()) != null) {
+				logger.error(line);	
 			}
-
-			logger.error("----syncMetaSchedule_end--------");
-		}
-
+			logger.error("----- uploadGitSchedule END -----");
+		}		
+		
 	}
-	*/
 
 	private String typeCheck(String dataType, int scaleLen) {
 

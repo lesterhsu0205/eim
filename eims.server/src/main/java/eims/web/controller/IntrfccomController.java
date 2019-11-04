@@ -155,11 +155,10 @@ public class IntrfccomController {
 			sysCdS = "FEB";
 			sysCdR = "FEB";
 			out = intrfccomService.getFebList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
-					msgLayoutId, trxTypeDscd, viewId, pageSize,
-					pageNumber);
+					msgLayoutId, trxTypeDscd, viewId, pageSize, pageNumber);
 		} else {
 			out = intrfccomService.getList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
-					msgLayoutId, trxTypeDscd, viewId, execEnvDscd, pageSize,	pageNumber);
+					msgLayoutId, trxTypeDscd, viewId, execEnvDscd, pageSize, pageNumber);
 		}
 		
 		logger.debug(" OUTPUT : {}", out.getTotalCnt());

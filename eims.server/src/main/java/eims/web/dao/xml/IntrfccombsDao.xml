@@ -319,9 +319,6 @@
  	 <if test="viewId != null and viewId != ''">
 		AND A.VIEW_ID like CONCAT('%',#{viewId, jdbcType = VARCHAR},'%')
  	</if> 	
- 	<if test="execEnvDscd != null and execEnvDscd != ''">
-		AND A.EXEC_ENV_DSCD like CONCAT('%',#{execEnvDscd, jdbcType = VARCHAR},'%')
- 	</if>
 	AND (B.SYS_CD like CONCAT('%',#{sysCdS, jdbcType = VARCHAR},'%') OR  C.SYS_CD like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%'))
 	group by A.INTRFC_ID
  	order by A.REG_DTTM DESC
@@ -576,9 +573,6 @@
  	</if>
  	<if test="viewId != null and viewId != ''">
 		AND A.VIEW_ID like CONCAT('%',#{viewId, jdbcType = VARCHAR},'%')
- 	</if>
- 	<if test="execEnvDscd != null and execEnvDscd != ''">
-		AND A.EXEC_ENV_DSCD like CONCAT('%',#{execEnvDscd, jdbcType = VARCHAR},'%')
  	</if>
 	AND (B.SYS_CD like CONCAT('%',#{sysCdS, jdbcType = VARCHAR},'%') OR  C.SYS_CD like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%'))
  	group by A.INTRFC_ID, A.BIZ_CD, A.INST_CD, A.INTRFC_NM, A.INTRFC_WAY_CD, A.LV_1_CD, A.LV_2_CD, A.LV_3_CD, A.LV_4_CD, A.LV_5_CD, A.MSG_TRNSFRM_YN, A.REG_DTTM, A.REG_MAN_ID, A.TRX_CD, A.TRX_DSCD, A.WORK_STATUS_CD, A.INTRFC_TYPE_CD, B.SR_SEQ, B.SR_TYPE_CD, B.SYS_CD, C.SR_SEQ, C.SR_TYPE_CD, C.SYS_CD, A.TRX_TYPE_DSCD

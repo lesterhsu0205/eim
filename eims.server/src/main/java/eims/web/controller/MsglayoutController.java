@@ -212,7 +212,8 @@ public class MsglayoutController {
 		MsglayoutbsFileUploadDto resultDto;
 		
 		//msglayoutService.fileUpload(msglayoutFile);
-		msglayoutService.AllFileUpload(msglayoutFile);
+		//msglayoutService.AllFileUpload(msglayoutFile);
+		msglayoutService.makeDeployFile(msglayoutFile);
 		resultDto = null;
 		logger.debug(" OUTPUT : {}", resultDto);
 

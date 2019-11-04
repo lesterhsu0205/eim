@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import eims.web.dto.table.IntrfcdeployhisthsDto;
 import eims.web.dto.table.MsgIdCreateDto;
 import eims.web.dto.table.MsgLayoutEffectDto;
 import eims.web.dto.table.MsglayoutbsDto;
@@ -12,6 +13,8 @@ import eims.web.dto.table.MsglayoutbsDto;
 @Mapper
 public interface MsglayoutbsDao {
 
+	List<IntrfcdeployhisthsDto> selectDeployList();
+	
 	MsglayoutbsDto selectMsglayoutbs(@Param("msgLayoutId") String msgLayoutId);
 
 	List<MsgLayoutEffectDto> selectMsglayoutEffect(@Param("msgLayoutId") String msgLayoutId, @Param("intrfcId") String intrfcId, @Param("intrfcNm") String intrfcNm);

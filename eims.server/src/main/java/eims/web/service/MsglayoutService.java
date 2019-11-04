@@ -3,6 +3,7 @@ package eims.web.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -34,9 +35,9 @@ import eims.web.dao.CommCodeDao;
 import eims.web.dao.MsglayoutbsDao;
 import eims.web.dao.MsglayoutdtDao;
 import eims.web.dao.SrsysbsDao;
-import eims.web.dao.UserDao;
 import eims.web.dto.table.ActionhisthsDto;
 import eims.web.dto.table.CommCodeDto;
+import eims.web.dto.table.IntrfcdeployhisthsDto;
 import eims.web.dto.table.MsgIdCreateDto;
 import eims.web.dto.table.MsgLayoutEffectDto;
 import eims.web.dto.table.MsglayoutbsDto;
@@ -47,6 +48,7 @@ import eims.web.dto.ui.UiMsglayoutbsOut;
 import eims.web.exception.ServiceException;
 import eims.web.utils.DateUtils;
 import eims.web.utils.ExcelUtils;
+import eims.web.utils.JsonUtils;
 import eims.web.utils.UidUtils;
 
 @Service
@@ -115,7 +117,33 @@ public class MsglayoutService {
 
 		return out;
 	}
-
+	
+	public void makeDeployFile(MultipartFile messageFile) {
+		System.out.println("@@@@@makeDeployFile");
+		List<IntrfcdeployhisthsDto> list = new ArrayList<IntrfcdeployhisthsDto>();
+		
+		list = msglayoutbsDao.selectDeployList();
+		
+		for(IntrfcdeployhisthsDto item : list) {
+			String id = item.getIntrfcId();
+			String deployInfo = item.getRawData();
+			System.out.println("interface@@@@:"+id);
+			System.out.println(deployInfo);
+			String deployPath = "C:\\linebank\\temp\\deploy\\";
+			String deployFileName = deployPath + id + ".json";
+			File deployFile = new File(deployFileName);
+			FileWriter writer = null;
+			try {
+				writer = new FileWriter(deployFile, false);
+				writer.write(deployInfo);
+				writer.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				logger.error("{}", e);
+			}
+		} 
+	}
+	
 	public MsglayoutbsListDto getList(List<String> msgLayoutList) {
 
 		List<MsglayoutbsDto> list = new ArrayList<MsglayoutbsDto>();
@@ -970,7 +998,7 @@ public class MsglayoutService {
 		return fileResult;
 	}	
 	
-	
+
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void AllFileUpload(MultipartFile messageFile) {
 		logger.debug("fileName: {}", messageFile.getOriginalFilename());
