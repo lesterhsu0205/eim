@@ -2051,14 +2051,14 @@ public class IntrfccomService {
 
 			deployDataSet(info, deployDtoHist);
 
-			IntrfcdeployhisthsDto deployHistListOneRow = intrfcdeployhisthsDao
-					.selectIntrfcdeployhisthsOneRow(in.getIntrfcId());
+			IntrfcdeployhisthsDto deployHistListOneRow = intrfcdeployhisthsDao.selectIntrfcdeployhisthsOneRow(in.getIntrfcId());
 
 			if (deployHistListOneRow != null) {
 				deployVersion = deployHistListOneRow.getDeployVersion() + 1;
 			}
 
 			deployDto.setDeployStatus("DEPLOY");
+			
 			deployDto.setDeployer(ServiceContext.getUserInfo().getUserId());
 			deployDto.setDeployTime(DateUtils.getCurrentDate(9));
 			deployDto.setIntrfcId(in.getIntrfcId());
@@ -2274,6 +2274,22 @@ public class IntrfccomService {
 			actionhisthsDto.setWorkCttCd("REDEPLOY");
 			actionhisthsDto.setWorkDttm(DateUtils.getCurrentDate(10));
 			actionhistService.add(actionhisthsDto);
+			
+			if(BxConstants.Default.IS_SERVER) {
+				//String deployPath = "C:\\linebank\\temp\\";
+				String deployPath = "/logs/jboss/opseim01_18080/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
+				String deployFileName = deployPath + in.getIntrfcId() + ".json";
+				File deployFile = new File(deployFileName);
+				FileWriter writer = null;
+				try {
+					writer = new FileWriter(deployFile, false);
+					writer.write(JsonUtils.objectToJson(deployDtoHist));
+					writer.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					logger.error("{}", e);
+				}
+			}
 		}
 
 		int updateResult = update(deployDtoHist, true);

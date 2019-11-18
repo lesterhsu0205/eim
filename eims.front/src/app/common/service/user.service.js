@@ -37,7 +37,22 @@ class UserService {
 						});
 		return defer.promise;
 	}
+
 	
+	doLogout() {
+		this.httpService.post('/logout')
+		.then(res => {
+			this._removeUser();
+			this.$state.go('login');
+		});
+	}
+
+	requestLogout(scope) {
+		this.popupService.simpleConfirm(scope,
+			bxMsg('common.logoutMsg'),
+			()=>this.doLogout(), ()=>{}, bxMsg('common.confirmOk'), bxMsg('common.confirmCancel'));
+	}
+	/*
 	requestLogout(scope) {
 		this.httpService.post('/logout')
 						.then(res => {
@@ -49,6 +64,7 @@ class UserService {
 									});
 						});
 	}
+	*/
 	
 	getUserMenu() {
 		this._menu.map((menu) => {

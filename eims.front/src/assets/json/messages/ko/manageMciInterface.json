@@ -100,6 +100,7 @@
 		"msgMapping": "전문 매핑",
 		"reqMsgMapping": "요청 전문 매핑",
 		"scrollSync": "스크롤 연동",
+		"useMsgMapping":"전문 변환 사용",
 		"mappingVerification": "매핑검증",
 		"oneToOnemapping": "1:1매핑",
 		"resMsgMapping": "응답 전문 매핑",
@@ -117,7 +118,9 @@
 		"rcvSysNm": "수신시스템명",
 		"trxDscd2": "발생유형",
 		"intrfcWayCd": "인터페이스 방식",
-		"sendMappingLayout": "요청 전문 매핑 LAYOUT 타입은 속성명 값이 지정 되어야 합니다.",
-		"revMappingLayout": "응답 전문 매핑 LAYOUT 타입은 속성명 값이 지정 되어야 합니다."
+		"sendMappingLayout": "요청 전문 매핑의 LAYOUT 타입은 속성명 값이 지정 되어야 합니다.",
+		"revMappingLayout": "응답 전문 매핑의 LAYOUT 타입은 속성명 값이 지정 되어야 합니다.",
+		"sendMappingPropt": "요청 전문 매핑의 속성명 타입은 속성명 값이 지정 되어야 합니다.",
+		"revMappingPropt": "요청 전문 매핑  속성명 타입은 속성명 값이 지정 되어야 합니다."  
     }
 }

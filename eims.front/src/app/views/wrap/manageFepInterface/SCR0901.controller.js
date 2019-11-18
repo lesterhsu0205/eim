@@ -23,6 +23,9 @@ class SCR0901Controller {
   
 		this.useRequestMsgScroll = true;
 		this.useResponseMsgScroll = true;
+		this.useRequestMsgMapping = true;
+		this.useResponseMsgMapping = true;
+
 
 		this.initZabara();
 		this.initText();	
@@ -1307,6 +1310,8 @@ class SCR0901Controller {
 			this.useRequestMsgScroll = true;
 			this.useResponseMsgScroll = true;
 			this.compulsionDeployYn = false;
+			this.useRequestMsgMapping = false;
+			this.useResponseMsgMapping = false;
 			
 			this.setIntrfAccordion(data, isCreateInterfaceId);
 			
@@ -1379,24 +1384,34 @@ class SCR0901Controller {
 			this.isBatch = true;
 		}
 		
-		data.intrfccombsMappingReqDto && data.intrfccombsMappingReqDto.map(reqestMapping => {
-			 const result = sendMsgMapTrg.filter(v => v.fldUnqId == reqestMapping.targetData);
-			 
-			 if(result.length > 0){
-				 result[0].mappingTypeCd = reqestMapping.mappingTypeCd;
-				 result[0].srcData = reqestMapping.srcData; 
-			 }
-		});
-		
-		data.intrfccombsMappingResDto && data.intrfccombsMappingResDto.map(responseMapping => {
-			const result = recvMsgMapTrg.filter(v => v.fldUnqId == responseMapping.targetData);
-			 
-			 if(result.length > 0){
-				 result[0].mappingTypeCd = responseMapping.mappingTypeCd;
-				 result[0].srcData = responseMapping.srcData;
-			 }
-		});
-		
+		if(!_.isEmpty(data.intrfccombsMappingReqDto)) {
+			if (data.intrfccombsMappingReqDto.length != 0) {
+				data.intrfccombsMappingReqDto && data.intrfccombsMappingReqDto.map(reqestMapping => {
+					const result = sendMsgMapTrg.filter(v => v.fldUnqId == reqestMapping.targetData);
+					
+					if(result.length > 0){
+						result[0].mappingTypeCd = reqestMapping.mappingTypeCd;
+						result[0].srcData = reqestMapping.srcData; 
+					}
+			    });
+				this.useRequestMsgMapping = true;
+			}
+		}
+
+		if(!_.isEmpty(data.intrfccombsMappingResDto)) {
+			if(data.intrfccombsMappingResDto.length != 0) {
+				data.intrfccombsMappingResDto && data.intrfccombsMappingResDto.map(responseMapping => {
+					const result = recvMsgMapTrg.filter(v => v.fldUnqId == responseMapping.targetData);
+					 
+					 if(result.length > 0){
+						 result[0].mappingTypeCd = responseMapping.mappingTypeCd;
+						 result[0].srcData = responseMapping.srcData;
+					 }
+				});				
+				this.useResponseMsgMapping = true;
+			}
+		}
+				
 		this.deployTargetSysGrid.records = intrfcdeploysysdtDtoRecords;
 		this.refHistoryGrid.records = intrfcdeployhisthsDtoRecords.map(v => {
 			v.id = v.deploySysCd + v.deployVersion;
@@ -2441,41 +2456,48 @@ class SCR0901Controller {
 			return v;
 		}));
 		
-		detail.intrfccombsMappingReqDto = sendMsgMapTrgGridRecords.map((v,index)=>{
-			if(reqDtoMsgId != v.msgLayoutId){
-				reqDtoMsgId = v.msgLayoutId;
-				reqDtoTargetDataSeq = 1;
-			}
-			
-			let data = {
-					mappingTypeCd: v.mappingTypeCd,
-					reqResTypeCd: 'REQUEST',
-					srcData: v.srcData,
-					targetData: v.fldUnqId,
-					mappingSeq: index + 1,
-					targetDataSeq: reqDtoTargetDataSeq++
-				};
-			
-			return data;
-		});
-		
-		detail.intrfccombsMappingResDto = rcvMsgMapTrgGridRecords.map((v,index)=>{
-			if(resDtoMsgId != v.msgLayoutId){
-				resDtoMsgId = v.msgLayoutId;
-				resDtoTargetDataSeq = 1;
-			}
-			
-			let data = {
-					mappingTypeCd: v.mappingTypeCd,
-					reqResTypeCd: 'RESPONSE',
-					srcData: v.srcData,
-					targetData: v.fldUnqId,
-					mappingSeq: index + 1,
-					targetDataSeq: resDtoTargetDataSeq++
-				};
-			
-			return data;
-		});
+		if(this.useRequestMsgMapping) {
+			detail.intrfccombsMappingReqDto = sendMsgMapTrgGridRecords.map((v,index)=>{
+				if(reqDtoMsgId != v.msgLayoutId){
+					reqDtoMsgId = v.msgLayoutId;
+					reqDtoTargetDataSeq = 1;
+				}
+				
+				let data = {
+						mappingTypeCd: v.mappingTypeCd,
+						reqResTypeCd: 'REQUEST',
+						srcData: v.srcData,
+						targetData: v.fldUnqId,
+						mappingSeq: index + 1,
+						targetDataSeq: reqDtoTargetDataSeq++
+					};
+				
+				return data;
+			});
+		} else {
+			detail.intrfccombsMappingReqDto  = [];
+		}
+		if(this.useResponseMsgMapping) {
+			detail.intrfccombsMappingResDto = rcvMsgMapTrgGridRecords.map((v,index)=>{
+				if(resDtoMsgId != v.msgLayoutId){
+					resDtoMsgId = v.msgLayoutId;
+					resDtoTargetDataSeq = 1;
+				}
+				
+				let data = {
+						mappingTypeCd: v.mappingTypeCd,
+						reqResTypeCd: 'RESPONSE',
+						srcData: v.srcData,
+						targetData: v.fldUnqId,
+						mappingSeq: index + 1,
+						targetDataSeq: resDtoTargetDataSeq++
+					};
+				
+				return data;
+			});
+	    } else {
+			detail.intrfccombsMappingResDto  = [];
+		}
 		
 		detail.intrfcdeploysysdtDto = deployTargetSysGridRecords
 											.map((v, index) => {

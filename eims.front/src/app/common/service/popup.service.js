@@ -14,6 +14,7 @@ class PopupService {
 		this.loadingBar = null;
 	}
 
+
 	showLoadingBar(scope) {
 		const $body = $('body');
 		const fontSize = 150;
@@ -37,13 +38,14 @@ class PopupService {
 		const $body = $('body');
 		const width = 460, height = 180;
 		const { top, left } = this.calculatePosition(width, height);
+		//const ok = bxMsg('common.confirmOk');
 		const template = `
 			<div class="dim" style="z-index:99999">
 				<div class="simple-modal-wrap" style="top:${top}px; left:${left}px;">
 					<div style="width: ${width}px;">
 						<h2 class="bw-tt a-center" style="height:auto; max-height: 400px; overflow: auto;">${text}</h2>
 						<div class="btn-wrap add-mg-t">
-							<button id="simpleAlertConfirm" type="button" class="bw-btn-txt">확인</button>
+							<button id="simpleAlertConfirm" type="button" class="bw-btn-txt">OK</button>
 						</div>
 					</div>
 				</div>
@@ -140,7 +142,7 @@ class PopupService {
 		this.alert.push({ $simpleAlert, close });
 	}
 	
-	simpleConfirm(scope, text="", confirm=()=>{}, cancel=()=>{}, confirmTxt = '확인', cancelTxt = '취소'){
+	simpleConfirm(scope, text="", confirm=()=>{}, cancel=()=>{}, confirmTxt = bxMsg('common.confirmOk'), cancelTxt = bxMsg('common.confirmCancel')){
 		const $body = $('body');
 		const width = 460, height = 180;
 		const { top, left } = this.calculatePosition(width, height);

@@ -38,7 +38,7 @@
 		"prevDeploy": "Previous Deployment Version",
 		"deployDttm": "Deployment Date",
 		"deploySysCd": "Deployment System",
-		"confirmRedeploy": "Redeploy?",
+		"confirmRedeploy": "Do you want to redeploy?",
 		"srTypeCd": "Division",
 		"crgManNm": "Manager Name",
 		"trxCd": "Transaction Code",
@@ -63,7 +63,7 @@
 		"deployAfterSave": "Deployment is possible after saving.",
 		"emptyDeploySystem": "There is no deployment target system. Please add the deployment target system.",
 		"emptyDeployTarget": "Please select the deployment target.",
-		"confirmDeploy": "Deploy?",
+		"confirmDeploy": "Do you want to deploy?",
 		"completeDeploy": "Deployment is complete.<br>Please check the result of the deployment.",
 		"completeRedeploy": "Redeployed.",
 		"emptyInterfaceName": "Please enter the interface name.",
@@ -97,6 +97,7 @@
 		"msgMapping": "Message Mapping",
 		"reqMsgMapping": "Request Message Mapping",
 		"scrollSync": "Scroll Interlock",
+		"useMsgMapping":"Use Telegram Transformation",
 		"mappingVerification": "Mapping Verification",
 		"oneToOnemapping": "1:1 Mapping",
 		"resMsgMapping": "Response Message Mapping",
@@ -148,6 +149,10 @@
 		"emptyDupProc": "Please enter the duplication process.",
 		"scheduleProcInterval": "Schedule Process Interval(Second)",
 		"typeScheduleProcInterval": "Please enter constant in the schedule process interval(second).",
-		"emptyScheduleProcInterval": "Please enter the schedule process interval(second)."
+		"emptyScheduleProcInterval": "Please enter the schedule process interval(second).",
+		"sendMappingLayout": "Request Special Mapping LAYOUT Type must have property name value specified.",
+		"revMappingLayout": "Response Special Mapping LAYOUT Type must have property name value specified.",
+		"sendMappingPropt": "Request Special Mapping PRORT Type must have property name value specified.",
+		"revMappingPropt": "Response Special Mapping PRORT Type must have property name value specified."
     }
 }

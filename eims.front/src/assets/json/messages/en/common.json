@@ -1,8 +1,8 @@
 {
 	"namespace": "common",
 	"messages": {
-		"alertConfirm": "Ok",
-		"confirmOk": "Ok",
+		"alertConfirm": "OK",
+		"confirmOk": "OK",
 		"confirmCancel": "Cancel",
 		"confirmTextDelete": "Delete?",
 		"saved": "Saved.",
@@ -64,6 +64,6 @@
 		"mciInterface": "MCA Interface",
 		"eaiInterface": "EAI Interface",
 		"fepInterface": "FEP Interface",
-		"logoutMsg": "Logout?"
+		"logoutMsg": "Are you sure you want to log out?"
 	}
 }

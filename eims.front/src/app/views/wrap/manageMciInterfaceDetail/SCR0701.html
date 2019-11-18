@@ -380,6 +380,9 @@
 						<label class="check-wrap">
 							<input type="checkbox" ng-model="vm.useRequestMsgScroll"/> {{::vm.text.scrollSync}}
 						</label>
+						<label class="check-wrap">
+							<input type="checkbox" ng-model="vm.useRequestMsgMapping"/> {{::vm.text.useMsgMapping}}
+						</label>
 					</li>
 					<right>
 						<label style="padding: 0 10px;" class="chr-c-orange" ng-show="vm.detail.msgLayoutTranYn === 'Y'">{{::vm.text.confirmChangedMsg}}</label>
@@ -415,6 +418,9 @@
 						{{::vm.text.resMsgMapping}}
 						<label class="check-wrap">
 							<input type="checkbox" ng-model="vm.useResponseMsgScroll"/> {{::vm.text.scrollSync}}
+						</label>
+						<label class="check-wrap">
+							<input type="checkbox" ng-model="vm.useResponseMsgMapping"/> {{::vm.text.useMsgMapping}}
 						</label>
 					</li>
 					<right>

@@ -22,7 +22,9 @@ class SCR0701Controller {
 		this.intrfcTypeCd = 'MCI';
 		this.useRequestMsgScroll = true;
 		this.useResponseMsgScroll = true;
-		
+		this.useRequestMsgMapping = true;
+		this.useResponseMsgMapping = true;
+
 		this.initZabara();
 		this.initText();	
 		this.initSelect();
@@ -1256,6 +1258,8 @@ class SCR0701Controller {
 			this.useRequestMsgScroll = true;
 			this.useResponseMsgScroll = true;
 			this.compulsionDeployYn = false;
+			this.useRequestMsgMapping = false;
+			this.useResponseMsgMapping = false;
 			
 			this.setIntrfAccordion(data, isCreateInterfaceId);
 			
@@ -1318,23 +1322,33 @@ class SCR0701Controller {
 		this.rcvMsgMapTrgGrid.records = recvMsgMapTrg;
 		this.setGridSeq();
 		
-		data.intrfccombsMappingReqDto && data.intrfccombsMappingReqDto.map(reqestMapping => {
-			 const result = sendMsgMapTrg.filter(v => v.fldUnqId == reqestMapping.targetData);
-			 
-			 if(result.length > 0){
-				 result[0].mappingTypeCd = reqestMapping.mappingTypeCd;
-				 result[0].srcData = reqestMapping.srcData;
-			 }
-		});
-		
-		data.intrfccombsMappingResDto && data.intrfccombsMappingResDto.map(responseMapping => {
-			const result = recvMsgMapTrg.filter(v => v.fldUnqId == responseMapping.targetData);
-			 
-			 if(result.length > 0){
-				 result[0].mappingTypeCd = responseMapping.mappingTypeCd;
-				 result[0].srcData = responseMapping.srcData;
-			 }
-		});
+		if(!_.isEmpty(data.intrfccombsMappingReqDto)) {
+			if (data.intrfccombsMappingReqDto.length != 0) {
+				data.intrfccombsMappingReqDto && data.intrfccombsMappingReqDto.map(reqestMapping => {
+					const result = sendMsgMapTrg.filter(v => v.fldUnqId == reqestMapping.targetData);
+					
+					if(result.length > 0){
+						result[0].mappingTypeCd = reqestMapping.mappingTypeCd;
+						result[0].srcData = reqestMapping.srcData;
+					}
+				});
+				this.useRequestMsgMapping = true;
+			}
+		}
+
+		if(!_.isEmpty(data.intrfccombsMappingResDto)) {
+			if(data.intrfccombsMappingResDto.length != 0) {
+				data.intrfccombsMappingResDto && data.intrfccombsMappingResDto.map(responseMapping => {
+					const result = recvMsgMapTrg.filter(v => v.fldUnqId == responseMapping.targetData);
+					
+					if(result.length > 0){
+						result[0].mappingTypeCd = responseMapping.mappingTypeCd;
+						result[0].srcData = responseMapping.srcData;
+					}
+				});
+				this.useResponseMsgMapping = true;
+			}
+		}
 		
 		this.deployTargetSysGrid.records = intrfcdeploysysdtDtoRecords;
 		this.refHistoryGrid.records = intrfcdeployhisthsDtoRecords.map(v => {
@@ -1399,6 +1413,8 @@ class SCR0701Controller {
 		this.detail.regManId  = this.user.userId;
 		this.detail.msgTrnsfrmYn = 'N';
 		this.isAdd = true;
+		this.useRequestMsgMapping = true;
+		this.useResponseMsgMapping = true;
 		this._onEdit();
 		this._openIntrfaceDetailZabara();
 		this.setDefaultDeployTarget();
@@ -2340,37 +2356,45 @@ class SCR0701Controller {
 			return v;
 		}));
 		
-		detail.intrfccombsMappingReqDto = sendMsgMapTrgGridRecords.map((v,index)=>{
-			if(reqDtoMsgId != v.msgLayoutId){
-				reqDtoMsgId = v.msgLayoutId;
-				reqDtoTargetDataSeq = 1;
-			}
-			
-			return {
-				mappingTypeCd: v.mappingTypeCd,
-				reqResTypeCd: 'REQUEST',
-				srcData: v.srcData,
-				targetData: v.fldUnqId,
-				mappingSeq: index + 1,
-				targetDataSeq: reqDtoTargetDataSeq++
-			};
-		});
+		if(this.useRequestMsgMapping) {
+			detail.intrfccombsMappingReqDto = sendMsgMapTrgGridRecords.map((v,index)=>{
+				if(reqDtoMsgId != v.msgLayoutId){
+					reqDtoMsgId = v.msgLayoutId;
+					reqDtoTargetDataSeq = 1;
+				}
+				
+				return {
+					mappingTypeCd: v.mappingTypeCd,
+					reqResTypeCd: 'REQUEST',
+					srcData: v.srcData,
+					targetData: v.fldUnqId,
+					mappingSeq: index + 1,
+					targetDataSeq: reqDtoTargetDataSeq++
+				};
+			});
+		} else {
+			detail.intrfccombsMappingReqDto  = [];
+		}
 		
-		detail.intrfccombsMappingResDto = rcvMsgMapTrgGridRecords.map((v,index)=>{
-			if(resDtoMsgId != v.msgLayoutId){
-				resDtoMsgId = v.msgLayoutId;
-				resDtoTargetDataSeq = 1;
-			}
-			
-			return {
-				mappingTypeCd: v.mappingTypeCd,
-				reqResTypeCd: 'RESPONSE',
-				srcData: v.srcData,
-				targetData: v.fldUnqId,
-				mappingSeq: index + 1,
-				targetDataSeq: resDtoTargetDataSeq++
-			};
-		});
+		if(this.useResponseMsgMapping) {
+			detail.intrfccombsMappingResDto = rcvMsgMapTrgGridRecords.map((v,index)=>{
+				if(resDtoMsgId != v.msgLayoutId){
+					resDtoMsgId = v.msgLayoutId;
+					resDtoTargetDataSeq = 1;
+				}
+				
+				return {
+					mappingTypeCd: v.mappingTypeCd,
+					reqResTypeCd: 'RESPONSE',
+					srcData: v.srcData,
+					targetData: v.fldUnqId,
+					mappingSeq: index + 1,
+					targetDataSeq: resDtoTargetDataSeq++
+				};
+			});
+		} else {			
+			detail.intrfccombsMappingResDto  = [];
+		}
 		
 		detail.intrfcdeploysysdtDto = deployTargetSysGridRecords
 											.map((v, index) => {
@@ -2494,6 +2518,14 @@ class SCR0701Controller {
 						return false;
 					}
 				}
+
+				if(senmdMappingGrid.mappingTypeCd == 'PROPT') {
+					if (_.isEmpty(senmdMappingGrid.srcData) || senmdMappingGrid.srcData == '') {
+						this.openAlert(this.text.sendMappingPropt);
+						return false
+					}
+				
+				}
 			}
 
 			for(let i = 0; i < rcvMsgMapTrgGridRecords.records.length; i++){
@@ -2506,6 +2538,14 @@ class SCR0701Controller {
 						this.openAlert(this.text.revMappingLayout);
 						return false;
 					}
+				}
+
+				if(revdMappingGrid.mappingTypeCd == 'PROPT') {
+					if (_.isEmpty(revdMappingGrid.srcData) || revdMappingGrid.srcData == '') {
+						this.openAlert(this.text.revMappingPropt  );
+						return false
+					}
+				
 				}
 			}		 
 		}
