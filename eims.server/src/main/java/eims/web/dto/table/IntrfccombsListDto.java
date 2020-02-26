@@ -36,6 +36,10 @@ public class IntrfccombsListDto {
 	String rqstExtrnlMsgNo; //요청전문번호
 	String rspsExtrnlMsgNo; //응답전문번호
 	String trxTypeDscd;
+	String viewId;
+	String execEnvDscd;
+	String syncAsyncDscd;
+	String rspsYn;
 	
 
 	
@@ -262,5 +266,39 @@ public class IntrfccombsListDto {
 	public void setSysCdR(String sysCdR) {
 		this.sysCdR = sysCdR;
 	}
+
+	public String getViewId() {
+		return viewId;
+	}
+
+	public void setViewId(String viewId) {
+		this.viewId = viewId;
+	}
+
+	public String getExecEnvDscd() {
+		return execEnvDscd;
+	}
+
+	public void setExecEnvDscd(String execEnvDscd) {
+		this.execEnvDscd = execEnvDscd;
+	}
+
+	public String getSyncAsyncDscd() {
+		return syncAsyncDscd;
+	}
+
+	public void setSyncAsyncDscd(String syncAsyncDscd) {
+		this.syncAsyncDscd = syncAsyncDscd;
+	}
+
+	public String getRspsYn() {
+		return rspsYn;
+	}
+
+	public void setRspsYn(String rspsYn) {
+		this.rspsYn = rspsYn;
+	}
+	
+	
 
 }

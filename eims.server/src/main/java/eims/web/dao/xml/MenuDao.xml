@@ -69,6 +69,22 @@
 	</update>
 	
 	<select id="selectMenuListByRole" resultType="eims.web.dto.ui.UiMenuTreeInfo">
+		SELECT 
+		    A.MENU_ID as id
+			,A.MENU_NM as name
+			,A.MENU_SEQ as seq
+			,A.MENU_DESC as description			
+			,A.PARENT_MENU_ID as parentId
+	   		,B.PERM_ID AS permId
+		  FROM 
+		  TBMENUBS AS A, TBROLEMENURL AS B
+		  WHERE 
+		  A.MENU_ID = B.MENU_ID AND B.ROLE_ID =  #{roleId, jdbcType = VARCHAR} 
+		  order by A.MENU_SEQ
+	</select>
+	
+	<!-- 
+	<select id="selectMenuListByRole" resultType="eims.web.dto.ui.UiMenuTreeInfo">
 	SELECT
 		 MENU_ID as id
 		,MENU_NM as name
@@ -83,4 +99,7 @@
 		WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR} )
 	order by MENU_SEQ
 	</select>
+	 -->
+	 
+	 
 </mapper>

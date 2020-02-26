@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import eims.web.dto.table.MenuRoleRelDto;
 import eims.web.dto.table.PermDto;
 import eims.web.dto.table.RoleDto;
 import eims.web.dto.ui.UiMenuTreeInfo;
@@ -152,11 +153,19 @@ public class RoleController {
 
 	@RequestMapping(value = "/roles/{roleId}/perms", method = RequestMethod.GET)
 	public ResponseEntity<List<PermDto>> getRolePermReleation(
-			@PathVariable(value = "roleId", required = true) String roleId, HttpSession session) {
+			@PathVariable(value = "roleId", required = true) String roleId,
+			@RequestParam(value = "menuId", required = false) String menuId,
+			HttpSession session) {
 
 		logger.debug(" INPUT : roleId [{}]", roleId);
-
-		List<PermDto> outList = roleService.getPermList(roleId);
+		logger.debug(" INPUT : menuId [{}]", menuId);
+		
+		MenuRoleRelDto menuRole = roleService.getMenuRoleList(roleId, menuId);
+				
+		
+		List<PermDto> outList = roleService.getMenuPermList(roleId, menuRole.getPermId());
+		
+		//List<PermDto> outList = roleService.getPermList(roleId);
 
 		logger.debug(" OUTPUT : {}", outList.size());
 
@@ -165,11 +174,16 @@ public class RoleController {
 
 	@RequestMapping(value = "/roles/{roleId}/permpopups", method = RequestMethod.GET)
 	public ResponseEntity<List<PermDto>> getRolePermReleationPopup(
-			@PathVariable(value = "roleId", required = true) String roleId, HttpSession session) {
+			@PathVariable(value = "roleId", required = true) String roleId, 
+			@RequestParam(value = "menuId", required = false) String menuId,
+			HttpSession session) {
 
 		logger.debug(" INPUT : roleId [{}]", roleId);
-
-		List<PermDto> outList = roleService.getPermListPopup(roleId);
+		logger.debug(" INPUT : menuId [{}]", menuId);
+		
+		MenuRoleRelDto menuRole = roleService.getMenuRoleList(roleId, menuId);
+		
+		List<PermDto> outList = roleService.getPermListPopup(roleId, menuRole.getPermId());
 
 		logger.debug(" OUTPUT : {}", outList.size());
 
@@ -179,11 +193,15 @@ public class RoleController {
 	@RequestMapping(value = "/roles/{roleId}/perms", method = RequestMethod.PUT)
 	public ResponseEntity<Integer> updateRolePermReleation(
 			@PathVariable(value = "roleId", required = true) String roleId,
+			@RequestParam(required = false) String menuId,
 			@RequestBody(required = false) List<PermDto> permList, HttpSession session) {
 
-		logger.debug(" INPUT : roleId : [{}], permList : [{}]", roleId, permList);
+		logger.debug(" INPUT : roleId : [{}], menuId : [{}], permList : [{}]", roleId, menuId, permList);
 
-		int out = roleService.updatePermList(roleId, permList);
+		for(int i = 0; i < permList.size();  i++) {
+			System.out.println(permList.get(i).getPermId() +","+ permList.get(i).isCheck());
+		}
+		int out = roleService.updatePermList(roleId, menuId, permList);
 
 		logger.debug(" OUTPUT : {}", out);
 
@@ -192,11 +210,12 @@ public class RoleController {
 
 	@RequestMapping(value = "/roles/{roleId}/perms/{permId}", method = RequestMethod.DELETE)
 	public ResponseEntity<Integer> deletePerm(@PathVariable(value = "roleId", required = true) String roleId, @PathVariable(value = "permId", required = true) String permId,
+			@RequestParam(required = false) String menuId,
 			HttpSession session) {
 
-		logger.debug(" INPUT : roleId : [{}]", roleId);
+		logger.debug(" INPUT : roleId : [{}], menuId : [{}]", roleId, menuId);
 
-		int out = roleService.deletePerm(roleId, permId);
+		int out = roleService.deletePerm(roleId, permId, menuId);
 
 		logger.debug(" OUTPUT : {}", out);
 

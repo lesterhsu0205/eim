@@ -37,35 +37,6 @@
 	    <result property="instCdNm" column="INST_CD_NM" javaType="java.lang.String" jdbcType="VARCHAR" />	    
 	</resultMap>
 	
-	<!-- select id="selectAll" resultMap="getRawData">
-	SELECT *
-	FROM(	
-		SELECT
-			 INTRFC_ID AS intrfcId
-			,INTRFC_NM AS intrfcNm
-			,INTRFC_WAY_CD AS intrfcWayCd
-			,L1_CD AS l1Cd
-			,L2_CD AS l2Cd
-			,L3_CD AS l3Cd
-			,WORK_STATUS_CD AS workStatusCd
-			,REG_MAN_ID AS regManId
-			,REG_DTTM AS regDttm
-			,MSG_TRNSFRM_YN AS msgTrnsfrmYn
-			,TRX_CD AS trxCd
-			,BIZ_CD AS bizCd
-			,INST_CD AS instCd
-			,TRX_DSCD AS trxDscd
-			,RAW_DATA AS rawData
-			,ROW_NUMBER() over (order by INTRFC_ID) as rn
-		FROM TBINTRFCCOMBS
-		WHERE 1=1
-	<if test="intrfcId != null and intrfcId != ''">
-		AND INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
- 	</if>
-	) p
-		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
-	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
-	</select> -->
 	
 	<select id="selectAll" resultType="eims.web.dto.table.IntrfccombsListDto">
 	SELECT *
@@ -85,10 +56,13 @@
 			A.MSG_TRNSFRM_YN AS msgTrnsfrmYn, 
 			A.REG_DTTM AS regDttm, 
 			A.REG_MAN_ID AS regManId, 
-			A.TRX_CD AS trxCd, 
+			A.EXEC_ENV_DSCD AS execEnvDscd,
+			C.TRX_CD AS trxCd, 
 			A.TRX_DSCD AS trxDscd, 
 			A.WORK_STATUS_CD AS workStatusCd,
 			A.INTRFC_TYPE_CD AS intrfcTypeCd,
+			A.RSPS_YN AS rspsYn,
+			A.SYNC_ASYNC_DSCD AS syncAsyncDscd,
 			A.VIEW_ID AS viewId,
 			A.PROTOCOL_DSCD AS protocolDscd,
 			A.HTTP_METHOD AS httpMethod,
@@ -134,7 +108,7 @@
 		AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
  	</if>
 	<if test="trxCd != null and trxCd != ''">
-		AND C.TRX_CD = #{trxCd, jdbcType = VARCHAR}
+		AND C.TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
  	</if>
 	<if test="bizCd != null and bizCd != ''">
 		AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
@@ -219,7 +193,7 @@
 			A.MSG_TRNSFRM_YN AS msgTrnsfrmYn, 
 			A.REG_DTTM AS regDttm, 
 			A.REG_MAN_ID AS regManId, 
-			A.TRX_CD AS trxCd, 
+			C.TRX_CD AS trxCd, 
 			A.TRX_DSCD AS trxDscd, 
 			A.WORK_STATUS_CD AS workStatusCd,
 			A.INTRFC_TYPE_CD AS intrfcTypeCd,
@@ -333,11 +307,10 @@
 		FROM 	
 			TBINTRFCCOMBS
 		WHERE
-			1=1
-			
-	<if test="intrfcId != null and intrfcId != ''">
-		AND INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
-	</if>
+			1=1			
+		<if test="intrfcId != null and intrfcId != ''">
+			AND INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+		</if>
 	</select>
 	<select id="selectAllCnt" resultType="java.lang.Integer">
 		SELECT
@@ -363,6 +336,7 @@
 			A.WORK_STATUS_CD AS workStatusCd,
 			A.INTRFC_TYPE_CD AS intrfcTypeCd,
 			A.VIEW_ID AS viewId,
+			A.EXEC_ENV_DSCD AS execEnvDscd,
 			B.SR_SEQ AS srSeqAsS, 
 			B.SR_TYPE_CD AS srTypeCdS, 
 			B.SYS_CD AS sysCdS, 
@@ -400,7 +374,7 @@
 		AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
  	</if>
 	<if test="trxCd != null and trxCd != ''">
-		AND C.TRX_CD = #{trxCd, jdbcType = VARCHAR}
+		AND C.TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
  	</if>
 	<if test="bizCd != null and bizCd != ''">
 		AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')

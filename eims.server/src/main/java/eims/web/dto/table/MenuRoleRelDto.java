@@ -10,6 +10,7 @@ public class MenuRoleRelDto {
 
 	String menuId; // 메뉴ID
 	String roleId; // 역할ID
+	String permId;
 
 	public String getMenuId() {
 		return menuId;
@@ -26,5 +27,15 @@ public class MenuRoleRelDto {
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
+
+	public String getPermId() {
+		return permId;
+	}
+
+	public void setPermId(String permId) {
+		this.permId = permId;
+	}
+	
+	
 
 }

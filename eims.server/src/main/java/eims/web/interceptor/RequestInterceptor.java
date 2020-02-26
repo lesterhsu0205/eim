@@ -60,7 +60,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 	private String TOA = "1";
 	private String SSO_DOMAIN = ".bccard.com";
 
-	private static final int timeout = 15000;
+	private static final int timeout = 1000000;
 	private static NXContext context = null;
 
 	// Added

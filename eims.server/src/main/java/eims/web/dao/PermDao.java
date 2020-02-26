@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import eims.web.dto.table.MenuRoleRelDto;
 import eims.web.dto.table.PermDto;
 
 @Mapper
@@ -30,6 +31,11 @@ public interface PermDao {
 
 	int deletePerm(@Param("permId") String permId);
 
-
 	List<PermDto> selectPermListByRole(@Param("roleId") String roleId);
+	
+	PermDto selectMenuPermListByRole(@Param("roleId") String roleId, @Param("permId") String permId);
+	
+	MenuRoleRelDto selectMenuByRole(@Param("roleId") String roleId, @Param("menuId") String menuId);	
+	
+	int updateMenuByRole(MenuRoleRelDto menuRoleRelDto);	
 }

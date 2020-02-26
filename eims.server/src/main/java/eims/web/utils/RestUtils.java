@@ -75,15 +75,15 @@ public class RestUtils {
 		
 		String readTimeout = SystemProperties.get(BxConstants.Keys.DEPLOY_READ_TIMEOUT) ;
 		String connTimeout = SystemProperties.get(BxConstants.Keys.DEPLOY_CONN_TIMEOUT) ;
-		int readSec = 10 ;
-		int connSec = 10 ;
+		int readSec = 60 ;
+		int connSec = 60 ;
 		
-		if(readTimeout != null && !readTimeout.equals("")) {
-			readSec = Integer.parseInt(readTimeout) ;
-		}
-		if(connTimeout != null && !connTimeout.equals("")) {
-			connSec = Integer.parseInt(connTimeout) ;
-		}
+//		if(readTimeout != null && !readTimeout.equals("")) {
+//			readSec = Integer.parseInt(readTimeout) ;
+//		}
+//		if(connTimeout != null && !connTimeout.equals("")) {
+//			connSec = Integer.parseInt(connTimeout) ;
+//		}
 		
 		factory.setConnectTimeout(connSec*1000);
 		factory.setReadTimeout(readSec*1000);

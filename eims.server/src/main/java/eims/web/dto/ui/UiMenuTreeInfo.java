@@ -10,6 +10,7 @@ public class UiMenuTreeInfo {
 	private int seq;
 	private String description;
 	private boolean check;
+	private String permId;
 
 	public String getId() {
 		return id;
@@ -57,6 +58,14 @@ public class UiMenuTreeInfo {
 
 	public void setCheck(boolean check) {
 		this.check = check;
+	}	
+
+	public String getPermId() {
+		return permId;
+	}
+
+	public void setPermId(String permId) {
+		this.permId = permId;
 	}
 
 	@Override
@@ -72,6 +81,8 @@ public class UiMenuTreeInfo {
 		builder.append(seq);
 		builder.append(", description=");
 		builder.append(description);
+		builder.append(", permId=");
+		builder.append(permId);
 		builder.append(", check=");
 		builder.append(check);
 		builder.append("]");

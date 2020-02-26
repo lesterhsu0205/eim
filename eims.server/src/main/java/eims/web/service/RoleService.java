@@ -147,7 +147,55 @@ public class RoleService {
 
 		return permList;
 	}
+	
+	public List<PermDto> getMenuPermList(String roleId, String permId) {
+		List<PermDto> permAllList = permDao.selectAll(null, null, null, null, permDao.selectAllCnt(null, null, null, null), 1);
+		Map<String, PermDto> permMap = new HashMap<String, PermDto>();
 
+		for (PermDto perm : permAllList) {
+			permMap.put(perm.getPermId(), perm);
+		}
+
+		String[] permSplit = permId.split(",");
+		String permStr = "";
+		List<PermDto> permList = new ArrayList<>();
+		for (String perm : permSplit) {
+			PermDto permInfo = permDao.selectMenuPermListByRole(roleId, perm);
+			permList.add(permInfo);
+		}
+		
+		
+		//List<PermDto> permList = permDao.selectMenuPermListByRole(roleId, permStr);
+//		for (PermDto perm : permList) {
+//			if (permMap.get(perm.getPermId()) != null) {
+//				permMap.get(perm.getPermId()).setCheck(true);
+//			}
+//		}
+//		List<PermDto> out = new ArrayList<PermDto>(permMap.values());
+
+		
+		return permList;
+	}
+
+	public MenuRoleRelDto getMenuRoleList(String roleId, String menuId) {
+		List<PermDto> permAllList = permDao.selectAll(null, null, null, null, permDao.selectAllCnt(null, null, null, null), 1);
+		Map<String, PermDto> permMap = new HashMap<String, PermDto>();
+
+		for (PermDto perm : permAllList) {
+			permMap.put(perm.getPermId(), perm);
+		}
+
+		MenuRoleRelDto menuRole = permDao.selectMenuByRole(roleId,menuId);
+//		for (PermDto perm : permList) {
+//			if (permMap.get(perm.getPermId()) != null) {
+//				permMap.get(perm.getPermId()).setCheck(true);
+//			}
+//		}
+//		List<PermDto> out = new ArrayList<PermDto>(permMap.values());
+
+		return menuRole;
+	}
+	/*
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public int updatePermList(String roleId, List<PermDto> permList) {
 		int out = 0;
@@ -165,6 +213,36 @@ public class RoleService {
 			}
 		}
 
+		return out;
+	}
+	*/
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public int updatePermList(String roleId, String menuId, List<PermDto> permList) {
+		int out = 0;
+		
+		MenuRoleRelDto menuRoleRelDto = permDao.selectMenuByRole(roleId, menuId);
+		
+		menuRoleRelDto.setRoleId(roleId);
+		
+		String permStr = "";
+		logger.debug(" menuRoleRelDto.getPermId()  : [{}]", menuRoleRelDto.getPermId());
+		
+		if( menuRoleRelDto.getPermId() != null && menuRoleRelDto.getPermId().length() > 0) {
+			permStr = menuRoleRelDto.getPermId() + ",";
+		}
+			
+		for (PermDto permInfo : permList) {
+			if (permInfo.isCheck()) { 
+			permStr += permInfo.getPermId() + ",";
+			}
+		}
+		
+		permStr = permStr.substring(0, permStr.length()-1);
+		menuRoleRelDto.setPermId(permStr);
+		menuRoleRelDto.setMenuId(menuId);
+		
+		out = permDao.updateMenuByRole(menuRoleRelDto);
 		return out;
 	}
 
@@ -226,18 +304,87 @@ public class RoleService {
 		return result;
 	}
 
-	public int deletePerm(String roleId, String permId) {
+	public int deletePerm(String roleId, String permId, String menuId) {
 
-		RolePermRelDto dto = new RolePermRelDto();
+		//MenuRoleRelDto dto = new MenuRoleRelDto();
 
-		dto.setPermId(permId);
-		dto.setRoleId(roleId);
+		MenuRoleRelDto dto = permDao.selectMenuByRole(roleId, menuId);
+		
+		String[] permSplit = dto.getPermId().split(",");
 
-		int result = rolePermRelDao.deleteRolePermRel2(dto);
+		String permStr = "";
+		for(String str : permSplit) {
+			if(!str.equals(permId)) {
+				permStr += str + ",";
+			}
+		}
+		
+		System.out.println("permStr : "+ permStr);
+		if(permStr.length() != 0) {
+			permStr = permStr.substring(0, permStr.length() - 1);
+		}
+		dto.setPermId(permStr);
+
+		int result = permDao.updateMenuByRole(dto);
 
 		return result;
 	}
+	/*
+	public int deletePerm(String roleId, String permId) {
 
+		MenuRoleRelDto dto = new MenuRoleRelDto();
+
+		dto.setRoleId(roleId);
+		dto.setMenuId(menuId);		
+		int result = permDao.deleteMenuByRole(dto);
+		return result;
+	}
+	*/
+
+	public List<PermDto> getPermListPopup(String roleId, String permId) {
+		List<PermDto> permAllList = permDao.selectAll(null, null, null, null, permDao.selectAllCnt(null, null, null, null), 1);
+		Map<String, PermDto> permMap = new HashMap<String, PermDto>();
+	//	List<PermDto> permList = permDao.selectPermListByRole(roleId);
+		
+		if (permId == null || permId.equals("")) {
+			return permAllList;
+		}
+		
+		String[] permSplit = permId.split(",");
+		String permStr = "";
+		List<PermDto> permList = new ArrayList<>();
+		for (String perm : permSplit) {
+			PermDto permInfo = permDao.selectMenuPermListByRole(roleId, perm);
+			permList.add(permInfo);
+		}
+
+
+
+		List<PermDto> permReturn = new ArrayList<PermDto>();
+		boolean permBool = true;
+
+		for (PermDto perm : permAllList) {
+			permBool = true;
+			for (PermDto perm2 : permList) {
+				if (perm.getPermId().equals(perm2.getPermId()))
+					permBool = false;
+			}
+			if (permBool) {
+				permReturn.add(perm);
+			}
+		}
+
+//		List<PermDto> permList = permDao.selectPermListByRole(roleId);
+//		for (PermDto perm : permList) {
+//			if (!permMap.containsKey(perm.getPermId()))
+//				permReturn.add(perm);
+//		}
+//		List<PermDto> out = new ArrayList<PermDto>(permMap.values());
+
+		return permReturn;
+	}
+	
+	/*
 	public List<PermDto> getPermListPopup(String roleId) {
 		List<PermDto> permAllList = permDao.selectAll(null, null, null, null, permDao.selectAllCnt(null, null, null, null), 1);
 		Map<String, PermDto> permMap = new HashMap<String, PermDto>();
@@ -271,7 +418,7 @@ public class RoleService {
 
 		return permReturn;
 	}
-
+*/
 	public List<UiMenuTreeInfo> getMenuListPopup(String roleId) {
 		List<UiMenuTreeInfo> menuAllList = menuDao.selectAll();
 		List<UiMenuTreeInfo> menuList = menuDao.selectMenuListByRole(roleId);

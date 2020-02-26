@@ -83,9 +83,9 @@
 	UPDATE TBEXTRNLINSTCD 
 	SET
  		INST_CD_NM = #{instCdNm, jdbcType = VARCHAR}		
-   		,INST_CD_DESC = #{instCdDesc, jdbcType = VARCHAR}		
+   		,INST_CD_DESC = #{instCdDesc, jdbcType = VARCHAR}
+   		,INST_DSTNCTN_VAL = #{instDstnctnVal, jdbcType = VARCHAR}
    	WHERE INST_CD = #{instCd, jdbcType = VARCHAR}
-	AND   INST_DSTNCTN_VAL = #{instDstnctnVal, jdbcType = VARCHAR}
 	</update>
 	
 	<update id="deleteExtrnlinstcd"	parameterType="eims.web.dto.table.ExtrnlinstcdDto">

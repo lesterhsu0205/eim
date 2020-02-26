@@ -1,5 +1,7 @@
 package eims.web.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,6 +24,8 @@ import eims.web.dto.CommonResponse;
 import eims.web.dto.LoginUserInfo;
 import eims.web.dto.SessionInfo;
 import eims.web.dto.UserInfo;
+import eims.web.dto.table.MenuRoleRelDto;
+import eims.web.dto.table.PermDto;
 import eims.web.exception.ServiceException;
 import eims.web.service.RoleService;
 import eims.web.service.SessionService;
@@ -68,8 +72,8 @@ public class MainController {
 		if (userAuth.isHasError()) {
 			logger.error(" authenticate error ");
 			throw new ServiceException(BxMessages.Error.FAIL_LOGIN, in.getUserId());
-		}
-
+		}   
+		
 		LoginUserInfo loginUserInfo = sessionService.getMainHome(session, in.getLocale());
 		loginUserInfo.setPermList(roleService.getPermList(loginUserInfo.getUserDto().getRoleId()));
 		

@@ -14,8 +14,8 @@ public interface BxConstants {
 		String PROPERTIES_FILE = "system.properties";
 		BxCode.Locale LOCALE = BxCode.Locale.ko;
 //		배포시 주석 true , 로컬개발시 false
-		boolean IS_SERVER = true;
-//		boolean IS_SERVER = false;
+//		boolean IS_SERVER = true;
+		boolean IS_SERVER = false; 
 	}
 
 	/** Properties Key */

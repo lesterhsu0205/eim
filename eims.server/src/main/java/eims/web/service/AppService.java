@@ -39,6 +39,11 @@ public class AppService {
 	public UiAppcdOut getList(String appCd, String appCdNm, String parentAppCd, String lvCd, int alignOrderNo,
 			String appCdDesc, int pageSize, int pageNumber) {
 		UiAppcdOut out = new UiAppcdOut();
+		
+		if(appCd != null && !appCd.equals("")) {
+			appCd = appCd.toUpperCase() ;
+		}
+		
 
 		int totalCount = appcdDao.selectAllCnt(appCd, appCdNm, parentAppCd, lvCd, alignOrderNo, appCdDesc);
 

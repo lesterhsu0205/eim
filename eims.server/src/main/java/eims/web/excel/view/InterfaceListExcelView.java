@@ -54,10 +54,10 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 	@Autowired
 	private AppcdDao appCdDao;
 	private final int startLine = 5;
-	private static final String STR_TEMPLATE_FILE_PATH = "/WEB-INF/classes/templates/";
-	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
-//	private static final String STR_TEMPLATE_FILE_PATH = "C:\\Users\\user\\Desktop\\temp\\template\\";
+//	private static final String STR_TEMPLATE_FILE_PATH = "/WEB-INF/classes/templates/";
 //	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
+	private static final String STR_TEMPLATE_FILE_PATH = "C:\\linebank\\5555.git\\lbtw_eim\\.git\\eims.server\\src\\main\\resources\\templates\\";
+	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
 
 	public InterfaceListExcelView(CommCodeDao codeDao) {
 		this.codeDao = codeDao;
@@ -158,7 +158,7 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// 인터페이스명
 		
 		ExcelUtils.writeValue(sheet, writeLine, "F", getCodeValue("INTRFC_WAY_CD", intrfcDto.getIntrfcWayCd(), "ko"));// 발생유형
-		ExcelUtils.writeValue(sheet, writeLine, "G", getCodeValue("TRAN_DSCD", intrfcDto.getTrxDscd(), "ko"));// 거래유형	
+		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getTrxDscd());// 거래유형	
 		
 		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getRqstExtrnlMsgNo());// 요청전문번호
 		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getInstCd());// 기관코드
@@ -172,38 +172,33 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 			ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getResponseMediaType()); // ResponseMediaType
 			}
 		}
-		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getSysCdSend());// 송신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getSysNmSend());//  송신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getSysCdReceive());// 수신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "V", intrfcDto.getSysNmReceive());//  수신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "W", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명		
-		ExcelUtils.writeValue(sheet, writeLine, "X", intrfcDto.getTrxCdReceive());// 수신시스템거래코드
+		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getSysCdSend());// 송신시스템코드
+		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getSysNmSend());//  송신시스템명
+		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
+		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getSysCdReceive());// 수신시스템코드
+		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getSysNmReceive());//  수신시스템명
+		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명		
+		ExcelUtils.writeValue(sheet, writeLine, "V", intrfcDto.getTrxCdReceive());// 수신시스템거래코드
 
-		ExcelUtils.writeValue(sheet, writeLine, "Y", getCodeValue("SYNC_DSCD_FEP", intrfcDto.getSyncAsyncDscd(), "ko"));// 동기구분
+		ExcelUtils.writeValue(sheet, writeLine, "W",intrfcDto.getSyncAsyncDscd());// 동기구분
 		if(intrfcDto.getFepDto().getTimeOut() == null) {
 			intrfcDto.getFepDto().setTimeOut("null"); 
 		}
-		ExcelUtils.writeValue(sheet, writeLine, "AA", intrfcDto.getFepDto().getTimeOut());
+		ExcelUtils.writeValue(sheet, writeLine, "X", intrfcDto.getFepDto().getTimeOut());
 
-		ExcelUtils.writeValue(sheet, writeLine, "Z", intrfcDto.getRspsYn());// 응답여부		
-		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getMsgTrnsfrmYn());// 전문변환여부
+		ExcelUtils.writeValue(sheet, writeLine, "Y", intrfcDto.getMsgTrnsfrmYn());// 전문변환여부
 		if (intrfcDto.getIntrfcWayCd() != null) {
 			if(intrfcDto.getIntrfcWayCd().equals("FILETOFILE"))  {
-				ExcelUtils.writeValue(sheet, writeLine, "AF", intrfcDto.getFepDto().getDupFileProc());// 파일 중복 처리 정책
+				ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getFepDto().getDupFileProc());// 파일 중복 처리 정책
 			}
 		}
-		ExcelUtils.writeValue(sheet, writeLine, "AG", getCodeValue("GEN_CYCLE_CD", intrfcDto.getFepDto().getOccurCycle(), "ko"));
-		//ExcelUtils.writeValue(sheet, writeLine, "AK", intrfcDto.getInstCd());
-		//ExcelUtils.writeValue(sheet, writeLine, "AL", intrfcDto.getBizCd());
-		//ExcelUtils.writeValue(sheet, writeLine, "AM", intrfcDto.getRqstExtrnlMsgNo());
-		//ExcelUtils.writeValue(sheet, writeLine, "AN", intrfcDto.getRspsExtrnlMsgNo());
-		ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getFepDto().getSendFileNm());// 파일명
-		ExcelUtils.writeValue(sheet, writeLine, "AD", intrfcDto.getFepDto().getSendFilePath());// 송신 경로
-		ExcelUtils.writeValue(sheet, writeLine, "AE", intrfcDto.getFepDto().getRecvFilePath());// 수신 경로
-		ExcelUtils.writeValue(sheet, writeLine, "AJ", intrfcDto.getRegManId());// 등록자ID
-		ExcelUtils.writeValue(sheet, writeLine, "AK", intrfcDto.getRegMamNm());// 등록자이름
-		ExcelUtils.writeValue(sheet, writeLine, "AL", intrfcDto.getFepDto().getIntrfDesc());// 비고		
+		ExcelUtils.writeValue(sheet, writeLine, "AD", getCodeValue("GEN_CYCLE_CD", intrfcDto.getFepDto().getOccurCycle(), "ko"));
+		ExcelUtils.writeValue(sheet, writeLine, "Z", intrfcDto.getFepDto().getSendFileNm());// 파일명
+		ExcelUtils.writeValue(sheet, writeLine, "AA", intrfcDto.getFepDto().getSendFilePath());// 송신 경로
+		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getFepDto().getRecvFilePath());// 수신 경로
+		ExcelUtils.writeValue(sheet, writeLine, "AE", intrfcDto.getRegManId());// 등록자ID
+		ExcelUtils.writeValue(sheet, writeLine, "AF", intrfcDto.getRegMamNm());// 등록자이름
+		ExcelUtils.writeValue(sheet, writeLine, "AG", intrfcDto.getFepDto().getIntrfDesc());// 비고		
 	}
 
 	private void writeInterfaceInfoEAI_E(Sheet sheet, IntrfcInfoExportDto intrfcDto, int writeLine) throws ParseException {
@@ -263,7 +258,7 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// 인터페이스아이디
 		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// 인터페이스명
 		ExcelUtils.writeValue(sheet, writeLine, "F", getCodeValue("INTRFC_WAY_CD", intrfcDto.getIntrfcWayCd(), "ko"));// 발생유형
-		ExcelUtils.writeValue(sheet, writeLine, "G", getCodeValue("TRAN_DSCD", intrfcDto.getTrxDscd(), "ko"));// 거래유형		
+		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getTrxDscd());// 거래유형		
 		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getSysCdSend());// 송신시스템코드
 		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysNmSend());//  송신시스템명
 		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
@@ -284,9 +279,11 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "Z", intrfcDto.getEaiDto().getErrSkipYn());// 에러skip여부
 		ExcelUtils.writeValue(sheet, writeLine, "W", intrfcDto.getEaiDto().getSendDbQuery());// 송신DB쿼리
 		ExcelUtils.writeValue(sheet, writeLine, "X", intrfcDto.getEaiDto().getRecvDbQuery());// 수신DBTO 쿼리문
-
+		if(intrfcDto.getExecEnvDscd() != null) {
+			ExcelUtils.writeValue(sheet, writeLine, "AA", getExecEnvDscd(intrfcDto.getExecEnvDscd()));// 실행환경
+		}
 		// 상세정보
-		ExcelUtils.writeValue(sheet, writeLine, "O", getCodeValue("SYNC_DSCD", intrfcDto.getSyncAsyncDscd(), "ko"));// 동기구분	
+		ExcelUtils.writeValue(sheet, writeLine, "O",  intrfcDto.getSyncAsyncDscd());// 동기구분	
 		if(intrfcDto.getEaiDto().getTimeOut() == null) {
 			intrfcDto.getEaiDto().setTimeOut("null"); 
 		}
@@ -296,8 +293,8 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "V",
 				getCodeValue("GEN_CYCLE_CD", intrfcDto.getEaiDto().getOccurCycle(), "ko"));// 발생주기
 
-		ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getRegManId());// 등록자ID	
-		ExcelUtils.writeValue(sheet, writeLine, "AD", intrfcDto.getEaiDto().getIntrfDesc());// 비고
+		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getRegManId());// 등록자ID	
+		ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getEaiDto().getIntrfDesc());// 비고
 	}
 
 	private void writeInterfaceInfoMCI(Sheet sheet, IntrfcInfoExportDto intrfcDto, int writeLine) throws ParseException {
@@ -314,7 +311,7 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명
 		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getTrxCdReceive());// 수신시스템거래코드
 
-		ExcelUtils.writeValue(sheet, writeLine, "M", getCodeValue("SYNC_DSCD", intrfcDto.getSyncAsyncDscd(), "ko"));// 동기구분
+		ExcelUtils.writeValue(sheet, writeLine, "M", intrfcDto.getSyncAsyncDscd());// 동기구분
 		// ExcelUtils.writeValue(sheet, writeLine, "N", getCodeValue("TRX_TYPE_DSCD", intrfcDto.getTrxTypeDscd(), "ko"));// 거래유형
 		if(intrfcDto.getMciDto().getTimeOut() == null) {
 			intrfcDto.getMciDto().setTimeOut("null"); 
@@ -323,10 +320,10 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		ExcelUtils.writeValue(sheet, writeLine, "N", intrfcDto.getRspsYn());// 응답여부		
 		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getMsgTrnsfrmYn());// 전문변환여부
 		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getViewId());// 전문변환여부
-		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getRegManId());// 등록자ID
-		ExcelUtils.writeValue(sheet, writeLine, "V", intrfcDto.getRegMamNm());// 등록자NAME
+		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getRegManId());// 등록자ID
+		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getRegMamNm());// 등록자NAME
 //		ExcelUtils.writeValue(sheet, writeLine, "Y", getCodeValue("WORK_STATUS_CD", intrfcDto.getWorkStatusCd(), "ko"));// 상태			
-		ExcelUtils.writeValue(sheet, writeLine, "W",
+		ExcelUtils.writeValue(sheet, writeLine, "T",
 				intrfcDto.getMciDto().getIntrfDesc() == null ? "" : intrfcDto.getMciDto().getIntrfDesc());// 비고	
 	}
 
@@ -354,6 +351,20 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 		}
 	}
 	
+	private String getExecEnvDscd(String execEnvDscd) {
+		switch(execEnvDscd) {
+		case "A" : 
+			return "All Server";
+		case "D" : 
+			return "Develop Server";
+		case "S" : 
+			return "Stage Server";
+		case "P" : 
+			return "Product Server";
+		default : 
+			return execEnvDscd;
+	}
+	}
 	private void copyFile(File src, File target) {
 		InputStream in = null ;
 		OutputStream out = null ;
@@ -391,15 +402,15 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 			uuid = uuid.replace("-", "");
 		}
 
-		String templateFile = rootPath + STR_TEMPLATE_FILE_PATH +
-				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
-		String filenameToWrite = rootPath + STR_TEMPLATE_FILE_PATH + "temp/" +
-				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + "_" + uuid + ".xlsx";
-		
-//		String templateFile =  STR_TEMPLATE_FILE_PATH +
+//		String templateFile = rootPath + STR_TEMPLATE_FILE_PATH +
 //				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
-//		String filenameToWrite =  STR_TEMPLATE_FILE_PATH + "temp/" +
+//		String filenameToWrite = rootPath + STR_TEMPLATE_FILE_PATH + "temp/" +
 //				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + "_" + uuid + ".xlsx";
+		
+		String templateFile =  STR_TEMPLATE_FILE_PATH +
+				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
+		String filenameToWrite =  STR_TEMPLATE_FILE_PATH + "temp/" +
+				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + "_" + uuid + ".xlsx";
 
 		Workbook workbook = null;
 		logger.debug("Org File : {}", templateFile);

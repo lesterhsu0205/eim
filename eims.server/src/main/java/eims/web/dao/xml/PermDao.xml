@@ -92,6 +92,7 @@
 	WHERE PERM_ID = #{permId, jdbcType = VARCHAR}
 	</update>
 	
+	
 	<select id="selectPermListByRole" resultType="eims.web.dto.table.PermDto">
 	SELECT
 		 PERM_ID AS permId
@@ -106,5 +107,35 @@
 		WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
 	) order by PERM_ID
 	</select>
+
 	
+	<select id="selectMenuPermListByRole" resultType="eims.web.dto.table.PermDto">
+	SELECT
+		 PERM_ID AS permId
+		,PERM_NM AS permNm
+		,PERM_DESC AS permDesc
+		,PERM_TYPE_CD AS permTypeCd
+	FROM TBPERMBS
+	WHERE PERM_ID IN (#{permId, jdbcType = VARCHAR})
+	</select>	
+		
+	<select id="selectMenuByRole" resultType="eims.web.dto.table.MenuRoleRelDto">
+	SELECT
+		ROLE_ID as roleId,
+		MENU_ID as menuId,
+		PERM_ID as permId
+	FROM TBROLEMENURL
+	WHERE 
+		ROLE_ID = #{roleId, jdbcType = VARCHAR}
+		AND MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</select> 	 
+	 
+	<update id="updateMenuByRole" parameterType="eims.web.dto.table.MenuRoleRelDto">
+	UPDATE TBROLEMENURL 
+	SET
+		PERM_ID = #{permId , jdbcType = VARCHAR}
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	AND MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</update> 
+			 
 </mapper>

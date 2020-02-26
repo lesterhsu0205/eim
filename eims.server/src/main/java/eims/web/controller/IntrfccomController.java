@@ -97,7 +97,7 @@ public class IntrfccomController {
 			@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
 			@RequestParam(value = "pageSize", required = false, defaultValue = "1000") int pageSize) {
 		logger.debug(
-				"INPUT   intrfcId : [{}],  intrfcNm : [{}],  intrfcWayCd : [{}],  workStatusCd : [{}],  regManId : [{}],  regDttm : [{}],  msgTrnsfrmYn : [{}],  trxCd : [{}],  bizCd : [{}],  instCd : [{}],  trxTypeCd : [{}], rawData : [{}],  intrfcTypeCd : [{}],  lv1Cd : [{}],  lv2Cd : [{}],  lv3Cd : [{}],  lv4Cd : [{}],  lv5Cd : [{}]",
+				"INPUT   intrfcId : [{}],  intrfcNm : [{}],  intrfcNmSub : [{}],  intrfcWayCd : [{}],  workStatusCd : [{}],  regManId : [{}],  regDttm : [{}],  msgTrnsfrmYn : [{}],  trxCd : [{}],  bizCd : [{}],  instCd : [{}],  trxTypeCd : [{}], rawData : [{}],  intrfcTypeCd : [{}],  lv1Cd : [{}],  lv2Cd : [{}],  lv3Cd : [{}],  lv4Cd : [{}],  lv5Cd : [{}]",
 				intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd);
 
 		UiIntrfccombsOut out = intrfccomService.getList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
@@ -145,7 +145,7 @@ public class IntrfccomController {
 				intrfcId, intrfcNm, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd);
 
 		UiIntrfccombsOut out = new UiIntrfccombsOut();
-		if(intrfcTypeCd.equals("MCA")) {
+		if(intrfcTypeCd.equals("MCA") || intrfcTypeCd.equals("SUI-enc") ) {
 			intrfcTypeCd = "MCI";
 			out = intrfccomService.getList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
 					msgLayoutId, trxTypeDscd, viewId, execEnvDscd,  pageSize,	pageNumber);
@@ -156,6 +156,23 @@ public class IntrfccomController {
 			sysCdR = "FEB";
 			out = intrfccomService.getFebList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
 					msgLayoutId, trxTypeDscd, viewId, pageSize, pageNumber);
+		} else if(intrfcTypeCd.equals("EAI")){
+			if(intrfcId != null) {
+				if (intrfcId.substring(0,1).equals("F")) {
+					intrfcTypeCd = "FEP";
+					sysCdS = "FEB";
+					sysCdR = "FEB";
+					out = intrfccomService.getFebList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
+							msgLayoutId, trxTypeDscd, viewId, pageSize, pageNumber);
+				} else {
+					out = intrfccomService.getList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
+							msgLayoutId, trxTypeDscd, viewId, execEnvDscd, pageSize, pageNumber);
+				}
+			} else {
+				out = intrfccomService.getList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
+						msgLayoutId, trxTypeDscd, viewId, execEnvDscd, pageSize, pageNumber);
+			}
+
 		} else {
 			out = intrfccomService.getList(intrfcId, intrfcNm, intrfcNmSub, intrfcWayCd, workStatusCd, regManId, regDttm, msgTrnsfrmYn, trxCd, bizCd, instCd, trxDscd, intrfcTypeCd, lv1Cd, lv2Cd, lv3Cd, lv4Cd, lv5Cd, syncAsyncDscd, srTypeCd, rqstExtrnlMsgNo, rspsExtrnlMsgNo, sysCdS, sysCdR,
 					msgLayoutId, trxTypeDscd, viewId, execEnvDscd, pageSize, pageNumber);
