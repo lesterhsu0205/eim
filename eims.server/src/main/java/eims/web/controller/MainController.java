@@ -1,11 +1,25 @@
 package eims.web.controller;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.jasig.cas.client.validation.Assertion;
+import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
+import org.jasig.cas.client.validation.TicketValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +38,12 @@ import eims.web.dto.CommonResponse;
 import eims.web.dto.LoginUserInfo;
 import eims.web.dto.SessionInfo;
 import eims.web.dto.UserInfo;
-import eims.web.dto.table.MenuRoleRelDto;
-import eims.web.dto.table.PermDto;
+import eims.web.dto.table.UserDto;
 import eims.web.exception.ServiceException;
 import eims.web.service.RoleService;
 import eims.web.service.SessionService;
 import eims.web.service.UserService;
+import eims.web.utils.RestUtils;
 
 @Controller
 public class MainController {
@@ -45,6 +59,11 @@ public class MainController {
 	@Autowired
 	private RoleService roleService;
 
+	private String casUrl = "https://sso.lbtwsys.com:8443/cas/";
+	private String meUrl = "http://localhost:8089/eims/sso";
+	// private String meUrl = "http://10.244.106.189:28080//eims/sso";
+	public static final String CONST_CAS_ASSERTION = "_const_cas_loname_";
+	private Cas30ServiceTicketValidator ticketValidator;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<LoginUserInfo> main(HttpSession session, HttpServletResponse response,
@@ -59,11 +78,11 @@ public class MainController {
 			userInfo.setUserId(in.getUserId());
 
 			ServiceContext.setUserInfo(userInfo);
- 
+
 			session.setAttribute(BxConstants.Session.USER_INFO, userInfo);
 			session.setAttribute(BxConstants.Session.IS_USER_LOGIN, true);
 			// 세션2시간
-			session.setMaxInactiveInterval(3600*2); 
+			session.setMaxInactiveInterval(3600 * 2);
 		}
 
 		CommonResponse userAuth = sessionService.authenticateUser(in, session);
@@ -72,14 +91,153 @@ public class MainController {
 		if (userAuth.isHasError()) {
 			logger.error(" authenticate error ");
 			throw new ServiceException(BxMessages.Error.FAIL_LOGIN, in.getUserId());
-		}   
-		
+		}
+
 		LoginUserInfo loginUserInfo = sessionService.getMainHome(session, in.getLocale());
 		loginUserInfo.setPermList(roleService.getPermList(loginUserInfo.getUserDto().getRoleId()));
-		
+
 		return new ResponseEntity<LoginUserInfo>(loginUserInfo, HttpStatus.OK);
 	}
 
+	public String authTicket(String ticket) {
+		System.out.println("authTicket() - in");
+		try {
+			this.ticketValidator = new Cas30ServiceTicketValidator(casUrl);
+			System.out.println("ticketValidator : " + ticketValidator);
+			final Assertion assertion = this.ticketValidator.validate(ticket, meUrl);
+			System.out.println(" assertion.getValidUntilDate() : " + assertion.getValidUntilDate());
+			return assertion.getPrincipal().getName();
+		} catch (final TicketValidationException e) {
+			// out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	private static void initSSL() {
+		System.out.println("initSSL start..");
+		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+				return null;
+			}
+
+			public void checkClientTrusted(X509Certificate[] certs, String authType) {
+			}
+
+			public void checkServerTrusted(X509Certificate[] certs, String authType) {
+			}
+		} };
+
+		try {
+			HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+				@Override
+				public boolean verify(String hostname, SSLSession sslSession) {
+					return true;
+				}
+			});
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new SecureRandom());
+
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			HttpsURLConnection.setFollowRedirects(true);
+		} catch (Exception e) {
+			System.out.println("initSSL Exception..");
+			e.printStackTrace();
+		}
+	}
+
+	@RequestMapping(value = "/eims/sso", method = RequestMethod.GET)
+	public String getSsoLogin(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "ticket", required = false) String ticket)
+			throws UnsupportedEncodingException, IOException {
+		System.out.println("getSsoTest() - in");
+		Object sessionObject = session.getAttribute(CONST_CAS_ASSERTION);
+		initSSL();
+		System.out.println("tickect : " + ticket + ",sessionObject : " + sessionObject);
+		boolean doLogin = false;
+		System.out.println("returnUrl :  " + request.getServerName() + request.getServerPort());
+		String returnUrl = request.getServerName() + ":" + request.getServerPort();
+		UserInfo userInfo = (UserInfo) session.getAttribute(BxConstants.Session.USER_INFO);
+		if (sessionObject == null) {
+			if (ticket == null) {
+				response.sendRedirect(casUrl + "?service=" + java.net.URLEncoder.encode(meUrl, "UTF-8"));
+			} else {
+				String name = this.authTicket(ticket);
+				System.out.println("authTicket name : " + name);
+				if (name != null) {
+					UserDto userdto = userService.get(name.toUpperCase());
+					if (userdto != null) {
+						userInfo.setUserId(name.toUpperCase());
+						userInfo.setRoleId(userdto.getRoleId());
+						session.setAttribute(BxConstants.Session.USER_INFO, userInfo);
+						session.setAttribute(BxConstants.Session.IS_USER_LOGIN, true);
+						ServiceContext.setUserInfo(userInfo);
+						return "redirect:http://" + returnUrl + "/index.html#!/main/manageMsg";
+					}
+					session.setAttribute(CONST_CAS_ASSERTION, name);
+				}
+			}
+		} else {
+			System.out.println("sessionObject not null, sessionObject =" + sessionObject);
+			session.setAttribute(CONST_CAS_ASSERTION, sessionObject);
+			// UserInfo userInfo = new UserInfo();
+			UserDto userdto = userService.get(sessionObject.toString().toUpperCase());
+			if (userdto != null) {
+				userInfo.setUserId(sessionObject.toString().toUpperCase());
+				// userInfo.setLocale("ko");
+				userInfo.setRoleId(userdto.getRoleId());
+				session.setAttribute(BxConstants.Session.USER_INFO, userInfo);
+				session.setAttribute(BxConstants.Session.IS_USER_LOGIN, true);
+				ServiceContext.setUserInfo(userInfo);
+				return "redirect:http://" + returnUrl + "/index.html#!/main/manageMsg";
+			}
+		}
+
+		return "redirect:http://" + returnUrl + "/index.html";
+		//
+	}
+
+	@RequestMapping(value = "/changelang", method = RequestMethod.GET)
+	public String changeLangn(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "locale", required = false, defaultValue = "ko") String locale)
+			throws UnsupportedEncodingException, IOException {
+		System.out.println("change locale : " + locale);
+
+		String returnUrl = request.getServerName() + ":" + request.getServerPort();
+
+		UserInfo userInfo = (UserInfo) session.getAttribute(BxConstants.Session.USER_INFO);
+		if (userInfo != null) {
+			userInfo.setLocale(locale);
+			session.setAttribute(BxConstants.Session.USER_INFO, userInfo);
+			session.setAttribute(BxConstants.Session.IS_USER_LOGIN, true);
+			ServiceContext.setUserInfo(userInfo);
+			return "redirect:http://" + returnUrl + "/index.html#!/main/manageMsg";
+		}
+
+		return "redirect:http://" + returnUrl + "/index.html";
+	}
+
+	@RequestMapping(value = "/logininfosso", method = RequestMethod.GET)
+	public ResponseEntity<LoginUserInfo> getUserInfo(HttpSession session, HttpServletResponse response) {
+
+		LoginUserInfo loginUserInfo = new LoginUserInfo();
+
+		UserInfo userInfo = (UserInfo) session.getAttribute(BxConstants.Session.USER_INFO);
+		ServiceContext.setUserInfo(userInfo);
+
+		if (userInfo != null) {
+			loginUserInfo.setUserDto(userService.get(userInfo.getUserId()));
+			loginUserInfo.setMenuList(roleService.getMenuList(userInfo.getRoleId()));
+
+			SessionInfo userSession = new SessionInfo();
+			userSession.setUserId(userInfo.getUserId());
+			userSession.setLocale(userInfo.getLocale());
+			loginUserInfo.setSessionInfo(userSession);
+			loginUserInfo.setPermList(roleService.getPermList(userInfo.getRoleId()));
+
+		}
+
+		return new ResponseEntity<LoginUserInfo>(loginUserInfo, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/bxmlogin", method = RequestMethod.GET)
 	public String bxmLogin(@RequestParam(value = "userId", required = false) String userId,
@@ -102,7 +260,6 @@ public class MainController {
 		return "redirect:index.html#!/main/blank";
 	}
 
-
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
 	public ResponseEntity<LoginUserInfo> userInfo(HttpSession session, HttpServletResponse response) {
 
@@ -113,45 +270,21 @@ public class MainController {
 		return new ResponseEntity<LoginUserInfo>(loginUserInfo, HttpStatus.OK);
 	}
 
+	// @RequestMapping(value = "/changePwd", method = RequestMethod.POST)
+	// public ResponseEntity<Integer> changePwd(@RequestBody ChangePwdInfo in) {
+	//
+	// logger.debug("userId = {}", in.getUserId());
+	// CommonResponse userAuth = sessionService.authenticateUserForChangePwd(in);
+	//
+	// if (userAuth.isHasError()) {
+	// logger.error(" authenticate error ");
+	// return new ResponseEntity<Integer>(0, HttpStatus.UNAUTHORIZED);
+	// }
+	//
+	// return new ResponseEntity<Integer>(0, HttpStatus.OK);
+	// }
 
-	@RequestMapping(value = "/logininfosso", method = RequestMethod.GET)
-	public ResponseEntity<LoginUserInfo> getUserInfo(HttpSession session, HttpServletResponse response) {
-
-		LoginUserInfo loginUserInfo = new LoginUserInfo();
-
-		UserInfo userInfo = (UserInfo) session.getAttribute(BxConstants.Session.USER_INFO);
-		ServiceContext.setUserInfo(userInfo);
-
-		if (userInfo != null) {
-			loginUserInfo.setUserDto(userService.get(userInfo.getUserId()));
-			loginUserInfo.setMenuList(roleService.getMenuList(userInfo.getRoleId()));
-		
-			SessionInfo userSession = new SessionInfo();
-			userSession.setUserId(userInfo.getUserId());
-			userSession.setLocale(userInfo.getLocale());
-			loginUserInfo.setSessionInfo(userSession);
-			loginUserInfo.setPermList(roleService.getPermList(userInfo.getRoleId()));
-			
-			
-		}
-
-		return new ResponseEntity<LoginUserInfo>(loginUserInfo, HttpStatus.OK);
-	}
-
-
-//	@RequestMapping(value = "/changePwd", method = RequestMethod.POST)
-//	public ResponseEntity<Integer> changePwd(@RequestBody ChangePwdInfo in) {
-//
-//		logger.debug("userId = {}", in.getUserId());
-//		CommonResponse userAuth = sessionService.authenticateUserForChangePwd(in);
-//
-//		if (userAuth.isHasError()) {
-//			logger.error(" authenticate error ");
-//			return new ResponseEntity<Integer>(0, HttpStatus.UNAUTHORIZED);
-//		}
-//
-//		return new ResponseEntity<Integer>(0, HttpStatus.OK);
-//	}
+	// return "redirect:index.html#!/main/blank";
 
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
 	public ResponseEntity<String> logout(HttpServletRequest req) {
@@ -163,10 +296,23 @@ public class MainController {
 		if (session != null) {
 			out = "Logout Success";
 			session.invalidate();
+			logoutSSO();
 			logger.info("logout session invalidate");
 		}
 
 		return new ResponseEntity<String>(out, HttpStatus.OK);
 	}
 
+	private void logoutSSO() {
+		byte[] resData = RestUtils.sendRestPost("https://sso.lbtwsys.com:8443/cas/logout", "", byte[].class);
+		try {
+			initSSL();
+			String resString = new String(resData, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

@@ -1,12 +1,24 @@
 package eims.web.utils;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +36,7 @@ import eims.web.constants.SystemProperties;
 
 public class RestUtils {
 	private static final Logger logger = LoggerFactory.getLogger(RestUtils.class);
-
+	private static final int LEN_BUFFER = 4 * 1024;
 
 	public static <T> void sendRest(String httpMethodType, List<String> urlList, String contextPath, Object request,
 			Class<T> responseType) {
@@ -70,7 +82,97 @@ public class RestUtils {
 	}
 
 
+	/*
+	public static <T> byte[] sendRestPost(String url, byte[] request, Class<T> responseType) throws Exception {
+		logger.debug("sendRestPost");
+		
+		int readSec = 60*60 ;
+		int connSec = 60*60 ;
+		
+		StringBuffer result= new StringBuffer();
+		HttpURLConnection httConn = null;
+		byte[] responsebytes = new byte[0];
+		
+		try {
+			initSSL();
+		    httConn = (HttpURLConnection)new URL(url).openConnection();
+			httConn.setDoOutput(true);
+	        addRequestProperty(httConn, "UTF-8");
+	        httConn.setConnectTimeout((int)connSec);
+	        httConn.setReadTimeout((int)readSec);
+	        logger.debug("URL : " + url); 
+
+	        dataOutStream.write(request);
+            dataOutStream.flush();
+
+            DataInputStream dataInStream = new DataInputStream(httConn.getInputStream());
+            
+            responsebytes = readInputStream(dataInStream);
+            
+	        httConn.disconnect();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("telegram : " + request);
+		System.out.println("result : " + result);
+		return responsebytes;
+
+	}
+	*/
+	
+    private static byte[] readInputStream(InputStream stream) throws Exception {
+		
+		ByteArrayOutputStream bout = null;
+		byte[] record = null;
+		try {
+            bout = new ByteArrayOutputStream();
+            byte[] outBuffer = new byte[LEN_BUFFER];
+            int readLen = 0;
+            do {
+                bout.write(outBuffer, 0, readLen);
+                readLen = stream.read(outBuffer);
+            } while (readLen > 0);
+            bout.flush();
+            record = bout.toByteArray();
+		} finally {
+		    close(bout);
+		}
+		return record;
+	}
+    
+    private static void addRequestProperty(HttpURLConnection httConn, String reqEncoding) {
+        httConn.addRequestProperty("Content-Type", "application/json;charset="+reqEncoding);    
+    }
+    
+	private static void close(HttpURLConnection closeable) {
+        try {
+            if(closeable != null) {
+                closeable.disconnect();
+            }
+        } catch(Exception e) {
+            logger.error("close error", e);
+        }
+    }
+    
+	private static void close(Closeable... closeables) {
+        if (closeables == null) return; 
+        for (Closeable closeable : closeables) {
+            if (closeable == null) continue; 
+            try {
+                closeable.close(); 
+            } catch (Exception e) {
+                logger.error("close error", e);
+            }
+        }
+    }
+	
 	public static <T> T postForObject(URI uri, Object request, Class<T> responseType) {
+	//	initSSL();
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory() ;
 		
 		String readTimeout = SystemProperties.get(BxConstants.Keys.DEPLOY_READ_TIMEOUT) ;
@@ -88,9 +190,8 @@ public class RestUtils {
 		factory.setConnectTimeout(connSec*1000);
 		factory.setReadTimeout(readSec*1000);
 		RestTemplate restTemplate = new RestTemplate(factory);
-
+		
 		try {
-
 			T result = restTemplate.postForObject(uri, request, responseType);
 			logger.debug("### result : [{}] ###", result);
 
@@ -101,6 +202,40 @@ public class RestUtils {
 		}
 	}
 
+   	public static void initSSL() {
+		logger.debug("initSSL start..");
+        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+           	public java.security.cert.X509Certificate[] getAcceptedIssuers() { return null; }
+           	public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+           	public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+          }
+        };
+        logger.debug("initSSL : 1111");
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+
+				@Override
+				public boolean verify(String arg0, SSLSession arg1) {
+					// TODO Auto-generated method stub
+					 logger.debug("initSSL : 222");
+					return true;
+				}
+            	
+
+            });            
+            logger.debug("initSSL : 333");
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null,  trustAllCerts, new SecureRandom());
+
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setFollowRedirects(true);
+        }catch(Exception e) {
+        	logger.info("initSSL Exception..", e);
+        	//e.printStackTrace();
+        }
+	}
+   	
+   	
 
 	public static <T> ResponseEntity<T> deleteForObject(URI uri, Object request, Class<T> responseType) {
 		RestTemplate restTemplate = new RestTemplate();

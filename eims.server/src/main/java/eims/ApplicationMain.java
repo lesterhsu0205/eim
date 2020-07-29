@@ -5,6 +5,7 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+@ServletComponentScan
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableAsync
@@ -33,8 +35,8 @@ public class ApplicationMain extends SpringBootServletInitializer implements Com
 
 	private static Class<ApplicationMain> applicationClass = ApplicationMain.class;
 
-
 	public static void main(String[] args) throws Exception {
+		System.out.println("init EIMS START !");
 		new SpringApplication(applicationClass).run(args);
 	}
 

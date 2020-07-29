@@ -442,7 +442,7 @@ public class MetaService {
 		if(BxConstants.Default.IS_SERVER) { 		
 			logger.error("----- uploadGitSchedule START -----");
 			Runtime runtime = Runtime.getRuntime();
-			Process process = runtime.exec("/logs/jboss/opseim01_18080/eims_logs/deploy/lbtw_deploy_interface/git_upload.sh");
+			Process process = runtime.exec("/logs/jboss/opseim01_18443/eims_logs/deploy/lbtw_deploy_interface/git_upload.sh");
 			InputStream is = process.getInputStream();
 			InputStreamReader isr = new  InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);

@@ -5,11 +5,21 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+
+import java.security.cert.X509Certificate;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
@@ -1498,6 +1508,7 @@ public class IntrfccomService {
 
 	// @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public UiIntrfcDeployResponse deploy(IntrfccombsDto inUi) {
+	//	initSSL();
 		IntrfcDeploy deployDto = new IntrfcDeploy();
 		IntrfcInfo info = new IntrfcInfo();
 		IntrfccombsDto in = this.get(inUi.getIntrfcId());
@@ -1694,6 +1705,7 @@ public class IntrfccomService {
 				logger.debug(
 						"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Not Ready!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				deployStatus = "SUCCESS";
+				
 				resData = RestUtils.sendRestPost(depl.getDeployUrl(), depl.getJsonData().getBytes("UTF-8"),
 						byte[].class);
 				resString = new String(resData, "UTF-8");
@@ -1985,7 +1997,9 @@ public class IntrfccomService {
 
 			if(BxConstants.Default.IS_SERVER) {
 				//String deployPath = "C:\\linebank\\temp\\";
-				String deployPath = "/logs/jboss/opseim01_18080/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
+				String deployPath = "/logs/jboss/opseim01_18443/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
+				
+//				String deployPath = "/logs/jboss/deveim01_18443/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
 				String deployFileName = deployPath + inUi.getIntrfcId() + ".json";
 				File deployFile = new File(deployFileName);
 				FileWriter writer = null;
@@ -2028,7 +2042,7 @@ public class IntrfccomService {
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public int reDeploy(IntrfcdeployhisthsDto in) {
-
+	//	initSSL();
 		IntrfcdeployhisthsDto deployHistList = intrfcdeployhisthsDao.selectIntrfcdeployhisthsRaw(in.getIntrfcId(),
 				in.getDeployVersion());
 
@@ -7270,6 +7284,38 @@ public class IntrfccomService {
 		return out;
 	}
 
+	private static void initSSL() {
+		System.out.println("initSSL start..");
+		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+			public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+				return null;
+			}
+
+			public void checkClientTrusted(X509Certificate[] certs, String authType) {
+			}
+
+			public void checkServerTrusted(X509Certificate[] certs, String authType) {
+			}
+		} };
+
+		try {
+			HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+				@Override
+				public boolean verify(String hostname, SSLSession sslSession) {
+					return true;
+				}
+			});
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new SecureRandom());
+
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			HttpsURLConnection.setFollowRedirects(true);
+		} catch (Exception e) {
+			System.out.println("initSSL Exception..");
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean validationIoNmWrapper(IntrfccombsDto intrfcDto, List<String> wrapperList, StringBuilder str) {
 
 		boolean isValid = true;

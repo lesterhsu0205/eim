@@ -1,16 +1,26 @@
 package eims.web.interceptor;
 
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.jasig.cas.client.validation.Assertion;
+import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
+import org.jasig.cas.client.validation.TicketValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,7 +33,6 @@ import com.initech.eam.smartenforcer.SECode;
 import eims.ServiceContext;
 import eims.web.constants.BxConstants;
 import eims.web.constants.SystemProperties;
-import eims.web.dto.SessionInfo;
 import eims.web.dto.UserInfo;
 
 @SuppressWarnings("unchecked")
@@ -55,7 +64,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 
 	private static Vector PROVIDER_LIST = new Vector();
 
-  private static final int COOKIE_SESSTION_TIME_OUT = 3000000;
+    private static final int COOKIE_SESSTION_TIME_OUT = 3000000;
 
 	private String TOA = "1";
 	private String SSO_DOMAIN = ".bccard.com";
@@ -63,6 +72,11 @@ public class RequestInterceptor implements HandlerInterceptor {
 	private static final int timeout = 1000000;
 	private static NXContext context = null;
 
+	private String casUrl = "https://sso.lbtwsys.com:8443/cas/";
+	private String meUrl = "http://localhost:8089/";
+	public static final String CONST_CAS_ASSERTION = "_const_cas_loname_";
+	private Cas30ServiceTicketValidator ticketValidator;
+	
 	// Added
 	private String ssoId;
 
@@ -121,31 +135,11 @@ public class RequestInterceptor implements HandlerInterceptor {
 		final HttpSession session = req.getSession();
 
 		logger.debug("------------------ SESSION : [{}] --------------------", session);
-		//
-//		 UserInfo userInfo = new UserInfo();
-//		 userInfo.setUserId("20180050");
-//		 userInfo.setLocale("ko");
-//		 userInfo.setRoleId("Administrator");
-//		 session.setAttribute(BxConstants.Session.USER_INFO, userInfo);
-//		 session.setAttribute(BxConstants.Session.IS_USER_LOGIN, true);
-//		 ServiceContext.setUserInfo(userInfo);
-//		
-//		 return true;
 
-		// FIXME :: restore
-		// if (session == null) {
-		// return ssoProcess(req, res);
-		// }
-		//
-		// if ((boolean) session.getAttribute(BxConstants.Session.IS_USER_LOGIN)) {
-		// return loginProcess(req, res);
-		// } else {
-		// return ssoProcess(req, res);
-		// }
 		 
-		if( req.getRequestURI().equals("/eims/interfaceListApi") || req.getRequestURI().equals("/interfaceListApi")  ) {
+		if(req.getRequestURI().equals("/eims/interfaceListApi") || req.getRequestURI().equals("/interfaceListApi")  ) {
 		  UserInfo userInfo = new UserInfo();
-		  userInfo.setUserId("20180050");
+		  userInfo.setUserId("eimsadmin");
 	      userInfo.setLocale("ko");
 		  userInfo.setRoleId("Administrator");
 		  session.setAttribute(BxConstants.Session.USER_INFO, userInfo);
@@ -153,7 +147,19 @@ public class RequestInterceptor implements HandlerInterceptor {
 		  ServiceContext.setUserInfo(userInfo);			
 		  return true;
 	   }
-		 
+		
+		if(req.getRequestURI().equals("/sso")  || req.getRequestURI().equals("/eims/sso") || req.getRequestURI().equals("/eims/eims/sso") ) {
+		  UserInfo userInfo = new UserInfo();
+		  userInfo.setUserId("eimsadmin");		  
+		  userInfo.setLocale("en");
+		  userInfo.setRoleId("Administrator");
+		  session.setAttribute(BxConstants.Session.USER_INFO, userInfo);
+		  session.setAttribute(BxConstants.Session.IS_USER_LOGIN, true);
+		  ServiceContext.setUserInfo(userInfo);			
+		  return true;
+	   }
+		
+	   System.out.println("req : " + req.getRequestURI().toString() );
 	   return loginProcess(req, res);
 	}
 
@@ -161,8 +167,8 @@ public class RequestInterceptor implements HandlerInterceptor {
 		final HttpSession session = req.getSession();
 		
 		UserInfo userInfo = (UserInfo) session.getAttribute(BxConstants.Session.USER_INFO);
+
 		if (userInfo == null) {
-			logger.debug("userInfo is null");
 			logger.debug("### userInfo : {}", userInfo);	
 			logger.debug("### res : {}", res);	
 			//res.sendError(440);
@@ -170,7 +176,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 			res.setHeader("isSession", "-1");
 			return false;
 		}
-
+		  
 		ServiceContext.setUserInfo(userInfo);
 
 		logger.debug(userInfo.toString());
@@ -272,17 +278,6 @@ public class RequestInterceptor implements HandlerInterceptor {
 		CookieManager.removeNexessCookie(SSO_DOMAIN, response);
 		CookieManager.addCookie(SECode.USER_URL, ASCP_URL, SSO_DOMAIN, response);
 		response.sendRedirect(NLS_ERROR_URL + "?errorCode=" + error_code);
-	}
-
-	private void saveAccessHistory(HttpServletRequest request, String result) throws APIException {
-		String ssoId = this.ssoId;
-		String clientIp = null;
-
-		ssoId = CookieManager.getCookieValue(SECode.USER_ID, request);
-		clientIp = request.getRemoteAddr();
-
-		NXUserAPI userAPI = new NXUserAPI(context);
-		userAPI.agentAccessHistory(ssoId, clientIp, SERVICE_NAME, "web_java", result);
 	}
 
 }

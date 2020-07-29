@@ -54,10 +54,10 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 	@Autowired
 	private AppcdDao appCdDao;
 	private final int startLine = 5;
-//	private static final String STR_TEMPLATE_FILE_PATH = "/WEB-INF/classes/templates/";
-//	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
-	private static final String STR_TEMPLATE_FILE_PATH = "C:\\linebank\\5555.git\\lbtw_eim\\.git\\eims.server\\src\\main\\resources\\templates\\";
+	private static final String STR_TEMPLATE_FILE_PATH = "/WEB-INF/classes/templates/";
 	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
+//	private static final String STR_TEMPLATE_FILE_PATH = "C:\\linebank\\5555.git\\lbtw_eim\\.git\\eims.server\\src\\main\\resources\\templates\\";
+//	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
 
 	public InterfaceListExcelView(CommCodeDao codeDao) {
 		this.codeDao = codeDao;
@@ -402,15 +402,16 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 			uuid = uuid.replace("-", "");
 		}
 
-//		String templateFile = rootPath + STR_TEMPLATE_FILE_PATH +
-//				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
-//		String filenameToWrite = rootPath + STR_TEMPLATE_FILE_PATH + "temp/" +
-//				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + "_" + uuid + ".xlsx";
-		
-		String templateFile =  STR_TEMPLATE_FILE_PATH +
+		//서버
+		String templateFile = rootPath + STR_TEMPLATE_FILE_PATH +
 				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
-		String filenameToWrite =  STR_TEMPLATE_FILE_PATH + "temp/" +
+		String filenameToWrite = rootPath + STR_TEMPLATE_FILE_PATH + "temp/" +
 				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + "_" + uuid + ".xlsx";
+		//로컬
+//		String templateFile =  STR_TEMPLATE_FILE_PATH +
+//				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
+//		String filenameToWrite =  STR_TEMPLATE_FILE_PATH + "temp/" +
+//				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + "_" + uuid + ".xlsx";
 
 		Workbook workbook = null;
 		logger.debug("Org File : {}", templateFile);

@@ -23,3 +23,6 @@ public class ApplicationContextProvider implements ApplicationContextAware {
 		return applicationContext;
 	}
 }
+
+
+  
