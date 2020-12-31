@@ -4,11 +4,19 @@
 		<section class="header-tool">
 			<ul class="bw-util">
 			
+				<li>
+					<!--
+					<select class="ipt-select"
+						ng-options="item.value as item.label for item in selectItems" 
+						ng-model="user.locale" ng-change="changeLang()">
+					</select>
+					-->		
+				</li>
 				<li ng-repeat="item in iconItems">
 					<i class="{{item.icon}}" ng-show="item.icon"></i>
 					<span class="bw-input" style="cursor: default;">{{::item.label}}</span>		
 				</li>
-				<li>
+				<li>								
 					<button type="button" class="bw-btn bxd bxd-logout" title="logout" ng-click="logout()"></button>
 				</li>
 			</ul>

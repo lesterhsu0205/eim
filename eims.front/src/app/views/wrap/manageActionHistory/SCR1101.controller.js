@@ -62,7 +62,7 @@ class SCR1101Controller {
 	}
 	
 	initText() {
-		this.text = $.extend({}, bxMsg.getMessages('common'), bxMsg.getMessages('manageActionHistory'), bxMsg.getMessages('manageUser'));
+		this.text = $.extend({}, bxMsg.getMessages('common'), bxMsg.getMessages('manageActionHistory'));
 	}
 	
 	initSelect() {
@@ -79,7 +79,6 @@ class SCR1101Controller {
 			pageSize: 10,
 			recordsCount: 0,
 			recid: 'id',
-			selectType: 'cell',
 			columns: [
 				{
 					caption: 'No', size: '40px',
@@ -94,14 +93,14 @@ class SCR1101Controller {
 					}
 				},
 				{ field: 'itemId', caption: this.text.itemId, size: '3%', sortable: true },
-				{ field: 'itemDesc', caption: this.text.itemDesc,size: '3%', attr: 'align=left'},
-				{ field: 'workDttm', caption: this.text.workDttm, size: '3%',
+				{ field: 'itemDesc', caption: this.text.itemDesc,size: '3%',  sortable: true, attr: 'align=left'},
+				{ field: 'workDttm', caption: this.text.workDttm, size: '3%', sortable: true,
 					render: (data) =>{
 						return this.utilService.setRegDttm(data.workDttm);
 					}
 				},
-				{ field: 'userId', caption: this.text.userId ,size: '1%'},
-				{ field: 'workCttCd', caption: this.text.workCttCd, size: '1%',
+				{ field: 'userId', caption: this.text.userId ,size: '1%',  sortable: true},
+				{ field: 'workCttCd', caption: this.text.workCttCd, size: '1%', sortable: true,
 					render: (data,index,colIndex) => {
 						const msgDscd = w2ui[this.options.name].getCellValue(index, colIndex);
 						return this.codeService.getCodeValNm('ACTION_STAT_CD', msgDscd);

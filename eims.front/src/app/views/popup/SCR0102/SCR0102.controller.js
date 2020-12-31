@@ -66,10 +66,10 @@ class SCR0102Controller {
 						return (pageNumber - 1) * this.userOptions.limit + index + 1;
 					}
 				},
-				{ field: 'userId', caption: this.text.userId },
-				{ field: 'userNm', caption: this.text.userNm },
-				{ field: 'deptNm', caption: this.text.deptNm },
-				{ field: 'roleId', caption: this.text.roleId }
+				{ field: 'userId', caption: this.text.userId, sortable: true},
+				{ field: 'userNm', caption: this.text.userNm, sortable: true},
+				{ field: 'deptNm', caption: this.text.deptNm, sortable: true},
+				{ field: 'roleId', caption: this.text.roleId, sortable: true}
 			],
 			onClick: (e) => {
 				// prevent deselect

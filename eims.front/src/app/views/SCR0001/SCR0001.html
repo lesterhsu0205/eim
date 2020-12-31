@@ -3,6 +3,7 @@
 		<h1>{{::vm.appName}}</h1>
 		<form class="login">
 			<ul>
+				
 				<li>
 					<bx-input type="text" class="bw-input ipt-login" 
 								placeholder="{{::vm.text.userId}}" ng-model="vm.user.userId" ></bx-input>
@@ -19,8 +20,7 @@
 							ng-options="item.value as item.label for item in vm.selectItems" 
 							ng-model="vm.user.locale">
 					</select>
-				</li>
-				
+				</li>			
 				<li>
 					<button class="bw-btn-txt no-line-height" ng-click="vm.signIn()">{{::vm.text.signIn}}</button>
 				</li>

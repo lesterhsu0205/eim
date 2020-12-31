@@ -50,6 +50,7 @@
 		"fillerVal": "Padding",
 		"privacyDscd": "개인정보",
 		"encYn": "암호화여부",
+		"encDpCd" : "암호화타입",
 		"paramType": "파라미터타입",
 		"fldRmk": "비고",
 		"modifyCommonHeader": "표준헤더는 관리자만 수정할 수 있습니다.",

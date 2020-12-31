@@ -139,6 +139,7 @@
 							<option value=""></option>
 							<option value="D">Develop Server</option>
 							<option value="S">Stage Server</option>
+							<option value="U">UAT Server</option>
 							<option value="P">Product Server</option>
 							<option value="A">All Server</option>
 						</select>
@@ -156,8 +157,8 @@
 			</left>
 			<right>				
 				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.exportDefinition()"><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDefinition}}</button>
-				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup2()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-down"></i>{{::vm.text.importDefinition}}</button>
-				<button type="button" class="bw-btn bxd bxd-add" title="{{::vm.text.add}}" ng-click="vm.add()" ng-show="vm.user.perm.insert"></button>
+				<!-- <button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.openImportXlsxPopup2()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-down"></i>{{::vm.text.importDefinition}}</button> -->
+				<button type="button" class="bw-btn bxd bxd-add" title="{{::vm.text.add}}" ng-click="vm.add()" ng-show="vm.permInsert"></button>
 				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
 					<i class="bxd bxd-toggle zabara"></i>
 				</button>
@@ -176,9 +177,9 @@
 		<bc-tool-wrap>
 			<right>
 				<button type="button" class="bw-btn bxd bxd-login" ng-show="vm.isAdd" title="{{::vm.text.copyInterface}}" ng-click="vm.openInterfacePopup()"></button>
-				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit && vm.user.perm.update" title="{{::vm.text.cancel}}" ng-click = "vm.cancel()"></button>
-				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit && vm.user.perm.update" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
-				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit && vm.detail.intrfcId && vm.user.perm.update" title="{{::vm.text.modifiy}}" ng-click="vm.onEditMode()"></button>
+				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit && vm.permUpdate" title="{{::vm.text.cancel}}" ng-click = "vm.cancel()"></button>
+				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit && (vm.permInsert || vm.permUpdate)" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit && vm.detail.intrfcId && vm.permUpdate" title="{{::vm.text.modifiy}}" ng-click="vm.onEditMode()"></button>
 			</right>
 		</bc-tool-wrap>
 		<bc-tool-wrap style="background:white; border-top: 1px solid #eeeeee !important; cursor:pointer;" 
@@ -291,10 +292,11 @@
 					</li>
 					<li class="w-33" ng-show="vm.detail.trxDscd == 'BATCH' && vm.detail.intrfcWayCd == 'DBTODB'">
 						<div class="input-wrap asterisk clr">
-							<label class="bw-label" ng-class="{'wp-220': vm.user.locale === 'en', 'wp-150': vm.user.locale === 'ko'}">{{::vm.text.execEnvDscd}}</label>
+							<label class="bw-label wp-150">{{::vm.text.execEnvDscd}}</label>
 							<select class="bw-input ipt-select" style="width:calc(100% - 150px);" ng-show="vm.detail.trxDscd == 'BATCH' && vm.detail.intrfcWayCd == 'DBTODB'"  ng-model="vm.detail.execEnvDscd">
 								<option value="D">Develop Server</option>
 								<option value="S">Stage Server</option>
+								<option value="U">UAT Server</option>
 								<option value="P">Product Server</option>
 								<option value="A">All Server</option>
 							</select>
@@ -709,7 +711,7 @@
 						<input style="vertical-align: middle;" type="checkbox" ng-model="vm.compulsionDeployYn" ng-click="vm.stopPropagation($event)"/> {{::vm.text.forceDeploy}}
 					</label>
 					<button type="button" style="margin-right: -10px;" class="bw-btn bxd bxd-rocket" 
-						title="{{::vm.text.deploy}}" ng-click="vm.deployInterface($event)"></button>
+						title="{{::vm.text.deploy}}" ng-click="vm.deployInterface($event)" ng-show="vm.permInsert"></button>
 				</div>
 				<button type="button" class="bw-btn">
 					<i id="deployInterfaceZabara" class="bxd bxd-arrow-down zabara" style="transform: rotate(180deg);"></i>

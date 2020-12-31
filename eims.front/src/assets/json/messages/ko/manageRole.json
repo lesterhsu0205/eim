@@ -13,6 +13,7 @@
 		"descPlaceHolder": "내용을 적어주세요.",
 		"emptyRoleId": "역할ID를 입력해주세요.",
 		"emptyRoleId2": "역할ID를 선택해주세요.",
+		"emptyMenuId": "메뉴ID를 선택해주세요.",
 		"emptyRoleNm": "역할명을 입력해주세요.",
 		"roleList": "역할리스트",
 		"roleDetail": "역할정보상세",

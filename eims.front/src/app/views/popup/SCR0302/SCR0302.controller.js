@@ -75,9 +75,9 @@ class SCR0302Controller {
 					const editData = grid.get(recId);
 					const action = $eTarget.attr('data-action');
 					
-					if(action == "check" || editData.check == false){
+					if($eTarget.context.checked) {
 						editData.check = true;
-					}else if(action == "check" || editData.check == true){
+					} else {
 						editData.check = false;
 					}
 				},
@@ -87,8 +87,9 @@ class SCR0302Controller {
 	
 	getPermList() {
 		const roleId = this.data.roleId;
+		const menuId = this.data.menuId;
 		
-		this.httpService.get(`/roles/${roleId}/permpopups`).then(data => {
+		this.httpService.get(`/roles/${roleId}/permpopups?menuId=${menuId}`).then(data => {
 			this.permOptions.records = data;
 			this.permOptions.recordsCount = data.length;
 		});

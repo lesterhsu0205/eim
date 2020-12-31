@@ -143,8 +143,8 @@
 			</left>
 			<right>
 				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.xlsExport()"><i class="bxd bxd-xls-down"></i>{{::vm.text.exportDesign}}</button>
-				<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.xlsImport()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDesign}}</button>
-				<button type="button" class="bw-btn bxd bxd-add" title="{{::vm.text.add}}" ng-click="vm.add()" ng-show="vm.user.perm.insert"></button>
+				<!--<button type="button" class="bw-btn-txt bc-btn-txt" ng-click="vm.xlsImport()" ng-show="vm.user.roleId === 'Administrator'"><i class="bxd bxd-xls-up"></i>{{::vm.text.importDesign}}</button>-->
+				<button type="button" class="bw-btn bxd bxd-add" title="{{::vm.text.add}}" ng-click="vm.add()" ng-show="vm.permInsert"></button>
 				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
 					<i class="bxd bxd-toggle zabara"></i>
 				</button>
@@ -161,10 +161,10 @@
 			<right>
 				<button type="button" class="bw-btn bxd bxd-exchange" title="{{::vm.text.metaSync}}" ng-click="vm.syncMeta()"></button>
 				<button type="button" class="bw-btn bxd bxd-chart-bar" title="{{::vm.text.impactAnalysis}}" ng-show="!vm.isEdit && vm.selectedMsg.msgLayoutId" ng-click="vm.impactAnalysis()"></button>
-				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit && vm.user.perm.update" title="{{::vm.text.cancel}}" ng-click="vm.resetDetail()"></button>
-				<button type="button" class="bw-btn bxd bxd-file-confirm" ng-show="vm.isEdit && vm.user.perm.update" title="{{::vm.text.tempSave}}" ng-click="vm.tempSave()"></button>
-				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit && vm.user.perm.update" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
-				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit && vm.selectedMsg.msgLayoutId && vm.user.perm.update" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
+				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit && vm.permUpdate" title="{{::vm.text.cancel}}" ng-click="vm.resetDetail()"></button>
+				<button type="button" class="bw-btn bxd bxd-file-confirm" ng-show="vm.isEdit && (vm.permInster || vm.permUpdate)" title="{{::vm.text.tempSave}}" ng-click="vm.tempSave()"></button>
+				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit && (vm.permInster || vm.permUpdate)" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
+				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit && vm.selectedMsg.msgLayoutId && vm.permUpdate" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
 				<button type="button" class="bw-btn b-ctr" zabara="searchWrap">
 					<i class="bxd bxd-toggle zabara"></i>
 				</button>
@@ -251,7 +251,7 @@
 					</div>
 				</li>
 				<li class="w-33" ng-show="vm.selectedMsg.trxDscd === 'BATCH'">
-					<div class="input-wrap asterisk clr">
+					<div class="input-wrap asterisk clr editable">
 						<label class="bw-label wp-170">{{::vm.text.fileId}}</label>
 						<input type="text" class="bw-input"
 							style="width:calc(100% - 170px);"

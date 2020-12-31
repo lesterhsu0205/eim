@@ -38,7 +38,7 @@ class HttpService {
 							return res.data;
 						}, err => { 							
 							if(err.status == 440) {
-								alert('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
+								alert('Session has expired.');
 								window.location.href =  '/index.html';
 								return false;
 							}

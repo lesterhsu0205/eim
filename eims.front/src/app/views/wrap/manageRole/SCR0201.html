@@ -84,7 +84,7 @@
 		<div>
 			<bc-tool-wrap>
 				<right ng-show="vm.user.perm.update">
-					<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.onClickAddPerm()"></button>
+					<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.onClickAddPerm()" ng-show="!vm.isMenuParent"></button>
 				</right>
 			</bc-tool-wrap>
 			<section id="gridWrap">

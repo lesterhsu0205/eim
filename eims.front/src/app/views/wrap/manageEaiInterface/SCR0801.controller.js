@@ -18,12 +18,28 @@ class SCR0801Controller {
 		this.userService = userService;
 		this.codes = utilService.clone(codes);
 		this.user = this.userService.getUser();
+		this.menuList = this.userService.getUserMenu();
 		
 		this.intrfcTypeCd = 'EAI_I';
 		this.useRequestMsgScroll = true;
 		this.useResponseMsgScroll = true;
 		this.useRequestMsgMapping = true;
 		this.useResponseMsgMapping = true;
+
+		this.menuId = this.codeService.getMenubyState(this.$state.current.name);
+		this.permInsert = false, this.permUpdate = false, this.permDelete = false;
+		
+		for (var item of this.menuList) {
+			if (item.id == this.menuId) {
+				if(item.permId != null) {
+					if(item.permId.indexOf('insert') != -1 ) this.permInsert = true;			
+					if(item.permId.indexOf('update') != -1 ) this.permUpdate = true;
+					if(item.permId.indexOf('delete') != -1 ) this.permDelete = true;
+					break;
+				}
+			}
+		}
+
 
 		this.initZabara();
 		this.initText();	
@@ -199,10 +215,7 @@ class SCR0801Controller {
 				{ field: 'intrfcNm', caption: this.text.intrfcNm, size: '2.5%', sortable: true, attr: 'align=left' },
 				{ field: 'intrfcNmSub', caption: this.text.intrfcNmSub, size: '2.5%', sortable: true, attr: 'align=left' },
 				{ 
-					field: 'lvCds', caption: this.text.lvCds, size: '0.7%', 
-					render: (data) => {
-						return data.lv1Cd ? data.lv1Cd : '';
-					}
+					field: 'lv1Cd', caption: this.text.lvCds, size: '0.7%', sortable: true
 				},
 				{ 
 					field: 'trxDscd', caption: this.text.trxDscd2, size: this.user.locale === 'en'? '110px' : '0.5%',
@@ -218,6 +231,20 @@ class SCR0801Controller {
 				},
 				{ field: 'sysCdS', caption: this.text.sysCdS, size: this.user.locale === 'en'? '90px' :'0.5%', sortable: true},
 				{ field: 'sysCdR', caption: this.text.sysCdR, size: this.user.locale === 'en'? '95px' :'0.5%', sortable: true},
+				{ 
+					field: 'syncAsyncDscd', caption: this.text.syncAsyncDscd, size: '0.5%', sortable: true,
+					render: (data) => {		
+						return this.codeService.getCodeValNm('SYNC_DSCD', data.syncAsyncDscd);
+				}},		
+				{ field: 'msgTrnsfrmYn', caption: this.text.msgTrnsfrmYn, size: '0.5%', sortable: true},
+				{ field: 'rspsYn', caption: this.text.rspsYn, size: '0.5%', sortable: true},			
+				{ field: 'trxCd', caption: this.text.trxCd, size: '0.8%', sortable: true},
+				{
+					 field: 'execEnvDscd', caption: this.text.execEnvDscd, size: '0.8%', sortable: true,
+					 render : (data) => {
+						 return this.getExecEnvDscd(data.execEnvDscd);
+					 }
+				},
 				{ field: 'regManId', caption: this.text.regManId, size: '0.7%', sortable: true},
 				{ 
 					field: 'workStatusCd', caption: this.text.workStatusCd, size: this.user.locale === 'en'? '120px' : '0.5%', sortable: true,
@@ -239,15 +266,15 @@ class SCR0801Controller {
 					render: (data)=> {
 						let html = '';
 
-						if(this.user.perm.insert) {
+						if(this.permInsert) {
 							html += `<button type="button" class="bw-btn bxd bxd-new-file" title="${this.text.copy}" data-action="copy"></button>`;
 						}
 
-						if(this.user.perm.update) {
+						if(this.permUpdate) {
 							html += `<button type="button" class="bw-btn bxd bxd-edit2" title="${this.text.modifiy}" data-action="edit"></button>`;
 						}
 
-						if(this.user.perm.delete) {
+						if(this.permDelete) {
 							html += `<button type="button" class="bw-btn bxd bxd-trash" title="${this.text.delete}" data-action="delete"></button>`;
 						}
 
@@ -1024,7 +1051,9 @@ class SCR0801Controller {
 						let txt = '';
 						
 						if(data.deployResultCd.indexOf('SUCCESS') !== -1) {
-							txt = '<button type="button" class="bw-btn bxd bxd-rocket" title="' + this.text.redeploy + '" data-action="redeploy"></button>';
+							if(this.permInsert) {
+								txt = '<button type="button" class="bw-btn bxd bxd-rocket" title="' + this.text.redeploy + '" data-action="redeploy"></button>';
+							}
 						}
 						
 						return txt;
@@ -1459,6 +1488,23 @@ class SCR0801Controller {
 		}else{
 			this.detail.receiveSysCd = sysCd;
 			this.detail.receiveSysNm = sysNm;
+		}
+	}
+	
+	getExecEnvDscd(execEnvDscd) {
+		switch(execEnvDscd) {
+			case 'A' : 
+				return 'All Server';
+			case 'D' : 
+				return 'Develop Server';
+			case 'S' : 
+				return 'Stage Server';
+			case 'U' : 
+				return 'UAT Server';
+			case 'P' : 
+				return 'Product Server';
+			default : 
+				return execEnvDscd;
 		}
 	}
 	
@@ -2399,6 +2445,13 @@ class SCR0801Controller {
 		
 		if(!this._checkValid()) return;
 		
+		if(detail.rspsYn == 'N'){
+			if (!_.isEmpty(sndResLayoutGridRecords) || !_.isEmpty(rcvResLayoutGridRecords)) {
+				this.openAlert(this.text.validRspsYnTelegram);
+				return false;
+			}
+		}
+		
 		this.popupService.showLoadingBar(this.$scope);
 		
 		let receiveSysCd,
@@ -2590,7 +2643,21 @@ class SCR0801Controller {
 			this.openAlert(this.text.emptyErrSkipYn);
 			return false;
 		} 
-			
+				
+		if(intrfccoms.intrfcWayCd == 'DBTODB') {
+			var type = (intrfccoms.intrfcId).substring(7,8);
+			if(type != 'D') {
+				this.openAlert(this.text.vaildBatchType);
+				return false;
+			}
+		} else if (intrfccoms.intrfcWayCd == 'FILETOFILE') {
+			var type = (intrfccoms.intrfcId).substring(7,8);
+			if(type != 'F') {
+				this.openAlert(this.text.vaildBatchType);
+				return false;
+			}
+		}
+		
 		if (!this.checkLang(intrfccoms.intrfcNm)) {
 			this.openAlert(this.text.intrfcNmEng);
 			return false;

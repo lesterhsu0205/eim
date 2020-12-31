@@ -18,6 +18,21 @@ class SCR0501Controller {
 		this.metaService = metaService;
 		this.userService = userService;
 		this.user = this.userService.getUser();
+		this.menuList = this.userService.getUserMenu();
+
+		this.menuId = this.codeService.getMenubyState(this.$state.current.name);
+		this.permInsert = false, this.permUpdate = false, this.permDelete = false;
+		
+		for (var item of this.menuList) {
+			if (item.id == this.menuId) {
+				if(item.permId != null) {
+					if(item.permId.indexOf('insert') != -1 ) this.permInsert = true;			
+					if(item.permId.indexOf('update') != -1 ) this.permUpdate = true;
+					if(item.permId.indexOf('delete') != -1 ) this.permDelete = true;
+					break;
+				}
+			}
+		}
 		
 		this.initText();
 		this.initSelect();
@@ -27,6 +42,7 @@ class SCR0501Controller {
 		this.initMsgGridOptions();
 		this.initMsgDetailGridOptions();
 		this.getMaskCodes();
+		this.getEncCodes();
 		this.noncoreSys = this.getNoncoreSysCodes();
 
 		let count = 0;
@@ -224,8 +240,42 @@ class SCR0501Controller {
 				}		
 			}
 		}
-
 		return maskNm;
+	}
+	
+	getEncCodes(defaultArray = []){
+
+		this.httpService.get('encCd').then(data => {
+			const { encOutList: records, totalCnt: recordsCount } = data;
+			
+			this.encCd = records;
+			if(!_.isEmpty(this.encCd)){
+				this.encCd.map(records => {
+					defaultArray.push({
+						id: records.encCd,
+						text: records.encNm
+					});
+				});
+			}
+		});
+
+
+		return defaultArray;
+	}
+
+	getEncNm(code){
+		
+		var encNm ='';
+		if(!_.isEmpty(this.encCd)){
+			for(var i=0; i<this.encCd.length; i++) {
+				if(this.encCd[i].encCd == code) {
+					encNm = this.encCd[i].encNm;
+					break;
+				}		
+			}
+		}
+
+		return encNm;
 	}
 
 	getNoncoreSysCodes(defaultArray = []){
@@ -312,11 +362,11 @@ class SCR0501Controller {
 						render: (data)=> {
 							let html = '';
 
-							if(this.user.perm.update) {
+							if(this.permUpdate) {
 								html += '<button type="button" class="bw-btn bxd bxd-edit2" data-action="edit"></button>';
 							}
 
-							if(this.user.perm.delete) {
+							if(this.permDelete) {
 								html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
 							}
 
@@ -690,6 +740,14 @@ class SCR0501Controller {
 				editable: {  type: 'select', items: this.gridService.getSelectItemsFromCodes(this.codes.YN_CD)},
 			},	
 			{ 
+				field: 'encWayCd', caption: this.text.encDpCd, size: '1%', 
+				editable: this.isEdit ? { type: 'select', items: this.getEncCodes()} : false,
+				render: (data,index,colIndex) => {
+					const encCd = w2ui[this.msgDetailOptions.name].getCellValue(index, colIndex);					
+					return this.getEncNm(encCd);
+				}
+			},
+			{ 
 				field: 'paramType', caption: this.text.paramType, size: '80px',  
 				editable: this.isEdit ? { 
 					type: 'select', 
@@ -775,7 +833,7 @@ class SCR0501Controller {
 			{ field: 'msgLen', caption: this.text.msgLen, size: this.user.locale === 'en'? '50px' : '45px',  frozen: true, editable: this.isEdit ? {type: 'int'} : false },
 			{ field: 'decimalLen', caption: this.text.decimalLen, size: this.user.locale === 'en'? '110px' : '45px',  frozen: true, editable: this.isEdit ? {type: 'int'} : false },
 			{ field: 'fldLvNo', caption: this.text.fldLvNo, size: '45px', frozen: true , style: 'border-right: 0.5px solid black', editable: this.isEdit ? {type: 'int'} : false },
-			{ field: 'childDtoNm', caption: this.text.childDtoNm, size: '1%', editable: this.isEdit ? {type: 'text'} : false},
+			{ field: 'childDtoNm', caption: this.text.childDtoNm, size: '2%', editable: this.isEdit ? {type: 'text'} : false},
 			{ field: 'arraySizeRefVal', caption:  this.text.arraySizeRefVal, size: this.user.locale === 'en'? '140px' : '1%', editable: this.isEdit ? {type: 'text'} : false},
 			{ 
 				field: 'privacyDscd', caption: this.text.privacyDscd, size: '1%', 
@@ -786,8 +844,16 @@ class SCR0501Controller {
 				}
 			},
 			{ 
-				field: 'encYn', caption: this.text.encYn, size: '1%', editable: false
+				field: 'encYn', caption: this.text.encYn, size: '2%', editable: false
 			},	
+			{ 
+				field: 'encWayCd', caption: this.text.encDpCd, size: '2%', 
+				editable: this.isEdit ? { type: 'select', items: this.getEncCodes()} : false,
+				render: (data,index,colIndex) => {
+					const encCd = w2ui[this.msgDetailOptions.name].getCellValue(index, colIndex);
+					return this.getEncNm(encCd);
+				}
+			},
 			{ 
 				field: 'paramType', caption: this.text.paramType, size: '80px',  
 				editable: this.isEdit ? { 

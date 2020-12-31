@@ -13,6 +13,7 @@
 		"descPlaceHolder": "Please enter the role description.",
 		"emptyRoleId": "Please enter the role id.",
 		"emptyRoleId2": "Please select the role id.",
+		"emptyMenuId": "Please select the menu id.",
 		"emptyRoleNm": "Please enter the role name.",
 		"roleList": "Role List",
 		"roleDetail": "Role Detail",

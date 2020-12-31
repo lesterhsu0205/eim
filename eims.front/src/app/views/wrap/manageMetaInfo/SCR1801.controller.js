@@ -101,9 +101,9 @@ class SCR1801Controller {
 					},
 					{ field: 'metaEngNm', caption: this.text.metaEngNm, size:2, sortable: true, attr:"align=left"},
 					{ field: 'metaKorNm', caption: this.text.metaKorNm, size:2, sortable: true, attr:"align=left"},
-					{ field: 'dataTypeNm', caption: this.text.dataTypeNm, size:1},
-					{ field: 'metaLen', caption: this.text.metaLen, size:1},
-					{ field: 'decimalLen', caption: this.text.decimalLen, size:1},
+					{ field: 'dataTypeNm', caption: this.text.dataTypeNm, sortable: true, size:1},
+					{ field: 'metaLen', caption: this.text.metaLen, sortable: true, size:1},
+					{ field: 'decimalLen', caption: this.text.decimalLen, sortable: true, size:1},
 					{ 
 						caption: this.text.influence,  size: '80px',
 						render: (data)=> {

@@ -7,7 +7,7 @@
 		"userNm": "사용자명",
 		"email": "이메일",
 		"dutyNm": "직급",
-		"deptNm": "부서명",
+		"deptNm": "부서 또는 업체명",
 		"password": "비밀번호",
 		"passwordConfirm": "비밀번호 확인",
 		"userSearch": "사용자 조회",
@@ -19,6 +19,7 @@
 		"emptyRoleId": "역할을 입력해주세요.",
 		"emptyUserPwd": "비밀번호를 입력해주세요.",
 		"notMatchPwd": "비밀번호와 비밀번호 확인이 일치하지 않습니다.",
+		"emptydeptNm": "부서 또는 업체명을 입력해주세요.",
 		"roleNm": "역할명",
 		"roleDesc" : "역할설명"
     }

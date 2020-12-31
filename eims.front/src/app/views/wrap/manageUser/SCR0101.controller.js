@@ -376,6 +376,9 @@ class SCR0101Controller {
 		} else if(data.userPwd !== data.userPwdConfirm){
 			this.openAlert(bxMsg('manageUser.notMatchPwd'));
 			return false;
+		} else if(_.isEmpty(data.deptNm)) {
+			this.openAlert(bxMsg('manageUser.emptydeptNm'));
+			return false;
 		}
 		return true;
 	}

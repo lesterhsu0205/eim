@@ -35,7 +35,7 @@
 		"exportDesign": "설계서 익스포트",
 		"importDesign": "설계서 임포트",
 		"exportDefinition": "인터페이스 목록 익스포트",
-		"importDefinition": "인터페이스 임포트",
+		"importDefinition": "인터페이스 목록 임포트",
 		"fail": "실패",
 		"success": "성공",
 		"completeUpload": "업로드가 완료되었습니다.",

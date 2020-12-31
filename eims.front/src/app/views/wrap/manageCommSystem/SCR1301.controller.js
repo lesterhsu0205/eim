@@ -16,6 +16,21 @@ class SCR1301Controller {
 		this.codes = utilService.clone(codes);
 		this.user = this.userService.getUser();
 		
+		this.menuList = this.userService.getUserMenu();
+		this.menuId = this.codeService.getMenubyState(this.$state.current.name);
+		this.permInsert = false, this.permUpdate = false, this.permDelete = false;
+		
+		for (var item of this.menuList) {
+			if (item.id == this.menuId) {
+				if(item.permId != null) {
+					if(item.permId.indexOf('insert') != -1 ) this.permInsert = true;			
+					if(item.permId.indexOf('update') != -1 ) this.permUpdate = true;
+					if(item.permId.indexOf('delete') != -1 ) this.permDelete = true;
+					break;
+				}
+			}
+		}
+		
 		this.initText();	
 		this.initSelect();
 		this.resetSearch(true);
@@ -102,11 +117,11 @@ class SCR1301Controller {
 				render: (data)=> {
 					let html = '';
 
-					if(this.user.perm.update) {
+					if(this.permUpdate) {
 						html += '<button type="button" class="bw-btn bxd bxd-edit2" data-action="edit"></button>';
 					}
 
-					if(this.user.perm.delete) {
+					if(this.permDelete) {
 						html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
 					}
 

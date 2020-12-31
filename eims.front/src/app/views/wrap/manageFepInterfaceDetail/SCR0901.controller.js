@@ -214,21 +214,25 @@ class SCR0901Controller2 {
 			columns: [
 				{ field: 'intrfcId', caption: this.text.intrfcId, size: '1.5%', sortable: true},
 				{ field: 'intrfcNm', caption: this.text.intrfcNm, size: '2.5%', sortable: true, attr: 'align=left' },
+				{ field: 'intrfcNmSub', caption: this.text.intrfcNmSub, size: '2.5%', sortable: true, attr: 'align=left' },
 				{ 
-					field: 'lvCds', caption: this.text.lvCds, size: '0.7%', sortable: true,
-					render: (data) => {
-						return data.lv1Cd ? data.lv1Cd : '';
-					}
+					field: 'lv1Cd', caption: this.text.lvCds, size: '0.7%', sortable: true
 				},
 				{ 
-					field: 'trxDscd', caption: this.text.trxDscd2, size: this.user.locale === 'en'? '110px' : '0.5%',
+					field: 'trxDscd', caption: this.text.trxDscd2, size: this.user.locale === 'en'? '110px' : '0.5%', sortable: true,
 					render: (data) => {		
 						return this.codeService.getCodeValNm('TRAN_DSCD', data.trxDscd);
 					}	
 				},
-				{ field: 'sysCdS', caption: this.text.sysCdS, size: this.user.locale === 'en'? '90px' : '0.5%'},
-				{ field: 'sysCdR', caption: this.text.sysCdR, size: this.user.locale === 'en'? '95px' : '0.5%'},
-				{ field: 'instCd', caption: this.text.instCd, size: this.user.locale === 'en'? '100px' : '0.5%'},
+				{ field: 'sysCdS', caption: this.text.sysCdS, size: this.user.locale === 'en'? '90px' : '0.5%', sortable: true},
+				{ field: 'sysCdR', caption: this.text.sysCdR, size: this.user.locale === 'en'? '95px' : '0.5%', sortable: true},
+				{ 
+					field: 'syncAsyncDscd', caption: this.text.syncAsyncDscd, size: '0.5%', sortable: true,
+					render: (data) => {		
+						return this.codeService.getCodeValNm('SYNC_DSCD', data.syncAsyncDscd);
+				}},		
+				{ field: 'msgTrnsfrmYn', caption: this.text.msgTrnsfrmYn, size: '0.5%', sortable: true},
+				{ field: 'trxCd', caption: this.text.trxCd, size: '0.8%', sortable: true},
 				{ 
 					caption: this.text.reqResMsgNo, size: this.user.locale === 'en'? '210px' :'0.7%',
 					render: (data) =>{
@@ -243,14 +247,14 @@ class SCR0901Controller2 {
 						return renderText;
 					}
 				},
-				{ field: 'regManId', caption: this.text.regManId, size: '0.7%'},
+				{ field: 'regManId', caption: this.text.regManId, size: '0.7%', sortable: true},
 				{ 
-					field: 'workStatusCd', caption: this.text.workStatusCd, size: this.user.locale === 'en'? '120px' : '0.5%',
+					field: 'workStatusCd', caption: this.text.workStatusCd, size: this.user.locale === 'en'? '120px' : '0.5%', sortable: true,
 					render: (data) => {		
 						return this.codeService.getCodeValNm('WORK_STATUS_CD', data.workStatusCd);
 					}
 				},
-				{ field: 'regDttm', caption: this.text.regDttm, size: this.user.locale === 'en'? '110px' : '0.5%',
+				{ field: 'regDttm', caption: this.text.regDttm, sortable: true, size: this.user.locale === 'en'? '110px' : '0.5%',
 					render: (data) =>{
 						const regDttm = data.regDttm 
 						const yy = regDttm.substring(0,4);
@@ -258,6 +262,26 @@ class SCR0901Controller2 {
 						const dd = regDttm.substring(6,8);
 						return yy+"/"+mm+"/"+dd;
 					}	
+				},
+				{ 
+					caption: this.text.edit, size: '120px', 
+					render: (data)=> {
+						let html = '';
+
+						if(this.permInsert) {
+							html += `<button type="button" class="bw-btn bxd bxd-new-file" title="${this.text.copy}" data-action="copy"></button>`;
+						}
+
+						if(this.permUpdate) {
+							html += `<button type="button" class="bw-btn bxd bxd-edit2" title="${this.text.modifiy}" data-action="edit"></button>`;
+						}
+
+						if(this.permDelete) {
+							html += `<button type="button" class="bw-btn bxd bxd-trash" title="${this.text.delete}" data-action="delete"></button>`;
+						}
+
+						return html;
+					}
 				}
 			],
 			onClick: (e) => {

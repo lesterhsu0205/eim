@@ -38,7 +38,17 @@ class UserService {
 		return defer.promise;
 	}
 
-	
+	requestSSO() {
+		const defer = this.$q.defer();
+		
+		this.httpService.post('/sso')
+						.then(res => {
+							if(res.isError) defer.reject(res);
+							else defer.resolve(this._setUser(res));
+						});
+		return defer.promise;
+	}
+
 	doLogout() {
 		this.httpService.post('/logout')
 		.then(res => {

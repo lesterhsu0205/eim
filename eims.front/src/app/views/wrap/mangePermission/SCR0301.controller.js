@@ -60,7 +60,7 @@ class SCR0301Controller {
 				}
 				
 				// 수정모드
-					if(prevScope.isEdit){
+				if(prevScope.isEdit){
 					this.onEditMode();
 				}else{
 					this.offEditMode();
@@ -133,6 +133,7 @@ class SCR0301Controller {
 
 					const grid =  w2ui[gridName];
 					const editData = grid.get(recId);
+					
 					
 					if (eTarget.localName === 'button') {
 						const action = $eTarget.attr('data-action');

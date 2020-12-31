@@ -477,7 +477,6 @@ class GridService {
 		let condition;
 		let treeData = [];
 		
-		//배진형 수정
 		data.map(v => {
 			utilService.isEmpty(v[recidNm]) 
 				? treeData.push(v) 

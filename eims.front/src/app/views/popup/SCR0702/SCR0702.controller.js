@@ -135,6 +135,30 @@ class SCR0702Controller {
 			this.openAlert(this.text.emptyTrxDscd);
 			return false;
 		}
+
+		var type = (this.intrfc.intrfcId).substring(7,8);
+		
+		if(this.intrfc.trxDscd == 'ONLINE') {
+			if(type != 'A') {
+				this.openAlert(this.text.vaildOnlineType); 
+				return false;
+			}
+		} else if (this.intrfc.trxDscd == 'BATCH') {
+			if(this.data.intrfcTypeCd == 'FEP'){
+				if(type != 'F') {		
+					this.openAlert(this.text.vaildBatchType);
+					return false;
+				}	
+			} else {
+				if(type == 'D' || type == 'F') {
+				} else {
+					this.openAlert(this.text.vaildBatchType); 
+					return false;
+				}	
+			}
+
+		}
+
 		return true;
 	}
 	

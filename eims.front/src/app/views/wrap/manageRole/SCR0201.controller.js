@@ -15,7 +15,9 @@ class SCR0201Controller {
 		this.popupService = popupService;
 		this.userService = userService;
 		this.user = this.userService.getUser();
-		
+		this.roleId = null;
+		this.menuId = null;
+		this.isMenuParent = false;
 		this.initText();	
 		this.initSelect();
 		this.initGrid();
@@ -27,7 +29,21 @@ class SCR0201Controller {
 			count === 3 && this.initPrevData();
 		});
 	}
+
+    getMenuName(id) {
+		var name = this.text.id;
+		
+/*
+		for (var i = 0; this.text.length; i++) {
+			if(this.text[i] == id) {
+				name = this.text[i];
+				break;
+			}
+		}
+	*/
+		return this.text[id];
 	
+	}
 	initPrevData() {
 		const currentStateName = this.$state.current.name;
 		const param = this.utilService.getParams(currentStateName);
@@ -86,7 +102,8 @@ class SCR0201Controller {
 		});
 	}
 	initText() {
-		this.text = $.extend({}, bxMsg.getMessages('common'), bxMsg.getMessages('manageRole'));
+		this.text = $.extend({}, bxMsg.getMessages('common'), bxMsg.getMessages('manageRole'), bxMsg.getMessages('menu'));
+		
 	}
 
 	initSelect() {
@@ -114,15 +131,9 @@ class SCR0201Controller {
 						caption: bxMsg('common.edit') ,  size: '80px',
 						render: (data)=> {
 							let html = '';
-
-							if(this.user.perm.update) {
-								html += '<button type="button" class="bw-btn bxd bxd-edit2" data-action="edit"></button>';
-							}
-
-							if(this.user.perm.delete) {
-								html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
-							}
-
+							html += '<button type="button" class="bw-btn bxd bxd-edit2" data-action="edit"></button>';
+							html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
+							
 							return html;
 						}
 					}
@@ -168,7 +179,9 @@ class SCR0201Controller {
 					
 					this.getRole(editData.roleId);
 					this.getMenuList(editData.roleId);
-					this.getPermList(editData.roleId);
+					this.permOptions.records = [];
+					this.roleId = editData.roleId;
+//					this.getPermList(editData.roleId);
 				}
 			};
 		
@@ -190,15 +203,17 @@ class SCR0201Controller {
 						}
 					
 					},
-					{ field: 'name', caption: this.text.menuNm, sortable: true},
+					{ field: name, caption: this.text.menuNm, sortable: true, 
+						render: (data) => {
+							const menuid = data.id;
+							return this.getMenuName(menuid);
+						}
+					},
 					{ 
 						caption: bxMsg('common.edit') ,  size: '80px',
 						render: (data)=> {
 							let html = '';
-
-							if(this.user.perm.update) {
-								html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
-							}
+							html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
 
 							return html;
 						}
@@ -213,13 +228,25 @@ class SCR0201Controller {
 					
 					
 					const originalEvent = e.originalEvent;
-					const eTarget = originalEvent.target;
-					
+					const grid =  w2ui[this.menuOptions.name];
+					const eTarget = e.originalEvent.target;
+					const recid = e.recid;
+					const editData = grid.get(e.recid);
+					this.menuId = editData.id;
+
+					if(!_.isEmpty(editData.parentId)) {
+						this.isMenuParent = false;
+					} else {
+						this.isMenuParent = true;
+					}
+
 					if (eTarget.localName === 'button') {
 						this.popupService.simpleConfirm(this.$scope,
 								this.text.confirmTextDelete,
 								()=>this.deleteMenu(this.selectedRole.roleId, e.recid));
 					}
+					
+					this.getPermList(this.roleId,this.menuId);
 				}
 			};
 		
@@ -243,10 +270,7 @@ class SCR0201Controller {
 						caption: bxMsg('common.edit') ,  size: '80px',
 						render: (data)=> {
 							let html = '';
-
-							if(this.user.perm.update) {
-								html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
-							}
+							html += '<button type="button" class="bw-btn bxd bxd-trash" data-action="delete"></button>';
 
 							return html;
 						}
@@ -316,9 +340,13 @@ class SCR0201Controller {
 		});
 	}
 		
-	getPermList(roleId){
-		this.httpService.get(`/roles/${roleId}/perms`).then(data => {
-			this.permOptions.records = data;
+	getPermList(roleId, menuId){
+		this.httpService.get(`/roles/${roleId}/perms?menuId=${menuId}`).then(data => {
+			if (!_.isEmpty(data[0])) {
+				this.permOptions.records = data;
+			} else {
+				this.permOptions.records = [];
+			}
 		});
 	}
 	
@@ -339,10 +367,10 @@ class SCR0201Controller {
 	}
 	
 	deletePerm(roleId = '', permId='') {
-		this.httpService.delete(`/roles/${roleId}/perms/${permId}`)
+		this.httpService.delete(`/roles/${roleId}/perms/${permId}?menuId=${this.menuId}`)
 						.then(data => {
 							if (data.isError) return;
-							this.getPermList(roleId);
+							this.getPermList(roleId, this.menuId);
 						});
 	}
 	
@@ -429,11 +457,19 @@ class SCR0201Controller {
 			this.openAlert(bxMsg('manageRole.emptyRoleId2'));
 			return;
 		}
+
+		if (_.isEmpty(this.menuId)){
+			this.openAlert(bxMsg('manageRole.emptyMenuId'));
+			return;
+		}
+
+		
 		
 		this.popupService.openModal('SCR0302',
 									{
 										text: this.text,
-										roleId : this.selectedRole.roleId
+										roleId : this.selectedRole.roleId,
+										menuId : this.menuId
 									})
 									.then((records) => this.updatePerms(records))
 									.catch(()=>{});
@@ -457,14 +493,14 @@ class SCR0201Controller {
 	updatePerms(records){
 		const roleId = this.selectedRole.roleId;
 		
-		this.httpService.put(`/roles/${roleId}/perms`, records)
+		this.httpService.put(`/roles/${roleId}/perms?menuId=${this.menuId}`, records)
 						.then(res => {
 							if(res.isError){
 								this.popupService.detailAlert(this.$scope, res.data.message, res.data.stackTrace);
 								return;
 							}
 							
-							this.getPermList(roleId);
+							this.getPermList(roleId,this.menuId);
 							this.openAlert(bxMsg('common.saved'));
 						});
 	}
@@ -484,7 +520,7 @@ class SCR0201Controller {
 	resetDetail() {
 		this.selectedRole = {};
 		this._selectedRole = {};
-		this.menuOptions.records =[];
+		this.menuOptions.records = [];
 		this.permOptions.records = [];
 		this.offEditMode();
 

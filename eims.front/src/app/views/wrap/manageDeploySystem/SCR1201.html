@@ -46,7 +46,7 @@
 				<label>{{::vm.text.all}} {{vm.options.recordsCount}}{{::vm.text.cnt}}</label>
 			</left>
 			<right>
-				<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()" ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.insert"></button>
+				<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()" ng-show="vm.user.roleId === 'Administrator' && vm.permInsert"></button>
 				<button type="button" class="bw-btn b-ctr" zabara="gridWrap" ng-click="vm.refreshGrid()">
 					<i class="bxd bxd-toggle zabara"></i>
 				</button>
@@ -62,7 +62,7 @@
 	
 	<div>
 		<bc-tool-wrap>
-			<right ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.update">
+			<right ng-show="vm.user.roleId === 'Administrator' && vm.permUpdate">
 				<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
 				<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit" title="{{::vm.text.cancel}}" ng-click="vm.cancel()"></button>
 				<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit" title="{{::vm.text.save}}" ng-click="vm.save()"></button>
@@ -95,7 +95,7 @@
 				<li class="w-100">
 					<div class="input-wrap asterisk clr">
 						<label class="bw-label wp-170">{{::vm.text.deploySysUrl}}</label>
-						<input type="search" class="bw-input" style="width:calc(100% - 170px);" ng-model="vm.selectedDeploySys.deploySysUrl"
+						<input type="search" class="bw-input required" style="width:calc(100% - 170px);" ng-model="vm.selectedDeploySys.deploySysUrl"
 							disabled>
 					</div>
 				</li>

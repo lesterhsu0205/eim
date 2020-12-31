@@ -13,13 +13,13 @@
 				<left>
 					<label>{{::vm.text.all}} {{vm.options.recordsCount}}{{::vm.text.cnt}}</label>
 				</left>
-				<right ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.insert">	
+				<right ng-show="vm.user.roleId === 'Administrator' && vm.permInsert">	
 					<button type="button" class="bw-btn bxd bxd-add" ng-click="vm.add()"></button>
 				</right>
 			</bc-tool-wrap>
 			<section id="gridWrap">
 				<div class="w-100" style="height: 500px;" bc-grid="vm.options"></div>
-			</section>
+			</section> 
 		</div>
 	</div>
 	
@@ -29,7 +29,7 @@
 		</h3>
 		<div>
 			<bc-tool-wrap>
-				<right ng-show="vm.user.roleId === 'Administrator' && vm.user.perm.update">
+				<right ng-show="vm.user.roleId === 'Administrator' && vm.permUpdate">
 					<button type="button" class="bw-btn bxd bxd-edit2" ng-show="!vm.isEdit" title="{{::vm.text.edit}}" ng-click="vm.onEditMode()"></button>
 					<button type="button" class="bw-btn bxd bxd-close" ng-show="vm.isEdit" title="{{::vm.text.cancel}}" ng-click="vm.cancel()"></button>
 					<button type="button" class="bw-btn bxd bxd-save" ng-show="vm.isEdit" title="{{::vm.text.save}}" ng-click="vm.save()"></button>

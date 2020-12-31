@@ -1,8 +1,8 @@
 {
 	"namespace": "login",
     "messages": {
-      "userId": "아이디",
-      "userPassword": "패스워드",
-      "signIn": "로그인"
+      "userId": "ID",
+      "userPassword": "Password",
+      "signIn": "Login"
     }
 }

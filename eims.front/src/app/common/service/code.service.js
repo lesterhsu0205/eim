@@ -8,12 +8,14 @@ class CodeService {
 		this.httpService = httpService;
 		this.$q = $q;
 		this.commonCodes = {};
+		this.menuMap = null;
 		this.init();
 	}
 	
 	init(){
 		this.isCommonCodeLoad = false;
 		this._initCodes();
+		this.setMenubyState();
 	}
 
 	_initCodes(){
@@ -102,10 +104,32 @@ class CodeService {
 		if(_.isEmpty(codes) || codes.length === 0) throw Error('코드목록이 없습니다.');
 		return this._getVal(codes, codeVal).cdValNm;
 	}
+
+	setMenubyState() {
+		this.menuMap = new Map();
+
+		this.menuMap.set("main.manageMsg" , "MENU2010");
+		this.menuMap.set("main.manageMciInterface" , "MENU3110");
+		this.menuMap.set("main.manageEaiInterface" , "MENU3120");
+		this.menuMap.set("main.manageFepInterface" , "MENU3130");
+		this.menuMap.set("main.manageDeploySystem" , "MENU4010");
+		this.menuMap.set("main.manageCommSystem" , "MENU4020");
+		this.menuMap.set("main.manageAppCode" , "MENU4030");
+		this.menuMap.set("main.manageExtInstCode" , "MENU4060");
+		this.menuMap.set("main.manageMetaInfo" , "MENU4070");
+		this.menuMap.set("main.manageActionHistory" , "MENU5010");
+		this.menuMap.set("main.manageUser" , "MENU1010");
+		this.menuMap.set("main.manageRole" , "MENU1020");
+		this.menuMap.set("main.managePerm" , "MENU1030");
+	}
+
+	getMenubyState($state) {
+		return this.menuMap.get($state);
+	}
 	
 	_get(codes, key){
 		if(_.isEmpty(key)) throw new Error('코드값은 필수입니다.');
-		return codes[key];
+		return codes[key];  
 	}
 	
 	_getVal(codes, key){

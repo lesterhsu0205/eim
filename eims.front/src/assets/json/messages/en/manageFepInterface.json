@@ -135,9 +135,10 @@
 		"recvWrapperDtoNm": "Receive Wrapper Io Name",
 		"filePath2": "File Path",
 		"toggleMsgColumn": "Toggle Message Id Column",
-		"sendMappingLayout": "Request Special Mapping LAYOUT Type must have property name value specified.",
-		"revMappingLayout": "Response Special Mapping LAYOUT Type must have property name value specified.",
-		"sendMappingPropt": "Request Special Mapping PRORT Type must have property name value specified.",
-		"revMappingPropt": "Response Special Mapping PRORT Type must have property name value specified."
+		"sendMappingLayout": "Request Telegram Mapping LAYOUT Type must have property name value specified.",
+		"revMappingLayout": "Response Telegram Mapping LAYOUT Type must have property name value specified.",
+		"sendMappingPropt": "Request Telegram Mapping PRORT Type must have property name value specified.",
+		"revMappingPropt": "Response Telegram Mapping PRORT Type must have property name value specified.",		
+		"validRspsYnTelegram" : "If the Response Status value is N, you cannot map the response telegram."
     }
 }

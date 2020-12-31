@@ -25,6 +25,8 @@ class SCR0704Controller {
 		this.initWindow('100%', '100%');
 		this.initText();
 		this.initGridOption();
+		this.getMaskCodes();
+		this.getEncCodes();
 		
 		this.$scope.$on(`gridRendered`, () => {
 			this.getMsgDetailGridData();
@@ -106,7 +108,41 @@ class SCR0704Controller {
 
 		return maskNm;
 	}
+	
+	getEncCodes(defaultArray = []){
 
+		this.httpService.get('encCd').then(data => {
+			const { encOutList: records, totalCnt: recordsCount } = data;
+			
+			this.encCd = records;
+			if(!_.isEmpty(this.encCd)){
+				this.encCd.map(records => {
+					defaultArray.push({
+						id: records.encCd,
+						text: records.encNm
+					});
+				});
+			}
+		});
+
+
+		return defaultArray;
+	}
+
+	getEncNm(code){
+		
+		var encNm ='';
+		if(!_.isEmpty(this.encCd)){
+			for(var i=0; i<this.encCd.length; i++) {
+				if(this.encCd[i].encCd == code) {
+					encNm = this.encCd[i].encNm;
+					break;
+				}		
+			}
+		}
+
+		return encNm;
+	}
 	_getDefaultMsgDetailGridColumns(msg){
 		let columns = [
 			{ field: 'msgSeq', caption: 'seq', size: '40px', frozen: true},
@@ -160,6 +196,25 @@ class SCR0704Controller {
 				}
 			},
 			{ field: 'encYn', caption: this.text.encYn, size: '1%', editable: { type: 'select', items: this.gridService.getSelectItemsFromCodes(this.codes.YN_CD) } },		
+			{ 
+				field: 'encWayCd', caption: this.text.encDpCd, size: '1%', 
+				editable: this.isEdit ? { type: 'select', items: this.getEncCodes()} : false,
+				render: (data,index,colIndex) => {
+					const encCd = w2ui[this.msgDetailOptions.name].getCellValue(index, colIndex);					
+					return this.getEncNm(encCd);
+				}
+			},
+			{ 
+				field: 'paramType', caption: this.text.paramType, size: '80px',  
+				editable: this.isEdit ? { 
+					type: 'select', 
+					items: this.gridService.getSelectItemsFromCodes(this.codes.PARAM_TYPE)
+				} : false,
+				render: (data,index,colIndex) => {
+					const paramTypeNm = w2ui[this.msgDetailOptions.name].getCellValue(index, colIndex);
+					return this.codeService.getCodeValNm(this.codes.PARAM_TYPE, paramTypeNm);
+				}
+			},	
 			{ 
 				field: 'alignNm', caption: this.text.alignNm, size: this.user.locale === 'en'? '70px' : '40px',
 				editable: this.isEdit ? { type: 'select', items: this.gridService.getSelectItemsFromCodes(this.codes.ALIGN_CD, [{id: "NONE", text: " "}])} : false,

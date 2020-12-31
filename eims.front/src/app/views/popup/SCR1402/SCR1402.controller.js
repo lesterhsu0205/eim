@@ -45,13 +45,13 @@ class SCR1402Controller {
 				recid: 'appUnqKey',
 				columns: [
 					{ 
-						field: 'lvCd', caption: this.text.lvCd,  size: '100px',
+						field: 'lvCd', caption: this.text.lvCd,  size: '100px', sortable: true,
 						render: (data)=>{
 							return 'L'+data.lvCd;
 						}
 					},
 					{ 
-						field: 'appCd', caption: this.text.appCd, style: 'text-align : left',
+						field: 'appCd', caption: this.text.appCd, style: 'text-align : left', sortable: true,
 						render: (data) => {
 							return data.appCd+"("+data.appCdNm+")";
 						}

@@ -39,16 +39,6 @@ const routeConfig = [
 		},
 		children: [
 			{
-				state: 'main.test',
-				url: '/test',
-				templateUrl: 'app/views/wrap/test/test.html',
-				controller: 'TestController',
-				controllerUrl: 'app/views/wrap/test/test.controller.js',
-				injectUrl: [],
-				abstract: false,
-				cache: true
-			},
-			{
 				state: 'main.blank',
 				url: '/blank',
 				templateUrl: 'app/views/wrap/blank/blank.html',

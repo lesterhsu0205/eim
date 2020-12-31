@@ -74,7 +74,7 @@ class SCR0402Controller {
 					
 					},
 					{ field: 'name', caption: this.text.menuNm, sortable: true}
-				],
+				], 
 				onClick: (e) => {
 					// prevent deselect
 					let selection = w2ui[e.target].getSelection();

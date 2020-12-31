@@ -182,7 +182,7 @@ class LnbDirective {
 		$scope.$watch('items', (newVal, oldVal)=> {
 			
 			if ($scope.items.length === 0) {
-				$scope.$state.go('main.blank');
+				$scope.$state.go('main.manageMsg');
 				return;
 			}
 			

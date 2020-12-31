@@ -7,7 +7,7 @@
 		"userNm": "User Name",
 		"email": "Email",
 		"dutyNm": "Position",
-		"deptNm": "Department Name",
+		"deptNm": "Department OR Company Name",
 		"password": "Password",
 		"passwordConfirm": "Confirm Password",
 		"userSearch": "User Search",
@@ -19,6 +19,7 @@
 		"emptyRoleId": "Please enter the role.",
 		"emptyUserPwd": "Please enter the password.",
 		"notMatchPwd": "Password does not match.",
+		"emptydeptNm": "Please enter the Department OR Company Name.",
 		"roleNm": "Role Name",
 		"roleDesc" : "Role Description"
     }

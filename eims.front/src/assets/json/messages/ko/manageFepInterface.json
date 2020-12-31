@@ -141,6 +141,7 @@
 		"sendMappingLayout": "요청 전문 매핑 LAYOUT 타입은 속성명 값이 지정 되어야 합니다.",
 		"revMappingLayout": "응답 전문 매핑 LAYOUT 타입은 속성명 값이 지정 되어야 합니다",
 		"sendMappingPropt": "요청 전문 매핑의 속성명 타입은 속성명 값이 지정 되어야 합니다.",
-		"revMappingPropt": "요청 전문 매핑  속성명 타입은 속성명 값이 지정 되어야 합니다."  
+		"revMappingPropt": "요청 전문 매핑  속성명 타입은 속성명 값이 지정 되어야 합니다.",
+		"validRspsYnTelegram" : "응답 여부 값이 N 이면 응답 전문을 매핑 할 수 없습니다."
     }
 }

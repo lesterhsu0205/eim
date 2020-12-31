@@ -4,7 +4,7 @@ import App from '../../../app';
 class SCR0701Controller {
 	
 	constructor ($scope, $state, $compile, $timeout, popupService,httpService, utilService, 
-				gridService,codeService, metaService, userService, codes){
+				gridService, codeService, metaService, userService, codes){
 		this.$scope = $scope;
 		this.$state = $state;
 		this.$compile = $compile;
@@ -17,7 +17,7 @@ class SCR0701Controller {
 		this.metaService = metaService;
 		this.userService = userService;
 		this.codes = utilService.clone(codes);
-		this.user = this.userService.getUser();
+		this.user = this.userService.getUser();	
 		
 		this.intrfcTypeCd = 'MCI';
 		this.useRequestMsgScroll = true;
@@ -25,14 +25,28 @@ class SCR0701Controller {
 		this.useRequestMsgMapping = true;
 		this.useResponseMsgMapping = true;
 
+		this.menuList = this.userService.getUserMenu();
+		this.menuId = this.codeService.getMenubyState(this.$state.current.name);
+		this.permInsert = false, this.permUpdate = false, this.permDelete = false;
+		
+		for (var item of this.menuList) {
+			if (item.id == this.menuId) {
+				if(item.permId != null) {
+					if(item.permId.indexOf('insert') != -1 ) this.permInsert = true;			
+					if(item.permId.indexOf('update') != -1 ) this.permUpdate = true;
+					if(item.permId.indexOf('delete') != -1 ) this.permDelete = true;
+					break;
+				}
+			}
+		}
+
 		this.initZabara();
 		this.initText();	
 		this.initSelect();
 		this.initGrid();
 		this.initGenerate();
 		this.initScroll();
-
-		let count = 0;
+  		let count = 0;
 		this.$scope.$on(`gridRendered`, () => {
 			count ++;
 			count === 12 && this.initPrevData();	
@@ -199,21 +213,32 @@ class SCR0701Controller {
 				{ field: 'intrfcNm', caption: this.text.intrfcNm, size: '2.5%', sortable: true, attr: 'align=left' },
 				{ field: 'intrfcNmSub', caption: this.text.intrfcNmSub, size: '2.5%', sortable: true, attr: 'align=left' },
 				{ 
-					field: 'lvCds', caption: this.text.lvCds, size: '0.7%', 
-					render: (data) => {
-						return data.lv1Cd ? data.lv1Cd : '';
-					}
-				},
+					field: 'lv1Cd', caption: this.text.lvCds, size: '0.7%', sortable: true
+				},				
 				{ field: 'sysCdS', caption: this.text.sysCdS, size: '0.5%', sortable: true},
-				{ field: 'sysCdR', caption: this.text.sysCdR, size: '0.5%', sortable: true},
+				{ field: 'sysCdR', caption: this.text.sysCdR, size: '0.5%', sortable: true},	
+				{ 
+					field: 'syncAsyncDscd', caption: this.text.syncAsyncDscd, size: '0.5%', sortable: true,
+					render: (data) => {		
+						return this.codeService.getCodeValNm('SYNC_DSCD', data.syncAsyncDscd);
+				}},		
+				{ field: 'msgTrnsfrmYn', caption: this.text.msgTrnsfrmYn, size: '0.5%', sortable: true},
+				{ field: 'rspsYn', caption: this.text.rspsYn, size: '0.5%', sortable: true},				
+				{ field: 'trxTypeDscd', caption: this.text.trxTypeDscd, size: '0.8%', sortable: true,
+					render: (data) => {		
+					return this.codeService.getCodeValNm('TRX_TYPE_DSCD', data.trxTypeDscd);
+				}},
+				{ field: 'viewId', caption: this.text.viewId, size: '0.8%', sortable: true},
+				{ field: 'trxCd', caption: this.text.trxCd, size: '0.8%', sortable: true},
+				{ field: 'viewId', caption: this.text.viewId, size: '0.8%', sortable: true},
 				{ field: 'regManId', caption: this.text.regManId, size: '0.7%', sortable: true},
 				{ 
-					field: 'workStatusCd', caption: this.text.workStatusCd, size: this.user.locale === 'en'? '120px' : '0.5%',sortable: true,
+					field: 'workStatusCd', caption: this.text.workStatusCd, size: this.user.locale === 'en'? '120px' : '0.8%',sortable: true,
 					render: (data) => {		
 						return this.codeService.getCodeValNm('WORK_STATUS_CD', data.workStatusCd);
 					}
 				},
-				{ field: 'regDttm', caption: this.text.regDttm, sortable: true, size: this.user.locale === 'en'? '110px' : '0.5%',
+				{ field: 'regDttm', caption: this.text.regDttm, sortable: true, size: this.user.locale === 'en'? '110px' : '0.8%',
 					render: (data) =>{
 						const regDttm = data.regDttm 
 						const yy = regDttm.substring(0,4);
@@ -227,15 +252,15 @@ class SCR0701Controller {
 					render: (data)=> {
 						let html = '';
 
-						if(this.user.perm.insert) {
+						if(this.permInsert) {
 							html += `<button type="button" class="bw-btn bxd bxd-new-file" title="${this.text.copy}" data-action="copy"></button>`;
 						}
 
-						if(this.user.perm.update) {
+						if(this.permUpdate) {
 							html += `<button type="button" class="bw-btn bxd bxd-edit2" title="${this.text.modifiy}" data-action="edit"></button>`;
 						}
 
-						if(this.user.perm.delete) {
+						if(this.permDelete) {
 							html += `<button type="button" class="bw-btn bxd bxd-trash" title="${this.text.delete}" data-action="delete"></button>`;
 						}
 
@@ -1013,7 +1038,9 @@ class SCR0701Controller {
 						let txt = '';
 						
 						if(data.deployResultCd.indexOf('SUCCESS') !== -1) {
-							txt = '<button type="button" class="bw-btn bxd bxd-rocket" title="' + this.text.redeploy + '" data-action="redeploy"></button>';
+							if(this.permInsert) {
+								txt = '<button type="button" class="bw-btn bxd bxd-rocket" title="' + this.text.redeploy + '" data-action="redeploy"></button>';
+							}
 						}
 						
 						return txt;
@@ -2306,6 +2333,13 @@ class SCR0701Controller {
 		
 		if(!this._checkValid()) return;
 		
+		if(detail.rspsYn == 'N'){
+			if (!_.isEmpty(sndResLayoutGridRecords) || !_.isEmpty(rcvResLayoutGridRecords)) {
+				this.openAlert(this.text.validRspsYnTelegram);
+				return false;
+			}
+		}
+
 		this.popupService.showLoadingBar(this.$scope);
 		
 		let receiveSysCd,
