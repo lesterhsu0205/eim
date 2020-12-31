@@ -56,7 +56,7 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 	private final int startLine = 5;
 	private static final String STR_TEMPLATE_FILE_PATH = "/WEB-INF/classes/templates/";
 	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
-//	private static final String STR_TEMPLATE_FILE_PATH = "C:\\linebank\\5555.git\\lbtw_eim\\.git\\eims.server\\src\\main\\resources\\templates\\";
+//	private static final String STR_TEMPLATE_FILE_PATH = "C:\\Users\\fp90119\\eims\\.git\\eims.server\\src\\main\\resources\\templates\\";
 //	private static final String STR_TEMPLATE_FILENAME_PREFIX = "LBTW_BW_QAS_5.0.Interface List_v1.0_";
 
 	public InterfaceListExcelView(CommCodeDao codeDao) {
@@ -66,7 +66,7 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		// 응답헤더 세팅
+		// ������ ����
 		String intrfcTypeFileName = (String) model.get("intrfcType");
 		if(intrfcTypeFileName.equals("MCI")) intrfcTypeFileName = "MCA";
 		if(intrfcTypeFileName.equals("EAI_I")) intrfcTypeFileName = "EAI";
@@ -152,18 +152,18 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 
 	private void writeInterfaceInfoFEP(Sheet sheet, IntrfcInfoExportDto intrfcDto, int writeLine) throws ParseException {
 		logger.debug("Interface ID to write in excelfile: {}, FEP DTO : {}", intrfcDto.getIntrfcId(), intrfcDto.getFepDto());
-		ExcelUtils.writeValue(sheet, writeLine, "B", intrfcDto.getLv1Cd());// 어플리케이션
-		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getAppCdNm());// 어플리케이션명
-		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// 인터페이스아이디
-		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// 인터페이스명
+		ExcelUtils.writeValue(sheet, writeLine, "B", intrfcDto.getLv1Cd());// ���收儤�����
+		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getAppCdNm());// ���收儤������
+		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// ����������
+		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// �����諈�
 		
-		ExcelUtils.writeValue(sheet, writeLine, "F", getCodeValue("INTRFC_WAY_CD", intrfcDto.getIntrfcWayCd(), "ko"));// 발생유형
-		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getTrxDscd());// 거래유형	
+		ExcelUtils.writeValue(sheet, writeLine, "F", getCodeValue("INTRFC_WAY_CD", intrfcDto.getIntrfcWayCd(), "ko"));// 諻����
+		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getTrxDscd());// 穇圉����	
 		
-		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getRqstExtrnlMsgNo());// 요청전문번호
-		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getInstCd());// 기관코드
-		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getInstCdNm());// 기관코드
-		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getProtocolDscd());// 프로토콜 종류
+		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getRqstExtrnlMsgNo());// ��痍��爰貒
+		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getInstCd());// 篣國�儠��
+		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getInstCdNm());// 篣國�儠��
+		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getProtocolDscd());// ������ 鮈��
 		if(intrfcDto.getProtocolDscd() != null) {
 			if(intrfcDto.getProtocolDscd().equals("REST")) {
 			ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getHttpMethod()); // HTTP METHOD
@@ -172,182 +172,182 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 			ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getResponseMediaType()); // ResponseMediaType
 			}
 		}
-		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getSysCdSend());// 송신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getSysNmSend());//  송신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getSysCdReceive());// 수신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getSysNmReceive());//  수신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명		
-		ExcelUtils.writeValue(sheet, writeLine, "V", intrfcDto.getTrxCdReceive());// 수신시스템거래코드
+		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getSysCdSend());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getSysNmSend());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getCrgManNmSend());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getSysCdReceive());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getSysNmReceive());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getCrgManNmReceive());// �������謔科���		
+		ExcelUtils.writeValue(sheet, writeLine, "V", intrfcDto.getTrxCdReceive());// ������掠�����
 
-		ExcelUtils.writeValue(sheet, writeLine, "W",intrfcDto.getSyncAsyncDscd());// 동기구분
+		ExcelUtils.writeValue(sheet, writeLine, "W",intrfcDto.getSyncAsyncDscd());// ��萼窱禺��
 		if(intrfcDto.getFepDto().getTimeOut() == null) {
 			intrfcDto.getFepDto().setTimeOut("null"); 
 		}
 		ExcelUtils.writeValue(sheet, writeLine, "X", intrfcDto.getFepDto().getTimeOut());
 
-		ExcelUtils.writeValue(sheet, writeLine, "Y", intrfcDto.getMsgTrnsfrmYn());// 전문변환여부
+		ExcelUtils.writeValue(sheet, writeLine, "Y", intrfcDto.getMsgTrnsfrmYn());// ��爰貐���賱�
 		if (intrfcDto.getIntrfcWayCd() != null) {
 			if(intrfcDto.getIntrfcWayCd().equals("FILETOFILE"))  {
-				ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getFepDto().getDupFileProc());// 파일 중복 처리 정책
+				ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getFepDto().getDupFileProc());// �� 鴗陬 麮收 ����
 			}
 		}
 		ExcelUtils.writeValue(sheet, writeLine, "AD", getCodeValue("GEN_CYCLE_CD", intrfcDto.getFepDto().getOccurCycle(), "ko"));
-		ExcelUtils.writeValue(sheet, writeLine, "Z", intrfcDto.getFepDto().getSendFileNm());// 파일명
-		ExcelUtils.writeValue(sheet, writeLine, "AA", intrfcDto.getFepDto().getSendFilePath());// 송신 경로
-		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getFepDto().getRecvFilePath());// 수신 경로
-		ExcelUtils.writeValue(sheet, writeLine, "AE", intrfcDto.getRegManId());// 등록자ID
-		ExcelUtils.writeValue(sheet, writeLine, "AF", intrfcDto.getRegMamNm());// 등록자이름
-		ExcelUtils.writeValue(sheet, writeLine, "AG", intrfcDto.getFepDto().getIntrfDesc());// 비고		
+		ExcelUtils.writeValue(sheet, writeLine, "Z", intrfcDto.getFepDto().getSendFileNm());// ��諈�
+		ExcelUtils.writeValue(sheet, writeLine, "AA", intrfcDto.getFepDto().getSendFilePath());// ���� 窶趟��
+		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getFepDto().getRecvFilePath());// ���� 窶趟��
+		ExcelUtils.writeValue(sheet, writeLine, "AE", intrfcDto.getRegManId());// �諢�D
+		ExcelUtils.writeValue(sheet, writeLine, "AF", intrfcDto.getRegMamNm());// �諢�謔�
+		ExcelUtils.writeValue(sheet, writeLine, "AG", intrfcDto.getFepDto().getIntrfDesc());// 赬��		
 	}
 
 	private void writeInterfaceInfoEAI_E(Sheet sheet, IntrfcInfoExportDto intrfcDto, int writeLine) throws ParseException {
 		logger.debug("Interface ID to write in excelfile: {}, EAI_E DTO : {}", intrfcDto.getIntrfcId(), intrfcDto.getEaiDto());
-		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getLv3Cd());// 어플리케이션
-		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// 인터페이스아이디
-		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// 인터페이스명
-		ExcelUtils.writeValue(sheet, writeLine, "F", intrfcDto.getSysCdSend());// 송신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getSysNmSend());//  송신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysCdReceive());// 수신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getSysNmReceive());//  수신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명				
+		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getLv3Cd());// ���收儤�����
+		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// ����������
+		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// �����諈�
+		ExcelUtils.writeValue(sheet, writeLine, "F", intrfcDto.getSysCdSend());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getSysNmSend());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getCrgManNmSend());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysCdReceive());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getSysNmReceive());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getCrgManNmReceive());// �������謔科���				
 
-		// 송신파일속성
-		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getEaiDto().getSendFilePath());// 파일경로
-		ExcelUtils.writeValue(sheet, writeLine, "M", intrfcDto.getEaiDto().getSendFileNm());// 파일명
+		// ������
+		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getEaiDto().getSendFilePath());// ��窶趟��
+		ExcelUtils.writeValue(sheet, writeLine, "M", intrfcDto.getEaiDto().getSendFileNm());// ��諈�
 		ExcelUtils.writeValue(sheet, writeLine, "N",
-				getCodeValue("TRAN_POST_PROC", intrfcDto.getEaiDto().getSendTranPostProc(), "ko"));// 전송후처리유형
-		ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getEaiDto().getSendTranPostBackPath());// 전송후백업경로
-		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getEaiDto().getSendTranBeforeScript());//전송전선행스크립트
-		ExcelUtils.writeValue(sheet, writeLine, "Q", getCodeValue("TRAN_BEFORE_SCRIPT_TYPE", intrfcDto.getEaiDto().getSendTranBeforeScriptType(), "ko"));//전송전선행스크립트유형
+				getCodeValue("TRAN_POST_PROC", intrfcDto.getEaiDto().getSendTranPostProc(), "ko"));// �����收����
+		ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getEaiDto().getSendTranPostBackPath());// ����停��祭諢�
+		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getEaiDto().getSendTranBeforeScript());//�������謔踫
+		ExcelUtils.writeValue(sheet, writeLine, "Q", getCodeValue("TRAN_BEFORE_SCRIPT_TYPE", intrfcDto.getEaiDto().getSendTranBeforeScriptType(), "ko"));//�������謔踫����
 
-		// 수신파일속성
-		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getEaiDto().getRecvFilePath());// 파일경로
-		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getEaiDto().getRecvFileNm());// 파일명
-		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getEaiDto().getRecvTranPostFinCreateYn());// 전송후fin파일생성여부
-		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getEaiDto().getRecvTranPostScript());// 전송후후행스크립트
-		ExcelUtils.writeValue(sheet, writeLine, "V", getCodeValue("TRAN_POST_SCRIPT_TYPE", intrfcDto.getEaiDto().getRecvTranPostScriptType(), "ko"));//전송후후행스크립트유형
+		// ������
+		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getEaiDto().getRecvFilePath());// ��窶趟��
+		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getEaiDto().getRecvFileNm());// ��諈�
+		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getEaiDto().getRecvTranPostFinCreateYn());// ����in�����賱�
+		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getEaiDto().getRecvTranPostScript());// �������謔踫
+		ExcelUtils.writeValue(sheet, writeLine, "V", getCodeValue("TRAN_POST_SCRIPT_TYPE", intrfcDto.getEaiDto().getRecvTranPostScriptType(), "ko"));//�������謔踫����
 
-		ExcelUtils.writeValue(sheet, writeLine, "W", intrfcDto.getEaiDto().getPrivacyInclYn());// 개인정보포함여부
-		ExcelUtils.writeValue(sheet, writeLine, "X", getCodeValue("BACKUP_CD", intrfcDto.getEaiDto().getBackupAprvStat(), "ko"));// 백업승인상태확인
-		ExcelUtils.writeValue(sheet, writeLine, "Y", intrfcDto.getEaiDto().getEncTargetYn());// 암호화대상여부
+		ExcelUtils.writeValue(sheet, writeLine, "W", intrfcDto.getEaiDto().getPrivacyInclYn());// 穈��陷���賱�
+		ExcelUtils.writeValue(sheet, writeLine, "X", getCodeValue("BACKUP_CD", intrfcDto.getEaiDto().getBackupAprvStat(), "ko"));// 諻桿������
+		ExcelUtils.writeValue(sheet, writeLine, "Y", intrfcDto.getEaiDto().getEncTargetYn());// �������賱�
 		ExcelUtils.writeValue(sheet, writeLine, "Z",
-				getCodeValue("GEN_CYCLE_CD", intrfcDto.getEaiDto().getOccurCycle(), "ko"));// 발생주기
-		ExcelUtils.writeValue(sheet, writeLine, "AA", intrfcDto.getEaiDto().getDayOccurCnt());// 일발생건수		
-		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getInstCd());// 기관코드
-		ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getEaiDto().getFepTranIntrfcId());// 일괄전송인터페이스ID
-		ExcelUtils.writeValue(sheet, writeLine, "AD", intrfcDto.getEaiDto().getRecordSize());//레코드사이즈
-		ExcelUtils.writeValue(sheet, writeLine, "AE", getCodeValue("RECORD_SEPARATOR_CD", intrfcDto.getEaiDto().getRecordSeparator(), "ko"));//레코드구분자
-		ExcelUtils.writeValue(sheet, writeLine, "AF", intrfcDto.getEaiDto().getReqWrapperDtoNm());// 송신 Wrapper IO명
-		ExcelUtils.writeValue(sheet, writeLine, "AG", intrfcDto.getEaiDto().getResWrapperDtoNm());// 수신 Wrapper IO명		
+				getCodeValue("GEN_CYCLE_CD", intrfcDto.getEaiDto().getOccurCycle(), "ko"));// 諻�ˉ篣�
+		ExcelUtils.writeValue(sheet, writeLine, "AA", intrfcDto.getEaiDto().getDayOccurCnt());// �諻�探���		
+		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getInstCd());// 篣國�儠��
+		ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getEaiDto().getFepTranIntrfcId());// �窵������ID
+		ExcelUtils.writeValue(sheet, writeLine, "AD", intrfcDto.getEaiDto().getRecordSize());//�����鴞�
+		ExcelUtils.writeValue(sheet, writeLine, "AE", getCodeValue("RECORD_SEPARATOR_CD", intrfcDto.getEaiDto().getRecordSeparator(), "ko"));//����筋賱��
+		ExcelUtils.writeValue(sheet, writeLine, "AF", intrfcDto.getEaiDto().getReqWrapperDtoNm());// ���� Wrapper IO諈�
+		ExcelUtils.writeValue(sheet, writeLine, "AG", intrfcDto.getEaiDto().getResWrapperDtoNm());// ���� Wrapper IO諈�		
 
-		ExcelUtils.writeValue(sheet, writeLine, "AH", intrfcDto.getRegManId());// 등록자ID
-		ExcelUtils.writeValue(sheet, writeLine, "AI", getFormDate(intrfcDto.getRegDttm()));// 등록일자
-		ExcelUtils.writeValue(sheet, writeLine, "AJ", getCodeValue("WORK_STATUS_CD", intrfcDto.getWorkStatusCd(), "ko"));// 상태			
-		ExcelUtils.writeValue(sheet, writeLine, "AK", intrfcDto.getEaiDto().getCurrIntrfcIdentifier());// 현행인터페이스식별자
-		ExcelUtils.writeValue(sheet, writeLine, "AL", intrfcDto.getEaiDto().getIntrfcUse());// 인터페이스용도
-		ExcelUtils.writeValue(sheet, writeLine, "AM", intrfcDto.getEaiDto().getIntrfDesc());// 비고
+		ExcelUtils.writeValue(sheet, writeLine, "AH", intrfcDto.getRegManId());// �諢�D
+		ExcelUtils.writeValue(sheet, writeLine, "AI", getFormDate(intrfcDto.getRegDttm()));// �諢���
+		ExcelUtils.writeValue(sheet, writeLine, "AJ", getCodeValue("WORK_STATUS_CD", intrfcDto.getWorkStatusCd(), "ko"));// ����			
+		ExcelUtils.writeValue(sheet, writeLine, "AK", intrfcDto.getEaiDto().getCurrIntrfcIdentifier());// ������������
+		ExcelUtils.writeValue(sheet, writeLine, "AL", intrfcDto.getEaiDto().getIntrfcUse());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "AM", intrfcDto.getEaiDto().getIntrfDesc());// 赬��
 
 	}
 
 	private void writeInterfaceInfoEAI_I(Sheet sheet, IntrfcInfoExportDto intrfcDto, int writeLine) throws ParseException {
 		logger.debug("Interface ID to write in excelfile: {}, EAI_I DTO : {}", intrfcDto.getIntrfcId(), intrfcDto.getEaiDto());
-		ExcelUtils.writeValue(sheet, writeLine, "B", intrfcDto.getLv1Cd());// 어플리케이션
-		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getAppCdNm());// 어플리케이션 명
-		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// 인터페이스아이디
-		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// 인터페이스명
-		ExcelUtils.writeValue(sheet, writeLine, "F", getCodeValue("INTRFC_WAY_CD", intrfcDto.getIntrfcWayCd(), "ko"));// 발생유형
-		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getTrxDscd());// 거래유형		
-		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getSysCdSend());// 송신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysNmSend());//  송신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getSysCdReceive());// 수신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getSysNmReceive());//  수신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "M", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "N", intrfcDto.getTrxCdReceive());// 수신시스템거래코드
+		ExcelUtils.writeValue(sheet, writeLine, "B", intrfcDto.getLv1Cd());// ���收儤�����
+		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getAppCdNm());// ���收儤����� 諈�
+		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// ����������
+		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// �����諈�
+		ExcelUtils.writeValue(sheet, writeLine, "F", getCodeValue("INTRFC_WAY_CD", intrfcDto.getIntrfcWayCd(), "ko"));// 諻����
+		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getTrxDscd());// 穇圉����		
+		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getSysCdSend());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysNmSend());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getCrgManNmSend());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getSysCdReceive());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getSysNmReceive());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "M", intrfcDto.getCrgManNmReceive());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "N", intrfcDto.getTrxCdReceive());// ������掠�����
 
-		// 송신파일속성
+		// ������
 
-		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getEaiDto().getSendFilePath());// 파일경로
-		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getEaiDto().getSendFileNm());// 파일명
-		// 수신파일속성
-		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getEaiDto().getRecvFilePath());// 파일경로
+		ExcelUtils.writeValue(sheet, writeLine, "T", intrfcDto.getEaiDto().getSendFilePath());// ��窶趟��
+		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getEaiDto().getSendFileNm());// ��諈�
+		// ������
+		ExcelUtils.writeValue(sheet, writeLine, "U", intrfcDto.getEaiDto().getRecvFilePath());// ��窶趟��
 		
-		// db속성
-		ExcelUtils.writeValue(sheet, writeLine, "Y", intrfcDto.getEaiDto().getSearchProcCnt());// 조회처리건수
-		ExcelUtils.writeValue(sheet, writeLine, "Z", intrfcDto.getEaiDto().getErrSkipYn());// 에러skip여부
-		ExcelUtils.writeValue(sheet, writeLine, "W", intrfcDto.getEaiDto().getSendDbQuery());// 송신DB쿼리
-		ExcelUtils.writeValue(sheet, writeLine, "X", intrfcDto.getEaiDto().getRecvDbQuery());// 수신DBTO 쿼리문
+		// db��
+		ExcelUtils.writeValue(sheet, writeLine, "Y", intrfcDto.getEaiDto().getSearchProcCnt());// 魽堅��收穇渥��
+		ExcelUtils.writeValue(sheet, writeLine, "Z", intrfcDto.getEaiDto().getErrSkipYn());// ��skip�賱�
+		ExcelUtils.writeValue(sheet, writeLine, "W", intrfcDto.getEaiDto().getSendDbQuery());// ���B勴潺收
+		ExcelUtils.writeValue(sheet, writeLine, "X", intrfcDto.getEaiDto().getRecvDbQuery());// ���BTO 勴潺收諡�
 		if(intrfcDto.getExecEnvDscd() != null) {
-			ExcelUtils.writeValue(sheet, writeLine, "AA", getExecEnvDscd(intrfcDto.getExecEnvDscd()));// 실행환경
+			ExcelUtils.writeValue(sheet, writeLine, "AA", getExecEnvDscd(intrfcDto.getExecEnvDscd()));// ����祭
 		}
-		// 상세정보
-		ExcelUtils.writeValue(sheet, writeLine, "O",  intrfcDto.getSyncAsyncDscd());// 동기구분	
+		// ����陷
+		ExcelUtils.writeValue(sheet, writeLine, "O",  intrfcDto.getSyncAsyncDscd());// ��萼窱禺��	
 		if(intrfcDto.getEaiDto().getTimeOut() == null) {
 			intrfcDto.getEaiDto().setTimeOut("null"); 
 		}
-		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getEaiDto().getTimeOut());// 타임아웃
-		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getRspsYn());// 응답여부		
-		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getMsgTrnsfrmYn());// 전문변환여부
+		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getEaiDto().getTimeOut());// �������
+		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getRspsYn());// ���賱�		
+		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getMsgTrnsfrmYn());// ��爰貐���賱�
 		ExcelUtils.writeValue(sheet, writeLine, "V",
-				getCodeValue("GEN_CYCLE_CD", intrfcDto.getEaiDto().getOccurCycle(), "ko"));// 발생주기
+				getCodeValue("GEN_CYCLE_CD", intrfcDto.getEaiDto().getOccurCycle(), "ko"));// 諻�ˉ篣�
 
-		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getRegManId());// 등록자ID	
-		ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getEaiDto().getIntrfDesc());// 비고
+		ExcelUtils.writeValue(sheet, writeLine, "AB", intrfcDto.getRegManId());// �諢�D	
+		ExcelUtils.writeValue(sheet, writeLine, "AC", intrfcDto.getEaiDto().getIntrfDesc());// 赬��
 	}
 
 	private void writeInterfaceInfoMCI(Sheet sheet, IntrfcInfoExportDto intrfcDto, int writeLine) throws ParseException {
 		logger.debug("Interface ID to write in excelfile: {}, MCIDTO : {}", intrfcDto.getIntrfcId(), intrfcDto.getMciDto());
-		ExcelUtils.writeValue(sheet, writeLine, "B", intrfcDto.getLv1Cd());// 어플리케이션
-		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getAppCdNm());// 어플리케이션명
-		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// 인터페이스아이디
-		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// 인터페이스명
-		ExcelUtils.writeValue(sheet, writeLine, "F", intrfcDto.getSysCdSend());// 송신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getSysNmSend());//  송신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysCdReceive());// 수신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getSysNmReceive());//  수신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getTrxCdReceive());// 수신시스템거래코드
+		ExcelUtils.writeValue(sheet, writeLine, "B", intrfcDto.getLv1Cd());// ���收儤�����
+		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getAppCdNm());// ���收儤������
+		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// ����������
+		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// �����諈�
+		ExcelUtils.writeValue(sheet, writeLine, "F", intrfcDto.getSysCdSend());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getSysNmSend());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getCrgManNmSend());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysCdReceive());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getSysNmReceive());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getCrgManNmReceive());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getTrxCdReceive());// ������掠�����
 
-		ExcelUtils.writeValue(sheet, writeLine, "M", intrfcDto.getSyncAsyncDscd());// 동기구분
-		// ExcelUtils.writeValue(sheet, writeLine, "N", getCodeValue("TRX_TYPE_DSCD", intrfcDto.getTrxTypeDscd(), "ko"));// 거래유형
+		ExcelUtils.writeValue(sheet, writeLine, "M", intrfcDto.getSyncAsyncDscd());// ��萼窱禺��
+		// ExcelUtils.writeValue(sheet, writeLine, "N", getCodeValue("TRX_TYPE_DSCD", intrfcDto.getTrxTypeDscd(), "ko"));// 穇圉����
 		if(intrfcDto.getMciDto().getTimeOut() == null) {
 			intrfcDto.getMciDto().setTimeOut("null"); 
 		}
-		ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getMciDto().getTimeOut());// 타임아웃
-		ExcelUtils.writeValue(sheet, writeLine, "N", intrfcDto.getRspsYn());// 응답여부		
-		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getMsgTrnsfrmYn());// 전문변환여부
-		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getViewId());// 전문변환여부
-		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getRegManId());// 등록자ID
-		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getRegMamNm());// 등록자NAME
-//		ExcelUtils.writeValue(sheet, writeLine, "Y", getCodeValue("WORK_STATUS_CD", intrfcDto.getWorkStatusCd(), "ko"));// 상태			
+		ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getMciDto().getTimeOut());// �������
+		ExcelUtils.writeValue(sheet, writeLine, "N", intrfcDto.getRspsYn());// ���賱�		
+		ExcelUtils.writeValue(sheet, writeLine, "P", intrfcDto.getMsgTrnsfrmYn());// ��爰貐���賱�
+		ExcelUtils.writeValue(sheet, writeLine, "Q", intrfcDto.getViewId());// ��爰貐���賱�
+		ExcelUtils.writeValue(sheet, writeLine, "R", intrfcDto.getRegManId());// �諢�D
+		ExcelUtils.writeValue(sheet, writeLine, "S", intrfcDto.getRegMamNm());// �諢�AME
+//		ExcelUtils.writeValue(sheet, writeLine, "Y", getCodeValue("WORK_STATUS_CD", intrfcDto.getWorkStatusCd(), "ko"));// ����			
 		ExcelUtils.writeValue(sheet, writeLine, "T",
-				intrfcDto.getMciDto().getIntrfDesc() == null ? "" : intrfcDto.getMciDto().getIntrfDesc());// 비고	
+				intrfcDto.getMciDto().getIntrfDesc() == null ? "" : intrfcDto.getMciDto().getIntrfDesc());// 赬��	
 	}
 
 	private void writeInterfaceInfoCC(Sheet sheet, IntrfcInfoExportDto intrfcDto, int writeLine) throws ParseException {
 		logger.debug("Interface ID to write in excelfile: {}, CCDTO : {}", intrfcDto.getIntrfcId(), intrfcDto.getCcDto());
-		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getLv3Cd());// 어플리케이션
-		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// 인터페이스아이디
-		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// 인터페이스명
-		ExcelUtils.writeValue(sheet, writeLine, "F", intrfcDto.getSysCdSend());// 송신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getSysNmSend());//  송신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getCrgManNmSend());// 송신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysCdReceive());// 수신시스템코드
-		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getSysNmReceive());//  수신시스템명
-		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getCrgManNmReceive());// 수신시스템관리자명
-		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getTrxCdReceive());// 수신시스템거래코드
+		ExcelUtils.writeValue(sheet, writeLine, "C", intrfcDto.getLv3Cd());// ���收儤�����
+		ExcelUtils.writeValue(sheet, writeLine, "D", intrfcDto.getIntrfcId());// ����������
+		ExcelUtils.writeValue(sheet, writeLine, "E", intrfcDto.getIntrfcNm());// �����諈�
+		ExcelUtils.writeValue(sheet, writeLine, "F", intrfcDto.getSysCdSend());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "G", intrfcDto.getSysNmSend());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "H", intrfcDto.getCrgManNmSend());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "I", intrfcDto.getSysCdReceive());// ���������
+		ExcelUtils.writeValue(sheet, writeLine, "J", intrfcDto.getSysNmReceive());//  ��������
+		ExcelUtils.writeValue(sheet, writeLine, "K", intrfcDto.getCrgManNmReceive());// �������謔科���
+		ExcelUtils.writeValue(sheet, writeLine, "L", intrfcDto.getTrxCdReceive());// ������掠�����
 
-		ExcelUtils.writeValue(sheet, writeLine, "M", getCodeValue("TRAN_DSCD", intrfcDto.getTrxDscd(), "ko"));// 발생유형
-		ExcelUtils.writeValue(sheet, writeLine, "N", getCodeValue("TRX_TYPE_DSCD_CC", intrfcDto.getTrxTypeDscd(), "ko"));// 거래유형
-		ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getRegManId());// 등록자ID
-		ExcelUtils.writeValue(sheet, writeLine, "P", getFormDate(intrfcDto.getRegDttm()));// 등록일자
-		ExcelUtils.writeValue(sheet, writeLine, "Q", getCodeValue("WORK_STATUS_CD", intrfcDto.getWorkStatusCd(), "ko"));// 상태	
+		ExcelUtils.writeValue(sheet, writeLine, "M", getCodeValue("TRAN_DSCD", intrfcDto.getTrxDscd(), "ko"));// 諻����
+		ExcelUtils.writeValue(sheet, writeLine, "N", getCodeValue("TRX_TYPE_DSCD_CC", intrfcDto.getTrxTypeDscd(), "ko"));// 穇圉����
+		ExcelUtils.writeValue(sheet, writeLine, "O", intrfcDto.getRegManId());// �諢�D
+		ExcelUtils.writeValue(sheet, writeLine, "P", getFormDate(intrfcDto.getRegDttm()));// �諢���
+		ExcelUtils.writeValue(sheet, writeLine, "Q", getCodeValue("WORK_STATUS_CD", intrfcDto.getWorkStatusCd(), "ko"));// ����	
 		if (intrfcDto.getCcDto() != null) {
 			ExcelUtils.writeValue(sheet, writeLine, "S",
-					intrfcDto.getCcDto().getIntrfDesc() == null ? "" : intrfcDto.getCcDto().getIntrfDesc());// 비고	
+					intrfcDto.getCcDto().getIntrfDesc() == null ? "" : intrfcDto.getCcDto().getIntrfDesc());// 赬��	
 		}
 	}
 	
@@ -402,12 +402,12 @@ public class InterfaceListExcelView extends AbstractXlsxView {
 			uuid = uuid.replace("-", "");
 		}
 
-		//서버
+		//����
 		String templateFile = rootPath + STR_TEMPLATE_FILE_PATH +
 				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
 		String filenameToWrite = rootPath + STR_TEMPLATE_FILE_PATH + "temp/" +
 				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + "_" + uuid + ".xlsx";
-		//로컬
+		//諢賑
 //		String templateFile =  STR_TEMPLATE_FILE_PATH +
 //				STR_TEMPLATE_FILENAME_PREFIX + intrfcType + ".xlsx";
 //		String filenameToWrite =  STR_TEMPLATE_FILE_PATH + "temp/" +

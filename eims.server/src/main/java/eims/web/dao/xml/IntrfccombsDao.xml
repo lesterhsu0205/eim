@@ -906,7 +906,7 @@
 				AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
 		 	</if>
 			<if test="trxCd != null and trxCd != ''">
-				AND D.trxCdReceive = #{trxCd, jdbcType = VARCHAR}
+				AND D.trxCdReceive like CONCAT('%', #{trxCd, jdbcType = VARCHAR},'%' )
 		 	</if>
 			<if test="bizCd != null and bizCd != ''">
 				AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
@@ -953,7 +953,7 @@
 		 	<if test="sysCdR != null and sysCdR != ''">
 				AND  D.sysCdReceive like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%')
 		 	</if>
-		 	<if test="msgLayoutId != null and msgLayoutId != ''">
+		 	<if test="msgLayoutId != null and msgLayoutId != ''">  
 				AND  A.INTRFC_ID in ( select intrfc_id
 						              from TBINTRFCMSGLAYOUTDT      
 						              where MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')

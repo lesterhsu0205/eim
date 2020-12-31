@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.EnccdDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.EnccdDto">
+		SELECT
+			 ENC_CD AS encCd
+			,ENC_NM AS encNm
+		FROM TBENCCD
+		WHERE 1=1
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM TBENCCD
+		WHERE 1=1
+	</select>
+
+	<insert id="insertEnccd"  parameterType="eims.web.dto.table.EnccdDto">
+	INSERT INTO TBENCCD (
+		 ENC_CD		
+		,ENC_NM		
+	) VALUES (
+		 #{encCd, jdbcType = VARCHAR}
+ 		,#{encNm, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateEnccd"	parameterType="eims.web.dto.table.EnccdDto">
+	UPDATE TBENCCD 
+	SET
+ 		ENC_CD = #{encCd, jdbcType = VARCHAR}		
+  		,ENC_NM = #{encNm, jdbcType = VARCHAR}		
+   	WHERE ENC_CD = #{encCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteEnccd"  parameterType="eims.web.dto.table.EnccdDto">
+	DELETE FROM TBENCCD
+	WHERE ENC_CD = #{encCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="updateEncCodeInterface"  parameterType="eims.web.dto.table.CodeInterfaceDto">
+	UPDATE TB_EAI_CD_DMN_CD_VAL_I 
+	SET
+		EAI_IF_DATA_APLY_TMSTMP = #{ifDataAplyTmstmp, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_STS_CD = #{ifDataAplyStsCd, jdbcType = VARCHAR}		
+  		,EAI_IF_DATA_APLY_ERR_CD = #{ifDataAplyErrCd, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_ERR_MSG_CONT = #{ifDataAplyErrMsg, jdbcType = NUMERIC}
+   	WHERE 
+	   	EAI_IF_DATA_SEQ_NBR = #{ifDataSeq, jdbcType = NUMERIC}	
+	</update>
+	
+ 	<select id="selectEncCodeInterfaceList" resultType="eims.web.dto.table.CodeInterfaceDto">
+	 SELECT 
+	 	EAI_IF_DATA_SEQ_NBR as ifDataSeq,
+		EAI_IF_DATA_CRT_TMSTMP as ifDataCrtTmstmp,
+		EAI_IF_DATA_APLY_TP_CD as ifDataAplyTpCd,
+		EAI_IF_DATA_APLY_STS_CD as ifDataAplyStsCd,
+		EAI_IF_DATA_APLY_TMSTMP as ifDataAplyTmstmp,
+		EAI_IF_DATA_APLY_ERR_CD as ifDataAplyErrCd,
+		EAI_IF_DATA_APLY_ERR_MSG_CONT as ifDataAplyErrMsg,
+		CD_DMN_LGCL_NM as dmnLgclNm,
+		CD_DMN_PSCL_NM as dmnPsclNm,
+		CD_DMN_CD_VAL as dmnCdVal,
+		CD_DMN_CD_VAL_GLBL_NM as dmnCdValGlbl,
+		CD_DMN_CD_VAL_LCAL_NM as dmnCdValLcal
+	 FROM 
+	 	TB_EAI_CD_DMN_CD_VAL_I
+	 WHERE
+		(EAI_IF_DATA_APLY_STS_CD = 'N' OR EAI_IF_DATA_APLY_STS_CD = 'E') 
+		AND (CD_DMN_PSCL_NM ='ENC_DS_CD'); 
+	</select>
+</mapper>

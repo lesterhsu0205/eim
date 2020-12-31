@@ -13,7 +13,7 @@ public interface BxConstants {
 	interface Default {
 		String PROPERTIES_FILE = "system.properties";
 		BxCode.Locale LOCALE = BxCode.Locale.ko;
-//		배포시 주석 true , 로컬개발시 false
+//		諻堅��� 鴥潰�� true , 諢賑穈��� false
 //		boolean IS_SERVER = true;
 		boolean IS_SERVER = false; 
 	}
@@ -28,13 +28,13 @@ public interface BxConstants {
 		String DEPLOY_CONN_TIMEOUT = "deploy.conntimeout" ;
 	} 
 
-	/** Exception 발생시  응답 전문에 이용 */
+	/** Exception 諻���  �� ��爰��� �� */
 	interface Status {
 		String ERROR = "ERROR";
 		String WARN = "WARN";
 	}
 
-	/** 채번 Prefix */
+	/** 麇�� Prefix */
 	interface Guid {
 		String MESSAGE = "MESSAGE";
 	}
