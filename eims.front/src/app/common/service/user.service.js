@@ -13,7 +13,6 @@ class UserService {
 	
 	getUserPromise(){
 		const defer = this.$q.defer();
-
 		this.httpService.get('/logininfosso')
 		.then(res =>{
 			if(res.isError) defer.reject(res);
