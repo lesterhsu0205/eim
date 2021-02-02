@@ -296,7 +296,6 @@ public class MainController {
 		if (session != null) {
 			out = "Logout Success";
 			session.invalidate();
-			logoutSSO();
 			logger.info("logout session invalidate");
 		}
 

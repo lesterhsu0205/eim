@@ -198,17 +198,17 @@ public class MsglayoutService {
 			List<String> msgDupListExt = msglayoutbsDao.selectSameIONmExternal(ioNm, layoutId);
 			List<String> childDupList = msglayoutdtDao.selectSameIONmChildNm(ioNm, layoutId);
 			if (msgDupList != null && msgDupList.size() > 0) {
-				str.append("\n세팅한 전문IO명이 이미 존재합니다. 전문ID [" + layoutId + "], 전문IO명 [" + ioNm + "], 사용중인 전문ID ["
+				str.append("\n IO Name Duplicated. Telegram ID [" + layoutId + "], IO Name [" + ioNm + "], IO Name ["
 						+ msgDupList + "]");
 				isValid = false;
 			}
 			if (msgDupListExt != null && msgDupListExt.size() > 0) {
-				str.append("\n세팅한 전문IO명이 이미 존재합니다. 전문ID [" + layoutId + "], 전문IO명 [" + ioNm + "], 사용중인 전문ID ["
+				str.append("\n IO Name Duplicated. Telegram ID [" + layoutId + "], IO Name [" + ioNm + "], Telegram ID ["
 						+ msgDupListExt + "]");
 				isValid = false;
 			}
 			if (childDupList != null && childDupList.size() > 0) {
-				str.append("\n세팅한 전문IO명이 하위IO명에 이미 존재합니다. 전문ID [" + layoutId + "], 전문IO명 [" + ioNm + "], 사용중인 전문ID ["
+				str.append("\n IO Name Duplicated, Telegram ID [" + layoutId + "], IO Name [" + ioNm + "], Telegram ID ["
 						+ childDupList + "]");
 				isValid = false;
 			}
@@ -3153,7 +3153,7 @@ public class MsglayoutService {
 							Long.parseLong(defaultValue);
 						} catch (NumberFormatException e) {
 							isValid = false;
-							str.append("\nLong 타입 기본값에는 정수 타입의 숫자만 세팅할 수 있습니다. - 전문ID [" + layoutId + "] 필드영문명: ["
+							str.append("\nLong Time value is only nuber. - Telegram ID [" + layoutId + "] English Name: ["
 									+ fieldEngNm + "]");
 						}
 					} else if (dataType.equals("BIGDECIMAL")) {
@@ -3161,14 +3161,14 @@ public class MsglayoutService {
 							Double.parseDouble(defaultValue);
 						} catch (NumberFormatException e) {
 							isValid = false;
-							str.append("\nBIGDECIMAL 타입 기본값에는 실수 타입의 숫자만 세팅할 수 있습니다. - 전문ID [" + layoutId + "] 필드영문명: ["
+							str.append("\nBIGDECIMAL Time value is only nuber. - Telegram ID [" + layoutId + "] English Name: ["
 									+ fieldEngNm + "]");
 						}
 					} else if (dataType.equals("LAYOUT")) {
 						if (!defaultValue.equals("instance") && !defaultValue.equals("null")) {
 							isValid = false;
-							str.append("\nLAYOUT 타입 기본값에는 Class초기화 값(instance, null) 만 세팅할 수 있습니다. - 전문ID [" + layoutId
-									+ "] 필드영문명: [" + fieldEngNm + "]");
+							str.append("\nLAYOUT 전문ID [" + layoutId
+									+ "] English Name: [" + fieldEngNm + "]");
 						}
 					}
 				}

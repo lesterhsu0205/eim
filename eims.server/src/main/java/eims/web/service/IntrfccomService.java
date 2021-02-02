@@ -1997,7 +1997,7 @@ public class IntrfccomService {
 
 			if(BxConstants.Default.IS_SERVER) {
 				//String deployPath = "C:\\linebank\\temp\\";
-				String deployPath = "/logs/jboss/opseim01_18443/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
+				String deployPath = "/logs/jboss/deveim01_18443/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
 				
 //				String deployPath = "/logs/jboss/deveim01_18443/eims_logs/deploy/lbtw_deploy_interface/deploy.interface/";
 				String deployFileName = deployPath + inUi.getIntrfcId() + ".json";

@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class SSOFilterConfig {
 	final Logger logger = LoggerFactory.getLogger(getClass());
 
-	
+	/*
 	@Bean
 	public FilterRegistrationBean singleSignOutFilter() {
 		logger.debug("Filter Init - singleSignOutFilter");
@@ -146,5 +146,6 @@ public class SSOFilterConfig {
 			e.printStackTrace();
 		}
 	}
+	*/
 
 }

@@ -1,5 +1,9 @@
 package eims.config;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
+import org.springframework.boot.context.embedded.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -52,6 +56,7 @@ public class CommonConfiguration {
 		};
 	}
 
+	
 //	@Bean
 //	public MultipartResolver multipartResolver() {
 //		CommonsMultipartResolver resolver = new CommonsMultipartResolver();

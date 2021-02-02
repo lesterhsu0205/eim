@@ -119,6 +119,7 @@ public class SessionService {
 		}
 
 		String userId = (String) session.getAttribute(BxConstants.Session.USER_ID);
+		logger.debug("userId = [{}]", userId);
 		LoginUserInfo loginUserInfo = new LoginUserInfo();
 
 		SessionInfo user = new SessionInfo();

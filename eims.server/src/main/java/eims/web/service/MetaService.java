@@ -435,6 +435,7 @@ public class MetaService {
 		logger.debug("----- syncMetaSchedule END -----");
 	}
 		
+	/*
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	@Scheduled(cron = "0 7,17,27,37,47,57 * * * *")
 	public void uploadGitSchedule() throws IOException {	    
@@ -454,6 +455,7 @@ public class MetaService {
 		}		
 		
 	}
+	*/
 
 	private String typeCheck(String dataType, int scaleLen) {
 

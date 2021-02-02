@@ -158,7 +158,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 		  ServiceContext.setUserInfo(userInfo);			
 		  return true;
 	   }
-		
+			  
 	   System.out.println("req : " + req.getRequestURI().toString() );
 	   return loginProcess(req, res);
 	}
@@ -167,7 +167,6 @@ public class RequestInterceptor implements HandlerInterceptor {
 		final HttpSession session = req.getSession();
 		
 		UserInfo userInfo = (UserInfo) session.getAttribute(BxConstants.Session.USER_INFO);
-
 		if (userInfo == null) {
 			logger.debug("### userInfo : {}", userInfo);	
 			logger.debug("### res : {}", res);	

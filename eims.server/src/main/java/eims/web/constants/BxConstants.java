@@ -12,10 +12,10 @@ public interface BxConstants {
 
 	interface Default {
 		String PROPERTIES_FILE = "system.properties";
-		BxCode.Locale LOCALE = BxCode.Locale.ko;
+		BxCode.Locale LOCALE = BxCode.Locale.en;
 //		諻堅��� 鴥潰�� true , 諢賑穈��� false
-//		boolean IS_SERVER = true;
-		boolean IS_SERVER = false; 
+		boolean IS_SERVER = true;
+//		boolean IS_SERVER = false; 
 	}
 
 	/** Properties Key */
