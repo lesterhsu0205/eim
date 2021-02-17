@@ -85,12 +85,12 @@ class PopupService {
 						<span style="font-size: 15px; max-height: 200px; overflow: auto;">${param}</span>
 						<div>
 							<span id="detailToggle" class="chr-c-blue cs-p">
-								상세보기 <i class="bxd bxd-toggle chr-c-blue" style="transform: rotate(180deg);font-size: 12px; width: 12px;"></i>
+								details <i class="bxd bxd-toggle chr-c-blue" style="transform: rotate(180deg);font-size: 12px; width: 12px;"></i>
 							</span>
 						</div>
 						<div id="detailWrapper" style="display: none;" class="detailWrapper">${detail}</div>
 						<div class="btn-wrap add-mg-t">
-							<button id="detailAlertConfirm" type="button" class="bw-btn-txt">확인</button>
+							<button id="detailAlertConfirm" type="button" class="bw-btn-txt">confirm</button>
 						</div>
 					</div>
 				</div>
