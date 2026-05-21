@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.IntrfccombsDao">
+
+	<resultMap id="getRawData" type="eims.web.dto.table.IntrfccombsDto">
+	    <result property="intrfcId" column="INTRFC_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="intrfcNm" column="INTRFC_NM" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="intrfcWayCd" column="INTRFC_WAY_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="lv1Cd" column="LV_1_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="lv2Cd" column="LV_2_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="lv3Cd" column="LV_3_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="lv4Cd" column="LV_4_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="lv5Cd" column="LV_5_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="workStatusCd" column="WORK_STATUS_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="regManId" column="REG_MAN_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="regDttm" column="REG_DTTM" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="msgTrnsfrmYn" column="MSG_TRNSFRM_YN" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="trxCd" column="TRX_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="bizCd" column="BIZ_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="instCd" column="INST_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="trxDscd" column="TRX_DSCD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="intrfcTypeCd" column="INTRFC_TYPE_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="syncAsyncDscd" column="SYNC_ASYNC_DSCD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="srTypeCd" column="SR_TYPE_CD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="rqstExtrnlMsgNo" column="RQST_EXTRNL_MSG_NO_NM" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="rspsExtrnlMsgNo" column="RSPS_EXTRNL_MSG_NO_NM" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="crtnSeq" column="CRTN_SEQ" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+	    <result property="rsrvFldVal1" column="RSRV_FLD_VAL1" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="rsrvFldVal2" column="RSRV_FLD_VAL2" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="rsrvFldVal3" column="RSRV_FLD_VAL3" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="rspsYn" column="RSPS_YN" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="trxTypeDscd" column="TRX_TYPE_DSCD" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="rawData" column="RAW_DATA" javaType="java.lang.String" jdbcType="CLOB" />	    
+	    <result property="bizCdNm" column="BIZ_CD_NM" javaType="java.lang.String" jdbcType="VARCHAR" />
+	    <result property="instCdNm" column="INST_CD_NM" javaType="java.lang.String" jdbcType="VARCHAR" />	    
+	</resultMap>
+	
+	
+	<select id="selectAll" resultType="eims.web.dto.table.IntrfccombsListDto">
+	SELECT *
+	FROM(	
+		select 
+			A.INTRFC_ID AS intrfcId, 
+			A.BIZ_CD AS bizCd, 
+			A.INST_CD AS instCd, 
+			A.INTRFC_NM AS intrfcNm, 
+			A.INTRFC_NM_SUB AS intrfcNmSub, 
+			A.INTRFC_WAY_CD AS intrfcWayCd, 
+			A.LV_1_CD AS lv1Cd, 
+			A.LV_2_CD AS lv2Cd, 
+			A.LV_3_CD AS lv3Cd,
+			A.LV_4_CD AS lv4Cd, 
+			A.LV_5_CD AS lv5Cd,  
+			A.MSG_TRNSFRM_YN AS msgTrnsfrmYn, 
+			A.REG_DTTM AS regDttm, 
+			A.REG_MAN_ID AS regManId, 
+			A.EXEC_ENV_DSCD AS execEnvDscd,
+			C.TRX_CD AS trxCd, 
+			A.TRX_DSCD AS trxDscd, 
+			A.WORK_STATUS_CD AS workStatusCd,
+			A.INTRFC_TYPE_CD AS intrfcTypeCd,
+			A.RSPS_YN AS rspsYn,
+			A.SYNC_ASYNC_DSCD AS syncAsyncDscd,
+			A.VIEW_ID AS viewId,
+			A.PROTOCOL_DSCD AS protocolDscd,
+			A.HTTP_METHOD AS httpMethod,
+			A.CONTEXT_URL AS contextUrl,
+			A.REQ_MEDIA_TYPE AS requestMediaType,
+			A.RES_MEDIA_TYPE AS responseMediaType,
+			B.SR_SEQ AS srSeqAsS, 
+			B.SR_TYPE_CD AS srTypeCdS, 
+			B.SYS_CD AS sysCdS, 
+			C.SR_SEQ AS srSeqAsR, 
+			C.SR_TYPE_CD AS srTypeCdR,
+			C.SYS_CD AS sysCdR,
+			A.RQST_EXTRNL_MSG_NO_NM as rqstExtrnlMsgNo,
+			A.RSPS_EXTRNL_MSG_NO_NM as rspsExtrnlMsgNo,
+			A.TRX_TYPE_DSCD as trxTypeDscd,
+			@rownum := @rownum + 1 AS rn
+		<!-- 	ROW_NUMBER() over (order by A.REG_DTTM DESC) as rn -->
+		from TBINTRFCCOMBS A left outer join TBINTRFCSRSYSDT B on A.INTRFC_ID = B.INTRFC_ID and B.SR_TYPE_CD = 'SEND' left join TBINTRFCSRSYSDT C 
+		ON A.INTRFC_ID = C.INTRFC_ID and C.SR_TYPE_CD = 'RECEIVE' left join TBINTRFCMSGLAYOUTDT D on A.INTRFC_ID = D.INTRFC_ID
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND A.INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNm != null and intrfcNm != ''">
+		AND A.INTRFC_NM like CONCAT('%',#{intrfcNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNmSub != null and intrfcNmSub != ''">
+		AND A.INTRFC_NM_SUB like CONCAT('%',#{intrfcNmSub, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcWayCd != null and intrfcWayCd != ''">
+		AND A.INTRFC_WAY_CD like CONCAT('%',#{intrfcWayCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="workStatusCd != null and workStatusCd != ''">
+		AND A.WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regManId != null and regManId != ''">
+		AND A.REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regDttm != null and regDttm != ''">
+		AND A.REG_DTTM like CONCAT('%',#{regDttm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgTrnsfrmYn != null and msgTrnsfrmYn != ''">
+		AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND C.TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bizCd != null and bizCd != ''">
+		AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCd != null and instCd != ''">
+		AND A.INST_CD like CONCAT('%',#{instCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+		AND A.TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcTypeCd != null and intrfcTypeCd != ''">
+		AND A.INTRFC_TYPE_CD like CONCAT('%',#{intrfcTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv1Cd != null and lv1Cd != ''">
+		AND A.LV_1_CD like CONCAT('%',#{lv1Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv2Cd != null and lv2Cd != ''">
+		AND A.LV_2_CD like CONCAT('%',#{lv2Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+		AND A.LV_3_CD like CONCAT('%',#{lv3Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv4Cd != null and lv4Cd != ''">
+		AND A.LV_4_CD like CONCAT('%',#{lv4Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv5Cd != null and lv5Cd != ''">
+		AND A.LV_5_CD like CONCAT('%',#{lv5Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="syncAsyncDscd != null and syncAsyncDscd != ''">
+		AND A.SYNC_ASYNC_DSCD like CONCAT('%',#{syncAsyncDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND A.SR_TYPE_CD like CONCAT('%',#{srTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="rqstExtrnlMsgNo != null and rqstExtrnlMsgNo != ''">
+		AND  A.RQST_EXTRNL_MSG_NO_NM like CONCAT('%',#{rqstExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rspsExtrnlMsgNo != null and rspsExtrnlMsgNo != ''">
+		AND  A.RSPS_EXTRNL_MSG_NO_NM like CONCAT('%',#{rspsExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="sysCdS != null and sysCdS != ''">
+		AND  B.SYS_CD like CONCAT('%',#{sysCdS, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="sysCdR != null and sysCdR != ''">
+		AND  C.SYS_CD like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND  D.MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="trxTypeDscd != null and trxTypeDscd != ''">
+		AND A.TRX_TYPE_DSCD like CONCAT('%',#{trxTypeDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	 <if test="viewId != null and viewId != ''">
+		AND A.VIEW_ID like CONCAT('%',#{viewId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="execEnvDscd != null and execEnvDscd != ''">
+		AND A.EXEC_ENV_DSCD like CONCAT('%',#{execEnvDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	group by A.INTRFC_ID
+ 	order by A.REG_DTTM DESC
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	
+	<select id="selectFebAll" resultType="eims.web.dto.table.IntrfccombsListDto">
+	SELECT *
+	FROM(	
+		select 
+			A.INTRFC_ID AS intrfcId, 
+			A.BIZ_CD AS bizCd, 
+			A.INST_CD AS instCd, 
+			A.INTRFC_NM AS intrfcNm, 
+			A.INTRFC_NM_SUB AS intrfcNmSub, 
+			A.INTRFC_WAY_CD AS intrfcWayCd, 
+			A.LV_1_CD AS lv1Cd, 
+			A.LV_2_CD AS lv2Cd, 
+			A.LV_3_CD AS lv3Cd,
+			A.LV_4_CD AS lv4Cd, 
+			A.LV_5_CD AS lv5Cd,  
+			A.MSG_TRNSFRM_YN AS msgTrnsfrmYn, 
+			A.REG_DTTM AS regDttm, 
+			A.REG_MAN_ID AS regManId, 
+			C.TRX_CD AS trxCd, 
+			A.TRX_DSCD AS trxDscd, 
+			A.WORK_STATUS_CD AS workStatusCd,
+			A.INTRFC_TYPE_CD AS intrfcTypeCd,
+			A.VIEW_ID AS viewId,
+			A.PROTOCOL_DSCD AS protocolDscd,
+			A.HTTP_METHOD AS httpMethod,
+			A.CONTEXT_URL AS contextUrl,
+			A.REQ_MEDIA_TYPE AS requestMediaType,
+			A.RES_MEDIA_TYPE AS responseMediaType,
+			A.EXEC_ENV_DSCD AS execEnvDscd,
+			B.SR_SEQ AS srSeqAsS, 
+			B.SR_TYPE_CD AS srTypeCdS, 
+			B.SYS_CD AS sysCdS, 
+			C.SR_SEQ AS srSeqAsR, 
+			C.SR_TYPE_CD AS srTypeCdR,
+			C.SYS_CD AS sysCdR,
+			A.RQST_EXTRNL_MSG_NO_NM as rqstExtrnlMsgNo,
+			A.RSPS_EXTRNL_MSG_NO_NM as rspsExtrnlMsgNo,
+			A.TRX_TYPE_DSCD as trxTypeDscd,
+			@rownum := @rownum + 1 AS rn
+		<!-- 	ROW_NUMBER() over (order by A.REG_DTTM DESC) as rn -->
+		from TBINTRFCCOMBS A left outer join TBINTRFCSRSYSDT B on A.INTRFC_ID = B.INTRFC_ID and B.SR_TYPE_CD = 'SEND' left join TBINTRFCSRSYSDT C 
+		ON A.INTRFC_ID = C.INTRFC_ID and C.SR_TYPE_CD = 'RECEIVE' left join TBINTRFCMSGLAYOUTDT D on A.INTRFC_ID = D.INTRFC_ID
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND A.INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNm != null and intrfcNm != ''">
+		AND A.INTRFC_NM like CONCAT('%',#{intrfcNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNmSub != null and intrfcNmSub != ''">
+		AND A.INTRFC_NM_SUB like CONCAT('%',#{intrfcNmSub, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcWayCd != null and intrfcWayCd != ''">
+		AND A.INTRFC_WAY_CD like CONCAT('%',#{intrfcWayCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="workStatusCd != null and workStatusCd != ''">
+		AND A.WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regManId != null and regManId != ''">
+		AND A.REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regDttm != null and regDttm != ''">
+		AND A.REG_DTTM like CONCAT('%',#{regDttm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgTrnsfrmYn != null and msgTrnsfrmYn != ''">
+		AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND C.TRX_CD = #{trxCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="bizCd != null and bizCd != ''">
+		AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCd != null and instCd != ''">
+		AND A.INST_CD like CONCAT('%',#{instCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+		AND A.TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcTypeCd != null and intrfcTypeCd != ''">
+		AND A.INTRFC_TYPE_CD like CONCAT('%',#{intrfcTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv1Cd != null and lv1Cd != ''">
+		AND A.LV_1_CD like CONCAT('%',#{lv1Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv2Cd != null and lv2Cd != ''">
+		AND A.LV_2_CD like CONCAT('%',#{lv2Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+		AND A.LV_3_CD like CONCAT('%',#{lv3Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv4Cd != null and lv4Cd != ''">
+		AND A.LV_4_CD like CONCAT('%',#{lv4Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv5Cd != null and lv5Cd != ''">
+		AND A.LV_5_CD like CONCAT('%',#{lv5Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="syncAsyncDscd != null and syncAsyncDscd != ''">
+		AND A.SYNC_ASYNC_DSCD like CONCAT('%',#{syncAsyncDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND A.SR_TYPE_CD like CONCAT('%',#{srTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="rqstExtrnlMsgNo != null and rqstExtrnlMsgNo != ''">
+		AND  A.RQST_EXTRNL_MSG_NO_NM like CONCAT('%',#{rqstExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rspsExtrnlMsgNo != null and rspsExtrnlMsgNo != ''">
+		AND  A.RSPS_EXTRNL_MSG_NO_NM like CONCAT('%',#{rspsExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND  D.MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="trxTypeDscd != null and trxTypeDscd != ''">
+		AND A.TRX_TYPE_DSCD like CONCAT('%',#{trxTypeDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	 <if test="viewId != null and viewId != ''">
+		AND A.VIEW_ID like CONCAT('%',#{viewId, jdbcType = VARCHAR},'%')
+ 	</if> 	
+	AND (B.SYS_CD like CONCAT('%',#{sysCdS, jdbcType = VARCHAR},'%') OR  C.SYS_CD like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%'))
+	group by A.INTRFC_ID
+ 	order by A.REG_DTTM DESC
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="checkIntrfcid" resultType="java.lang.Integer">
+		SELECT
+			count(*) as cnt
+		FROM 	
+			TBINTRFCCOMBS
+		WHERE
+			1=1			
+		<if test="intrfcId != null and intrfcId != ''">
+			AND INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+		</if>
+	</select>
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM (
+		select 
+			A.INTRFC_ID AS intrfcId, 
+			A.BIZ_CD AS bizCd, 
+			A.INST_CD AS instCd, 
+			A.INTRFC_NM AS intrfcNm, 
+			A.INTRFC_NM_SUB AS intrfcNmSub, 
+			A.INTRFC_WAY_CD AS intrfcWayCd, 
+			A.LV_1_CD AS lv1Cd, 
+			A.LV_2_CD AS lv2Cd, 
+			A.LV_3_CD AS lv3Cd,
+			A.LV_4_CD AS lv4Cd, 
+			A.LV_5_CD AS lv5Cd,  
+			A.MSG_TRNSFRM_YN AS msgTrnsfrmYn, 
+			A.REG_DTTM AS regDttm, 
+			A.REG_MAN_ID AS regManId, 
+			A.TRX_CD AS trxCd, 
+			A.TRX_DSCD AS trxDscd, 
+			A.WORK_STATUS_CD AS workStatusCd,
+			A.INTRFC_TYPE_CD AS intrfcTypeCd,
+			A.VIEW_ID AS viewId,
+			A.EXEC_ENV_DSCD AS execEnvDscd,
+			B.SR_SEQ AS srSeqAsS, 
+			B.SR_TYPE_CD AS srTypeCdS, 
+			B.SYS_CD AS sysCdS, 
+			C.SR_SEQ AS srSeqAsR, 
+			C.SR_TYPE_CD AS srTypeCdR,
+			C.SYS_CD AS sysCdR,
+			A.TRX_TYPE_DSCD as trxTypeDscd,
+			@rownum := @rownum + 1 AS rn
+		<!-- 	ROW_NUMBER() over (order by A.REG_DTTM DESC) as rn -->
+		from TBINTRFCCOMBS A left outer join TBINTRFCSRSYSDT B on A.INTRFC_ID = B.INTRFC_ID and B.SR_TYPE_CD = 'SEND' left join TBINTRFCSRSYSDT C 
+		ON A.INTRFC_ID = C.INTRFC_ID and C.SR_TYPE_CD = 'RECEIVE' left join TBINTRFCMSGLAYOUTDT d on A.INTRFC_ID = d.INTRFC_ID
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND A.INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNm != null and intrfcNm != ''">
+		AND A.INTRFC_NM like CONCAT('%',#{intrfcNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNmSub != null and intrfcNmSub != ''">
+		AND A.INTRFC_NM_SUB like CONCAT('%',#{intrfcNmSub, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcWayCd != null and intrfcWayCd != ''">
+		AND A.INTRFC_WAY_CD like CONCAT('%',#{intrfcWayCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="workStatusCd != null and workStatusCd != ''">
+		AND A.WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regManId != null and regManId != ''">
+		AND A.REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regDttm != null and regDttm != ''">
+		AND A.REG_DTTM like CONCAT('%',#{regDttm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgTrnsfrmYn != null and msgTrnsfrmYn != ''">
+		AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND C.TRX_CD like CONCAT('%',#{trxCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="bizCd != null and bizCd != ''">
+		AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCd != null and instCd != ''">
+		AND A.INST_CD like CONCAT('%',#{instCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+		AND A.TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcTypeCd != null and intrfcTypeCd != ''">
+		AND A.INTRFC_TYPE_CD like CONCAT('%',#{intrfcTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv1Cd != null and lv1Cd != ''">
+		AND A.LV_1_CD like CONCAT('%',#{lv1Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv2Cd != null and lv2Cd != ''">
+		AND A.LV_2_CD like CONCAT('%',#{lv2Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+		AND A.LV_3_CD like CONCAT('%',#{lv3Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv4Cd != null and lv4Cd != ''">
+		AND A.LV_4_CD like CONCAT('%',#{lv4Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv5Cd != null and lv5Cd != ''">
+		AND A.LV_5_CD like CONCAT('%',#{lv5Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="syncAsyncDscd != null and syncAsyncDscd != ''">
+		AND A.SYNC_ASYNC_DSCD like CONCAT('%',#{syncAsyncDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND A.SR_TYPE_CD like CONCAT('%',#{srTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="rqstExtrnlMsgNo != null and rqstExtrnlMsgNo != ''">
+		AND  A.RQST_EXTRNL_MSG_NO_NM like CONCAT('%',#{rqstExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rspsExtrnlMsgNo != null and rspsExtrnlMsgNo != ''">
+		AND  A.RSPS_EXTRNL_MSG_NO_NM like CONCAT('%',#{rspsExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="sysCdS != null and sysCdS != ''">
+		AND  B.SYS_CD like CONCAT('%',#{sysCdS, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="sysCdR != null and sysCdR != ''">
+		AND  C.SYS_CD like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND  d.MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="trxTypeDscd != null and trxTypeDscd != ''">
+		AND A.TRX_TYPE_DSCD like CONCAT('%',#{trxTypeDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="viewId != null and viewId != ''">
+		AND A.VIEW_ID like CONCAT('%',#{viewId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="execEnvDscd != null and execEnvDscd != ''">
+		AND A.EXEC_ENV_DSCD like CONCAT('%',#{execEnvDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	group by A.INTRFC_ID, A.BIZ_CD, A.INST_CD, A.INTRFC_NM, A.INTRFC_WAY_CD, A.LV_1_CD, A.LV_2_CD, A.LV_3_CD, A.LV_4_CD, A.LV_5_CD, A.MSG_TRNSFRM_YN, A.REG_DTTM, A.REG_MAN_ID, A.TRX_CD, A.TRX_DSCD, A.WORK_STATUS_CD, A.INTRFC_TYPE_CD, B.SR_SEQ, B.SR_TYPE_CD, B.SYS_CD, C.SR_SEQ, C.SR_TYPE_CD, C.SYS_CD, A.TRX_TYPE_DSCD
+ 	order by A.REG_DTTM DESC
+	) as p, (SELECT @rownum := 0) r
+	</select>
+	
+	<select id="selectFebAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM (
+		select 
+			A.INTRFC_ID AS intrfcId, 
+			A.BIZ_CD AS bizCd, 
+			A.INST_CD AS instCd, 
+			A.INTRFC_NM AS intrfcNm, 
+			A.INTRFC_NM_SUB AS intrfcNmSub, 
+			A.INTRFC_WAY_CD AS intrfcWayCd, 
+			A.LV_1_CD AS lv1Cd, 
+			A.LV_2_CD AS lv2Cd, 
+			A.LV_3_CD AS lv3Cd,
+			A.LV_4_CD AS lv4Cd, 
+			A.LV_5_CD AS lv5Cd,  
+			A.MSG_TRNSFRM_YN AS msgTrnsfrmYn, 
+			A.REG_DTTM AS regDttm, 
+			A.REG_MAN_ID AS regManId, 
+			A.TRX_CD AS trxCd, 
+			A.TRX_DSCD AS trxDscd, 
+			A.WORK_STATUS_CD AS workStatusCd,
+			A.INTRFC_TYPE_CD AS intrfcTypeCd,
+			A.VIEW_ID AS viewId,
+			B.SR_SEQ AS srSeqAsS, 
+			B.SR_TYPE_CD AS srTypeCdS, 
+			B.SYS_CD AS sysCdS, 
+			C.SR_SEQ AS srSeqAsR, 
+			C.SR_TYPE_CD AS srTypeCdR,
+			C.SYS_CD AS sysCdR,
+			A.TRX_TYPE_DSCD as trxTypeDscd,
+			@rownum := @rownum + 1 AS rn
+		from TBINTRFCCOMBS A left outer join TBINTRFCSRSYSDT B on A.INTRFC_ID = B.INTRFC_ID and B.SR_TYPE_CD = 'SEND' left join TBINTRFCSRSYSDT C 
+		ON A.INTRFC_ID = C.INTRFC_ID and C.SR_TYPE_CD = 'RECEIVE' left join TBINTRFCMSGLAYOUTDT d on A.INTRFC_ID = d.INTRFC_ID
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND A.INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNm != null and intrfcNm != ''">
+		AND A.INTRFC_NM like CONCAT('%',#{intrfcNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcNmSub != null and intrfcNmSub != ''">
+		AND A.INTRFC_NM_SUB like CONCAT('%',#{intrfcNmSub, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcWayCd != null and intrfcWayCd != ''">
+		AND A.INTRFC_WAY_CD like CONCAT('%',#{intrfcWayCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="workStatusCd != null and workStatusCd != ''">
+		AND A.WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regManId != null and regManId != ''">
+		AND A.REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="regDttm != null and regDttm != ''">
+		AND A.REG_DTTM like CONCAT('%',#{regDttm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgTrnsfrmYn != null and msgTrnsfrmYn != ''">
+		AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxCd != null and trxCd != ''">
+		AND C.TRX_CD = #{trxCd, jdbcType = VARCHAR}
+ 	</if>
+	<if test="bizCd != null and bizCd != ''">
+		AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="instCd != null and instCd != ''">
+		AND A.INST_CD like CONCAT('%',#{instCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="trxDscd != null and trxDscd != ''">
+		AND A.TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="intrfcTypeCd != null and intrfcTypeCd != ''">
+		AND A.INTRFC_TYPE_CD like CONCAT('%',#{intrfcTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv1Cd != null and lv1Cd != ''">
+		AND A.LV_1_CD like CONCAT('%',#{lv1Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv2Cd != null and lv2Cd != ''">
+		AND A.LV_2_CD like CONCAT('%',#{lv2Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv3Cd != null and lv3Cd != ''">
+		AND A.LV_3_CD like CONCAT('%',#{lv3Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv4Cd != null and lv4Cd != ''">
+		AND A.LV_4_CD like CONCAT('%',#{lv4Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lv5Cd != null and lv5Cd != ''">
+		AND A.LV_5_CD like CONCAT('%',#{lv5Cd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="syncAsyncDscd != null and syncAsyncDscd != ''">
+		AND A.SYNC_ASYNC_DSCD like CONCAT('%',#{syncAsyncDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND A.SR_TYPE_CD like CONCAT('%',#{srTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="rqstExtrnlMsgNo != null and rqstExtrnlMsgNo != ''">
+		AND  A.RQST_EXTRNL_MSG_NO_NM like CONCAT('%',#{rqstExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rspsExtrnlMsgNo != null and rspsExtrnlMsgNo != ''">
+		AND  A.RSPS_EXTRNL_MSG_NO_NM like CONCAT('%',#{rspsExtrnlMsgNo, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND  d.MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="trxTypeDscd != null and trxTypeDscd != ''">
+		AND A.TRX_TYPE_DSCD like CONCAT('%',#{trxTypeDscd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	<if test="viewId != null and viewId != ''">
+		AND A.VIEW_ID like CONCAT('%',#{viewId, jdbcType = VARCHAR},'%')
+ 	</if>
+	AND (B.SYS_CD like CONCAT('%',#{sysCdS, jdbcType = VARCHAR},'%') OR  C.SYS_CD like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%'))
+ 	group by A.INTRFC_ID, A.BIZ_CD, A.INST_CD, A.INTRFC_NM, A.INTRFC_WAY_CD, A.LV_1_CD, A.LV_2_CD, A.LV_3_CD, A.LV_4_CD, A.LV_5_CD, A.MSG_TRNSFRM_YN, A.REG_DTTM, A.REG_MAN_ID, A.TRX_CD, A.TRX_DSCD, A.WORK_STATUS_CD, A.INTRFC_TYPE_CD, B.SR_SEQ, B.SR_TYPE_CD, B.SYS_CD, C.SR_SEQ, C.SR_TYPE_CD, C.SYS_CD, A.TRX_TYPE_DSCD
+ 	order by A.REG_DTTM DESC
+	) as p, (SELECT @rownum := 0) r
+	</select>
+	<select id="selectIntrfccombs" resultMap="getRawData">	
+	SELECT
+		A.INTRFC_ID AS intrfcId
+		,A.INTRFC_NM AS intrfcNm
+		,A.INTRFC_NM_SUB AS intrfcNmSub
+		,A.INTRFC_WAY_CD AS intrfcWayCd
+		,A.WORK_STATUS_CD AS workStatusCd
+		,A.REG_MAN_ID AS regManId
+		,A.REG_DTTM AS regDttm
+		,A.MSG_TRNSFRM_YN AS msgTrnsfrmYn
+		,A.TRX_CD AS trxCd
+		,A.BIZ_CD AS bizCd
+    	,C.BIZ_CD_NM AS bizCdNm
+		,A.INST_CD AS instCd
+    	,B.INST_CD_NM AS instCdNm
+		,A.TRX_DSCD AS trxDscd
+		,A.RAW_DATA AS rawData
+		,A.INTRFC_TYPE_CD AS intrfcTypeCd
+		,A.LV_1_CD AS lv1Cd
+		,A.LV_2_CD AS lv2Cd
+		,A.LV_3_CD AS lv3Cd
+		,A.LV_4_CD AS lv4Cd
+		,A.LV_5_CD AS lv5Cd
+		,A.SYNC_ASYNC_DSCD AS syncAsyncDscd
+		,A.SR_TYPE_CD AS srTypeCd
+		,A.RQST_EXTRNL_MSG_NO_NM AS rqstExtrnlMsgNo
+		,A.RSPS_EXTRNL_MSG_NO_NM AS rspsExtrnlMsgNo
+		,A.CRTN_SEQ AS crtnSeq
+		,A.RSRV_FLD_VAL1 AS rsrvFldVal1
+		,A.RSRV_FLD_VAL2 AS rsrvFldVal2
+		,A.RSRV_FLD_VAL3 AS rsrvFldVal3
+		,A.RSPS_YN AS rspsYn
+		,A.TRX_TYPE_DSCD AS trxTypeDscd
+		,A.VIEW_ID AS viewId
+		,A.PROTOCOL_DSCD AS protocolDscd
+		,A.HTTP_METHOD AS httpMethod
+		,A.CONTEXT_URL AS contextUrl
+		,A.REQ_MEDIA_TYPE AS requestMediaType
+		,A.RES_MEDIA_TYPE AS responseMediaType
+		,A.EXEC_ENV_DSCD AS execEnvDscd
+	FROM TBINTRFCCOMBS A left OUTER JOIN TBEXTRNLINSTCD B  ON A.INST_CD = B.INST_CD  left OUTER JOIN TBBIZCD C ON A.BIZ_CD = C.BIZ_CD
+	WHERE A.INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</select>	
+
+
+	<insert id="insertIntrfccombs"	parameterType="eims.web.dto.table.IntrfccombsDto">
+	INSERT INTO TBINTRFCCOMBS (
+		 INTRFC_ID		
+		,INTRFC_NM
+		,INTRFC_NM_SUB		
+		,INTRFC_WAY_CD		
+		,WORK_STATUS_CD		
+		,REG_MAN_ID		
+		,REG_DTTM		
+		,MSG_TRNSFRM_YN		
+		,TRX_CD		
+		,BIZ_CD		
+		,INST_CD		
+		,TRX_DSCD		
+		,RAW_DATA		
+		,INTRFC_TYPE_CD		
+		,LV_1_CD		
+		,LV_2_CD		
+		,LV_3_CD		
+		,LV_4_CD		
+		,LV_5_CD		
+		,SYNC_ASYNC_DSCD		
+		,SR_TYPE_CD		
+		,RQST_EXTRNL_MSG_NO_NM		
+		,RSPS_EXTRNL_MSG_NO_NM
+		,CRTN_SEQ		
+		,RSRV_FLD_VAL1		
+		,RSRV_FLD_VAL2		
+		,RSRV_FLD_VAL3		
+		,RSPS_YN		
+		,TRX_TYPE_DSCD
+		,VIEW_ID
+		,PROTOCOL_DSCD
+		,HTTP_METHOD
+		,CONTEXT_URL
+		,REQ_MEDIA_TYPE
+		,RES_MEDIA_TYPE
+		,EXEC_ENV_DSCD
+	) VALUES (
+		 #{intrfcId, jdbcType = VARCHAR}
+ 		,#{intrfcNm, jdbcType = VARCHAR}
+ 		,#{intrfcNmSub, jdbcType = VARCHAR}
+ 		,#{intrfcWayCd, jdbcType = VARCHAR}
+ 		,#{workStatusCd, jdbcType = VARCHAR}
+ 		,#{regManId, jdbcType = VARCHAR}
+ 		,#{regDttm, jdbcType = VARCHAR}
+ 		,#{msgTrnsfrmYn, jdbcType = VARCHAR}
+ 		,#{trxCd, jdbcType = VARCHAR}
+ 		,#{bizCd, jdbcType = VARCHAR}
+ 		,#{instCd, jdbcType = VARCHAR}
+ 		,#{trxDscd, jdbcType = VARCHAR}
+ 		,#{rawData}
+ 		,#{intrfcTypeCd, jdbcType = VARCHAR}
+ 		,#{lv1Cd, jdbcType = VARCHAR}
+ 		,#{lv2Cd, jdbcType = VARCHAR}
+ 		,#{lv3Cd, jdbcType = VARCHAR}
+ 		,#{lv4Cd, jdbcType = VARCHAR}
+ 		,#{lv5Cd, jdbcType = VARCHAR}
+ 		,#{syncAsyncDscd, jdbcType = VARCHAR}
+ 		,#{srTypeCd, jdbcType = VARCHAR}
+ 		,#{rqstExtrnlMsgNo, jdbcType = VARCHAR}
+ 		,#{rspsExtrnlMsgNo, jdbcType = VARCHAR}
+ 		,#{crtnSeq, jdbcType = NUMERIC}
+ 		,#{rsrvFldVal1, jdbcType = VARCHAR}
+ 		,#{rsrvFldVal2, jdbcType = VARCHAR}
+ 		,#{rsrvFldVal3, jdbcType = VARCHAR}
+ 		,#{rspsYn, jdbcType = VARCHAR}
+ 		,#{trxTypeDscd, jdbcType = VARCHAR}
+ 		,#{viewId, jdbcType = VARCHAR}	
+ 		,#{protocolDscd, jdbcType = VARCHAR}
+ 		,#{httpMethod, jdbcType = VARCHAR}
+ 		,#{contextUrl, jdbcType = VARCHAR}
+ 		,#{requestMediaType, jdbcType = VARCHAR}
+ 		,#{responseMediaType, jdbcType = VARCHAR}	
+ 		,#{execEnvDscd, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateIntrfccombs"	parameterType="eims.web.dto.table.IntrfccombsDto">
+	UPDATE TBINTRFCCOMBS 
+	SET
+ 		INTRFC_NM = #{intrfcNm, jdbcType = VARCHAR}		
+ 		,INTRFC_NM_SUB = #{intrfcNmSub, jdbcType = VARCHAR}	
+  		,INTRFC_WAY_CD = #{intrfcWayCd, jdbcType = VARCHAR}		
+  		,WORK_STATUS_CD = #{workStatusCd, jdbcType = VARCHAR}		
+  		,REG_MAN_ID = #{regManId, jdbcType = VARCHAR}		
+  		,REG_DTTM = #{regDttm, jdbcType = VARCHAR}		
+  		,MSG_TRNSFRM_YN = #{msgTrnsfrmYn, jdbcType = VARCHAR}		
+  		,TRX_CD = #{trxCd, jdbcType = VARCHAR}		
+  		,BIZ_CD = #{bizCd, jdbcType = VARCHAR}		
+  		,INST_CD = #{instCd, jdbcType = VARCHAR}		
+  		,TRX_DSCD = #{trxDscd, jdbcType = VARCHAR}		
+  		,RAW_DATA = #{rawData}		
+  		,INTRFC_TYPE_CD = #{intrfcTypeCd, jdbcType = VARCHAR}		
+  		,LV_1_CD = #{lv1Cd, jdbcType = VARCHAR}		
+  		,LV_2_CD = #{lv2Cd, jdbcType = VARCHAR}		
+  		,LV_3_CD = #{lv3Cd, jdbcType = VARCHAR}		
+  		,LV_4_CD = #{lv4Cd, jdbcType = VARCHAR}		
+  		,LV_5_CD = #{lv5Cd, jdbcType = VARCHAR}		
+  		,SYNC_ASYNC_DSCD = #{syncAsyncDscd, jdbcType = VARCHAR}		
+  		,SR_TYPE_CD = #{srTypeCd, jdbcType = VARCHAR}
+  		,RQST_EXTRNL_MSG_NO_NM = #{rqstExtrnlMsgNo, jdbcType = VARCHAR}		
+  		,RSPS_EXTRNL_MSG_NO_NM = #{rspsExtrnlMsgNo, jdbcType = VARCHAR}
+  		,CRTN_SEQ = #{crtnSeq, jdbcType = NUMERIC}		
+  		,RSRV_FLD_VAL1 = #{rsrvFldVal1, jdbcType = VARCHAR}		
+  		,RSRV_FLD_VAL2 = #{rsrvFldVal2, jdbcType = VARCHAR}		
+  		,RSRV_FLD_VAL3 = #{rsrvFldVal3, jdbcType = VARCHAR}		
+  		,RSPS_YN = #{rspsYn, jdbcType = VARCHAR}
+  		,TRX_TYPE_DSCD = #{trxTypeDscd, jdbcType = VARCHAR}
+  		,VIEW_ID = #{viewId, jdbcType = VARCHAR}	
+  		,PROTOCOL_DSCD = #{protocolDscd, jdbcType = VARCHAR}
+  		,HTTP_METHOD = #{httpMethod, jdbcType = VARCHAR}
+  		,CONTEXT_URL = #{contextUrl, jdbcType = VARCHAR}
+  		,REQ_MEDIA_TYPE = #{requestMediaType, jdbcType = VARCHAR}
+  		,RES_MEDIA_TYPE = #{responseMediaType, jdbcType = VARCHAR}
+  		,EXEC_ENV_DSCD = #{execEnvDscd, jdbcType = VARCHAR}
+   	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="updateIntrfccombsStatus"	parameterType="java.lang.String">
+	UPDATE TBINTRFCCOMBS 
+	SET
+ 		WORK_STATUS_CD = #{workStatusCd, jdbcType = VARCHAR}		
+   	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteIntrfccombs"	parameterType="eims.web.dto.table.IntrfccombsDto">
+	DELETE FROM TBINTRFCCOMBS
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</update>
+ 	
+ 	<select id="selectIdSeq" resultType="java.lang.Integer">	
+ 	select 
+ 		MAX(CRTN_SEQ) 
+	from TBINTRFCCOMBS 
+	where LV_3_CD = #{intrfcIdPre, jdbcType = VARCHAR}   
+ 	</select>	
+ 	 	
+ 	<select id="selectDeployAllInterface" resultType="java.lang.String">	
+		SELECT INTRFC_ID FROM TBINTRFCCOMBS WHERE WORK_STATUS_CD ='DEPLOY_COMP' ORDER BY INTRFC_ID DESC LIMIT 1000 OFFSET 110;
+ 	</select>	
+ 	
+	<select id="selectAllIntrfcInfoToExport" resultType="eims.web.dto.IntrfcInfoExportDto">
+	SELECT
+			A.INTRFC_ID AS intrfcId
+			,A.INTRFC_NM AS intrfcNm
+			,A.INTRFC_WAY_CD AS intrfcWayCd
+			,A.WORK_STATUS_CD AS workStatusCd
+			,A.REG_MAN_ID AS regManId
+			,A.REG_DTTM AS regDttm
+			,A.MSG_TRNSFRM_YN AS msgTrnsfrmYn
+			,A.TRX_CD AS trxCd
+			,A.BIZ_CD AS bizCd
+			,C.BIZ_CD_NM AS bizCdNm
+			,A.INST_CD AS instCd
+			,B.INST_CD_NM AS instCdNm
+			,A.TRX_DSCD AS trxDscd
+			,A.RAW_DATA AS rawData
+			,A.INTRFC_TYPE_CD AS intrfcTypeCd
+			,A.LV_1_CD AS lv1Cd
+			,A.LV_2_CD AS lv2Cd
+			,A.LV_3_CD AS lv3Cd
+			,A.LV_4_CD AS lv4Cd
+			,A.LV_5_CD AS lv5Cd
+			,G.APP_CD_NM AS appCdNm
+       		,H.USER_NM AS regMamNm
+			,A.SYNC_ASYNC_DSCD AS syncAsyncDscd
+			,A.SR_TYPE_CD AS srTypeCd
+			,A.RQST_EXTRNL_MSG_NO_NM AS rqstExtrnlMsgNo
+			,A.RSPS_EXTRNL_MSG_NO_NM AS rspsExtrnlMsgNo
+			,A.CRTN_SEQ AS crtnSeq
+			,A.RSRV_FLD_VAL1 AS rsrvFldVal1
+			,A.RSRV_FLD_VAL2 AS rsrvFldVal2
+			,A.RSRV_FLD_VAL3 AS rsrvFldVal3
+			,A.RSPS_YN AS rspsYn
+			,A.TRX_TYPE_DSCD AS trxTypeDscd
+			,A.VIEW_ID AS viewId
+			,A.PROTOCOL_DSCD AS protocolDscd
+			,A.HTTP_METHOD AS httpMethod
+			,A.CONTEXT_URL AS contextUrl
+			,A.REQ_MEDIA_TYPE AS requestMediaType
+			,A.RES_MEDIA_TYPE AS responseMediaType
+			,A.EXEC_ENV_DSCD AS execEnvDscd
+		,D.srTypeCdSend as srTypeCdSend
+		,D.sysCdSend AS sysCdSend
+		,D.sysNmSend AS sysNmSend
+		,D.trxCdSend AS trxCdSend
+		,D.filePathSend AS filePathSend
+		,D.crgManNmSend AS crgManNmSend
+		,D.srTypeCdReceive as srTypeCdReceive
+		,D.sysCdReceive AS sysCdReceive
+		,D.sysNmReceive AS sysNmReceive
+		,D.trxCdReceive AS trxCdReceive
+		,D.filePathReceive AS filePathReceive
+		,D.crgManNmReceive AS crgManNmReceive    
+		, F.seq1 as seq1
+		, F.lenFldOffsetLen1 as lenFldOffsetLen1
+		, F.fldDataLen1 as fldDataLen1
+		, F.fldCfgVal1 as fldCfgVal1
+		, F.rutngDesc1 as rutngDesc1
+		, F.cndtCd1 as cndtCd1
+		, F.seq2 as seq2
+		, F.lenFldOffsetLen2 as lenFldOffsetLen2
+		, F.fldDataLen2 as fldDataLen2
+		, F.fldCfgVal2 as fldCfgVal2
+		, F.rutngDesc2 as rutngDesc2
+		, F.cndtCd2 as cndtCd2
+		FROM TBINTRFCCOMBS A left OUTER JOIN TBEXTRNLINSTCD B  ON A.INST_CD = B.INST_CD
+		left OUTER JOIN TBBIZCD C ON A.BIZ_CD = C.BIZ_CD
+		left OUTER JOIN (	select seq1.intrfcId , 
+		   seq1.seq as seq1 , 
+		   seq1.lenFldOffsetLen as lenFldOffsetLen1 , 
+		   seq1.fldDataLen as fldDataLen1 , 
+		   seq1.fldCfgVal as fldCfgVal1 , 
+		   seq1.rutngDesc as rutngDesc1 , 
+		   seq1.cndtCd as cndtCd1 , 
+		   seq2.seq as seq2 , 
+		   seq2.lenFldOffsetLen as lenFldOffsetLen2 , 
+		   seq2.fldDataLen as fldDataLen2 , 
+		   seq2.fldCfgVal as fldCfgVal2 , 
+		   seq2.rutngDesc as rutngDesc2 , 
+		   seq2.cndtCd as cndtCd2 
+		from 
+		(
+		select 
+			F.INTRFC_ID AS intrfcId ,
+			F.SEQ AS seq ,
+			F.LEN_FLD_OFFSET_LEN AS lenFldOffsetLen ,
+			F.FLD_DATA_LEN AS fldDataLen ,
+			F.FLD_CFG_VAL AS fldCfgVal ,
+			F.RUTNG_DESC AS rutngDesc ,
+			F.CNDT_CD AS cndtCd 
+		from TBINTRFCROUTINFODT F where seq = 1 
+		) seq1 LEFT OUTER JOIN
+		( 
+		select 
+			F.INTRFC_ID AS intrfcId ,
+			F.SEQ AS seq ,
+			F.LEN_FLD_OFFSET_LEN AS lenFldOffsetLen ,
+			F.FLD_DATA_LEN AS fldDataLen ,
+			F.FLD_CFG_VAL AS fldCfgVal ,
+			F.RUTNG_DESC AS rutngDesc ,
+			F.CNDT_CD AS cndtCd 
+		from TBINTRFCROUTINFODT F where seq = 2
+		) seq2 on seq1.intrfcId = seq2.intrfcId ) F ON A.INTRFC_ID = F.intrfcId
+		left OUTER JOIN (
+		  select send.intrfcId
+			,send.srTypeCd as srTypeCdSend
+			,send.sysCd AS sysCdSend
+			,send.sysNm AS sysNmSend
+			,send.trxCd AS trxCdSend
+			,send.filePath AS filePathSend
+			,send.crgManNm AS crgManNmSend
+			,receive.srTypeCd as srTypeCdReceive
+			,receive.sysCd AS sysCdReceive
+			,receive.sysNm AS sysNmReceive
+			,receive.trxCd AS trxCdReceive
+			,receive.filePath AS filePathReceive
+			,receive.crgManNm AS crgManNmReceive
+	  from (
+		select D.INTRFC_ID AS intrfcId
+		  ,D.SR_TYPE_CD AS srTypeCd
+		  ,D.SR_SEQ AS srSeq
+		  ,D.SYS_CD AS sysCd
+			,E.SYS_NM AS sysNm
+			,D.TRX_CD AS trxCd
+		  ,D.FILE_PATH AS filePath
+		  ,D.CRG_MAN_NM AS crgManNm
+		from TBINTRFCSRSYSDT D LEFT OUTER JOIN TBSRSYSBS E on D.SYS_CD = E.SYS_CD
+		where D.sr_type_cd = 'SEND' ) send,
+		(
+		select D.INTRFC_ID AS intrfcId
+		  ,D.SR_TYPE_CD AS srTypeCd
+		  ,D.SR_SEQ AS srSeq
+		  ,D.SYS_CD AS sysCd
+			,E.SYS_NM AS sysNm
+			,D.TRX_CD AS trxCd
+		  ,D.FILE_PATH AS filePath
+		  ,D.CRG_MAN_NM AS crgManNm
+		from TBINTRFCSRSYSDT D LEFT OUTER JOIN TBSRSYSBS E on D.SYS_CD = E.SYS_CD
+		where D.sr_type_cd = 'RECEIVE') receive
+		where send.intrfcId = receive.intrfcId
+		) D on A.INTRFC_ID = D.intrfcId	
+       LEFT OUTER JOIN TBAPPCD G ON  A.LV_1_CD = G.APP_CD
+       LEFT OUTER JOIN TBUSERBS H ON  A.REG_MAN_ID = H.USER_ID
+		WHERE 1=1  
+			<if test="intrfcId != null and intrfcId != ''">
+				AND A.INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="intrfcNm != null and intrfcNm != ''">
+				AND A.INTRFC_NM like CONCAT('%',#{intrfcNm, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="intrfcWayCd != null and intrfcWayCd != ''">
+				AND A.INTRFC_WAY_CD like CONCAT('%',#{intrfcWayCd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="workStatusCd != null and workStatusCd != ''">
+				AND A.WORK_STATUS_CD like CONCAT('%',#{workStatusCd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="regManId != null and regManId != ''">
+				AND A.REG_MAN_ID like CONCAT('%',#{regManId, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="regDttm != null and regDttm != ''">
+				AND A.REG_DTTM like CONCAT('%',#{regDttm, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="msgTrnsfrmYn != null and msgTrnsfrmYn != ''">
+				AND A.MSG_TRNSFRM_YN like CONCAT('%',#{msgTrnsfrmYn, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="trxCd != null and trxCd != ''">
+				AND D.trxCdReceive like CONCAT('%', #{trxCd, jdbcType = VARCHAR},'%' )
+		 	</if>
+			<if test="bizCd != null and bizCd != ''">
+				AND A.BIZ_CD like CONCAT('%',#{bizCd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="instCd != null and instCd != ''">
+				AND A.INST_CD like CONCAT('%',#{instCd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="trxDscd != null and trxDscd != ''">
+				AND A.TRX_DSCD like CONCAT('%',#{trxDscd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="intrfcTypeCd != null and intrfcTypeCd != ''">
+				AND A.INTRFC_TYPE_CD like CONCAT('%',#{intrfcTypeCd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="lv1Cd != null and lv1Cd != ''">
+				AND A.LV_1_CD like CONCAT('%',#{lv1Cd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="lv2Cd != null and lv2Cd != ''">
+				AND A.LV_2_CD like CONCAT('%',#{lv2Cd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="lv3Cd != null and lv3Cd != ''">
+				AND A.LV_3_CD like CONCAT('%',#{lv3Cd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="lv4Cd != null and lv4Cd != ''">
+				AND A.LV_4_CD like CONCAT('%',#{lv4Cd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="lv5Cd != null and lv5Cd != ''">
+				AND A.LV_5_CD like CONCAT('%',#{lv5Cd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="syncAsyncDscd != null and syncAsyncDscd != ''">
+				AND A.SYNC_ASYNC_DSCD like CONCAT('%',#{syncAsyncDscd, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="srTypeCd != null and srTypeCd != ''">
+				AND A.SR_TYPE_CD like CONCAT('%',#{srTypeCd, jdbcType = VARCHAR},'%')
+		 	</if>
+		 	<if test="rqstExtrnlMsgNo != null and rqstExtrnlMsgNo != ''">
+				AND  A.RQST_EXTRNL_MSG_NO_NM like CONCAT('%',#{rqstExtrnlMsgNo, jdbcType = VARCHAR},'%')
+		 	</if>
+			<if test="rspsExtrnlMsgNo != null and rspsExtrnlMsgNo != ''">
+				AND  A.RSPS_EXTRNL_MSG_NO_NM like CONCAT('%',#{rspsExtrnlMsgNo, jdbcType = VARCHAR},'%')
+		 	</if>
+		 	<if test="sysCdS != null and sysCdS != ''">
+				AND  D.sysCdSend like CONCAT('%',#{sysCdS, jdbcType = VARCHAR},'%')
+		 	</if>
+		 	<if test="sysCdR != null and sysCdR != ''">
+				AND  D.sysCdReceive like CONCAT('%',#{sysCdR, jdbcType = VARCHAR},'%')
+		 	</if>
+		 	<if test="msgLayoutId != null and msgLayoutId != ''">  
+				AND  A.INTRFC_ID in ( select intrfc_id
+						              from TBINTRFCMSGLAYOUTDT      
+						              where MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+						              group by intrfc_id )
+		 	</if>
+		 	<if test="trxTypeDscd != null and trxTypeDscd != ''">
+				AND A.TRX_TYPE_DSCD like CONCAT('%',#{trxTypeDscd, jdbcType = VARCHAR},'%')
+		 	</if>
+		 	order by INTRFC_ID desc 	
+	</select>
+ 	
+</mapper>

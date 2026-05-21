@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.MetabsDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.MetabsDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 META_ENG_NM AS metaEngNm
+			,META_KOR_NM AS metaKorNm
+			,DATA_TYPE_NM AS dataTypeNm
+			,META_LEN AS metaLen
+			,DECIMAL_LEN AS decimalLen
+			,META_ENC_YN AS metaEncYn
+			,META_TERM_TYPE AS metaTermType
+			,@rownum := @rownum + 1 AS rn
+		FROM TBMETABS
+		WHERE 1=1
+	<if test="metaEngNm != null and metaEngNm != ''">
+		AND META_ENG_NM like CONCAT('%',#{metaEngNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="metaKorNm != null and metaKorNm != ''">
+		AND META_KOR_NM like CONCAT('%',#{metaKorNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="dataTypeNm != null and dataTypeNm != ''">
+		AND DATA_TYPE_NM like CONCAT('%',#{dataTypeNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="metaLen != null and metaLen != ''">
+		AND META_LEN like CONCAT('%',#{metaLen, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="decimalLen != null and decimalLen != ''">
+		AND DECIMAL_LEN like CONCAT('%',#{decimalLen, jdbcType = NUMERIC},'%')
+ 	</if> 	
+ 	order by META_ENG_NM
+	) p , (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBMETABS
+		WHERE 1=1
+	<if test="metaEngNm != null and metaEngNm != ''">
+		AND META_ENG_NM like CONCAT('%',#{metaEngNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="metaKorNm != null and metaKorNm != ''">
+		AND META_KOR_NM like CONCAT('%',#{metaKorNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="dataTypeNm != null and dataTypeNm != ''">
+		AND DATA_TYPE_NM like CONCAT('%',#{dataTypeNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="metaLen != null and metaLen != ''">
+		AND META_LEN like CONCAT('%',#{metaLen, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="decimalLen != null and decimalLen != ''">
+		AND DECIMAL_LEN like CONCAT('%',#{decimalLen, jdbcType = NUMERIC},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectMetabs" resultType="eims.web.dto.table.MetabsDto">	
+	SELECT
+		 META_ENG_NM AS metaEngNm
+		,META_KOR_NM AS metaKorNm
+		,DATA_TYPE_NM AS dataTypeNm
+		,META_LEN AS metaLen
+		,DECIMAL_LEN AS decimalLen
+		,META_ENC_YN AS metaEncYn
+		,META_TERM_TYPE AS metaTermType
+	FROM TBMETABS
+	WHERE META_KOR_NM = #{metaKorNm, jdbcType = VARCHAR}
+ 	</select>	
+
+	<insert id="insertMetabs"	parameterType="eims.web.dto.table.MetabsDto">
+	INSERT INTO TBMETABS (
+		 META_ENG_NM		
+		,META_KOR_NM		
+		,DATA_TYPE_NM		
+		,META_LEN		
+		,DECIMAL_LEN
+		,META_ENC_YN
+		,META_TERM_TYPE
+	) VALUES 
+	(
+		 #{metaEngNm, jdbcType = VARCHAR}
+ 		,#{metaKorNm, jdbcType = VARCHAR}
+ 		,#{dataTypeNm, jdbcType = VARCHAR}
+ 		,#{metaLen, jdbcType = NUMERIC}
+ 		,#{decimalLen, jdbcType = NUMERIC}
+ 		,#{metaEncYn, jdbcType = VARCHAR}
+ 		,#{metaTermType, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<insert id="insertMetabsList"	parameterType="java.util.List">
+	INSERT INTO TBMETABS (
+		 META_ENG_NM		
+		,META_KOR_NM		
+		,DATA_TYPE_NM		
+		,META_LEN		
+		,DECIMAL_LEN		
+	) VALUES
+	<foreach collection="list" item="item" open="" close="" separator="" >
+	(
+		 #{item.metaEngNm, jdbcType = VARCHAR}
+ 		,#{item.metaKorNm, jdbcType = VARCHAR}
+ 		,#{item.dataTypeNm, jdbcType = VARCHAR}
+ 		,#{item.metaLen, jdbcType = NUMERIC}
+ 		,#{item.decimalLen, jdbcType = NUMERIC}
+  	)
+	</foreach> 
+	</insert>
+	
+	<update id="updateMetabs"	parameterType="eims.web.dto.table.MetabsDto">
+	UPDATE TBMETABS 
+	SET
+		META_ENG_NM = #{metaEngNm, jdbcType = VARCHAR}
+  		,DATA_TYPE_NM = #{dataTypeNm, jdbcType = VARCHAR}		
+  		,META_LEN = #{metaLen, jdbcType = NUMERIC}		
+  		,DECIMAL_LEN = #{decimalLen, jdbcType = NUMERIC}		
+  		,META_ENC_YN = #{metaEncYn, jdbcType = VARCHAR}
+  		,META_TERM_TYPE = #{metaTermType, jdbcType = VARCHAR}
+   	WHERE 
+	   	META_KOR_NM = #{metaKorNm, jdbcType = VARCHAR}	
+	</update>
+	
+	<update id="updateInterface"	parameterType="eims.web.dto.table.MetaInterfaceDto">
+	UPDATE TB_EAI_STD_TRM_I 
+	SET
+		EAI_IF_DATA_APLY_TMSTMP = #{ifDataAplyTmstmp, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_STS_CD = #{ifDataAplyStsCd, jdbcType = VARCHAR}		
+  		,EAI_IF_DATA_APLY_ERR_CD = #{ifDataAplyErrCd, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_ERR_CONT = #{ifDataAplyErrMsg, jdbcType = NUMERIC}
+   	WHERE 
+	   	EAI_IF_DATA_SEQ_NBR = #{ifDataSeq, jdbcType = NUMERIC}	
+	</update>
+	
+	<update id="deleteMetabs"	parameterType="eims.web.dto.table.MetabsDto">
+	DELETE FROM TBMETABS
+	WHERE META_ENG_NM = #{metaEngNm, jdbcType = VARCHAR}
+ 	</update>
+ 	
+ 	<update id="deleteMetaAll">
+	DELETE FROM TBMETABS
+ 	</update>
+ 	
+ 	<select id="selectMetaEffect" resultType="eims.web.dto.table.MetaEffectDto">
+	 SELECT 
+	  C.INTRFC_ID AS intrfcId, 
+	  C.INTRFC_NM AS intrfcNm, 
+	  C.INTRFC_TYPE_CD AS intrfcType, 
+	  A.MSG_LAYOUT_ID AS msgLayoutId
+	 FROM TBINTRFCMSGLAYOUTDT A 
+		INNER JOIN TBMSGLAYOUTDT B ON A.MSG_LAYOUT_ID = B.MSG_LAYOUT_ID 
+		INNER JOIN TBINTRFCCOMBS C ON A.INTRFC_ID = C.INTRFC_ID
+	 WHERE B.FLD_ENG_NM = #{metaEngNm, jdbcType = VARCHAR}  
+	 	<if test="intrfcId != null and intrfcId != ''">
+		AND C.INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 		</if>
+ 		<if test="intrfcNm != null and intrfcNm != ''">
+		AND C.INTRFC_NM like CONCAT('%',#{intrfcNm, jdbcType = VARCHAR},'%')
+ 		</if>
+	</select> 
+	
+ 	<select id="selectMetaInterfaceList" resultType="eims.web.dto.table.MetaInterfaceDto">
+	 SELECT 
+	 	EAI_IF_DATA_SEQ_NBR as ifDataSeq,
+		EAI_IF_DATA_CRT_TMSTMP as ifDataCrtTmstmp,
+		EAI_IF_DATA_APLY_TP_CD as ifDataAplyTpCd,
+		EAI_IF_DATA_APLY_STS_CD as ifDataAplyStsCd,
+		EAI_IF_DATA_APLY_TMSTMP as ifDataAplyTmstmp,
+		EAI_IF_DATA_APLY_ERR_CD as ifDataAplyErrCd,
+		EAI_IF_DATA_APLY_ERR_CONT as ifDataAplyErrMsg,
+		STD_TRM_TP_CD as stdTrmTpCd,
+		STD_TRM_LGCL_NM as stdTrmLgclNm,
+		STD_TRM_PSCL_NM as stdTrmPsclNm,
+		STD_TRM_DATA_TP_NM as stdTrmDataTpNm,
+		STD_TRM_DATA_LEN as stdTrmDataLen,
+		STD_TRM_DATA_SCL as stdTrmDataScl, 	
+		STD_TRM_DMN_ENC_YN as stdTrmDmnEncYn
+	 FROM 
+	 	TB_EAI_STD_TRM_I
+	 WHERE
+	   EAI_IF_DATA_APLY_STS_CD = 'N' 
+	   OR EAI_IF_DATA_APLY_STS_CD = 'E'	   
+	</select>
+</mapper>

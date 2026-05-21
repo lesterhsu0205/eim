@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.MenuRoleRelDao">
+
+	<select id="selectRoleMenuRel"	resultType="java.lang.Integer">
+	SELECT
+		count(*) cnt 
+	FROM TBROLEMENURL
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	AND MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</select>
+
+	<insert id="insertMenuRoleRel"	parameterType="eims.web.dto.table.MenuRoleRelDto">
+	INSERT INTO TBROLEMENURL (
+		 MENU_ID		
+		,ROLE_ID		
+	) VALUES (
+ 		 #{menuId, jdbcType = VARCHAR}
+ 		,#{roleId, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<delete id="deleteMenuRoleRel"	parameterType="java.lang.String">
+	DELETE FROM TBROLEMENURL
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	</delete>
+	
+	<delete id="deleteMenuRoleRel2"	parameterType="eims.web.dto.table.MenuRoleRelDto">
+	DELETE FROM TBROLEMENURL
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	AND MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</delete>
+</mapper>

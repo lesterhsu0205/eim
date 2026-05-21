@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.UserDao">
+	<select id="selectAll" resultType="eims.web.dto.table.UserDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 USER_ID AS userId
+			,USER_NM AS userNm
+			,DUTY_NM AS dutyNm
+			,DEPT_NM AS deptNm
+			,EMAIL AS email
+			,ROLE_ID AS roleId
+			,USER_PWD AS userPwd
+			, @rownum := @rownum + 1 AS rn
+			<!-- ,ROW_NUMBER() over (order by USER_ID) as rn -->
+		FROM TBUSERBS
+		WHERE 1=1
+	<if test="userId != null and userId != ''">
+		AND USER_ID like CONCAT('%',#{userId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="userNm != null and userNm != ''">
+		AND USER_NM like CONCAT('%',#{userNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="dutyNm != null and dutyNm != ''">
+		AND DUTY_NM like CONCAT('%',#{dutyNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="deptNm != null and deptNm != ''">
+		AND DEPT_NM like CONCAT('%',#{deptNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="email != null and email != ''">
+		AND EMAIL like CONCAT('%',#{email, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="roleId != null and roleId != ''">
+		AND ROLE_ID like CONCAT('%',#{roleId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="userPwd != null and userPwd != ''">
+		AND USER_PWD like CONCAT('%',#{userPwd, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		order by USER_ID
+	) p, (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBUSERBS
+		WHERE 1=1
+	<if test="userId != null and userId != ''">
+		AND USER_ID like CONCAT('%',#{userId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="userNm != null and userNm != ''">
+		AND USER_NM like CONCAT('%',#{userNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="dutyNm != null and dutyNm != ''">
+		AND DUTY_NM like CONCAT('%',#{dutyNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="deptNm != null and deptNm != ''">
+		AND DEPT_NM like CONCAT('%',#{deptNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="email != null and email != ''">
+		AND EMAIL like CONCAT('%',#{email, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="roleId != null and roleId != ''">
+		AND ROLE_ID like CONCAT('%',#{roleId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="userPwd != null and userPwd != ''">
+		AND USER_PWD like CONCAT('%',#{userPwd, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectUser" resultType="eims.web.dto.table.UserDto">	
+	SELECT
+		  USER_ID AS userId
+		,USER_NM AS userNm
+		,DUTY_NM AS dutyNm
+		,DEPT_NM AS deptNm
+		,EMAIL AS email
+		,ROLE_ID AS roleId
+		,USER_PWD AS userPwd
+	FROM TBUSERBS
+	WHERE USER_ID = #{userId, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertUser"	parameterType="eims.web.dto.table.UserDto">
+	INSERT INTO TBUSERBS (
+		 USER_ID		
+		,USER_NM		
+		,DUTY_NM		
+		,DEPT_NM		
+		,EMAIL		
+		,ROLE_ID		
+		,USER_PWD		
+	) VALUES (
+		 #{userId, jdbcType = VARCHAR}
+ 		,#{userNm, jdbcType = VARCHAR}
+ 		,#{dutyNm, jdbcType = VARCHAR}
+ 		,#{deptNm, jdbcType = VARCHAR}
+ 		,#{email, jdbcType = VARCHAR}
+ 		,#{roleId, jdbcType = VARCHAR}
+ 		,#{userPwd, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateUser"	parameterType="eims.web.dto.table.UserDto">
+	UPDATE TBUSERBS 
+	SET
+  		USER_NM = #{userNm, jdbcType = VARCHAR}, 
+  		EMAIL = #{email, jdbcType = VARCHAR}, 
+  		DUTY_NM = #{dutyNm, jdbcType = VARCHAR}, 
+  		DEPT_NM = #{deptNm, jdbcType = VARCHAR}, 
+  		ROLE_ID = #{roleId, jdbcType = VARCHAR},
+  		USER_PWD = #{userPwd, jdbcType = VARCHAR}	
+	WHERE USER_ID = #{userId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteUser"	parameterType="java.lang.String">
+	DELETE FROM TBUSERBS
+	WHERE  USER_ID = #{userId, jdbcType = VARCHAR}
+	</update>
+	
+</mapper>

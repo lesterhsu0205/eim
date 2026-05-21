@@ -118,8 +118,10 @@ var PopupService = function () {
 			var _calculatePosition2 = this.calculatePosition(width, height),
 			    top = _calculatePosition2.top,
 			    left = _calculatePosition2.left;
+			//const ok = bxMsg('common.confirmOk');
 
-			var template = '\n\t\t\t<div class="dim" style="z-index:99999">\n\t\t\t\t<div class="simple-modal-wrap" style="top:' + top + 'px; left:' + left + 'px;">\n\t\t\t\t\t<div style="width: ' + width + 'px;">\n\t\t\t\t\t\t<h2 class="bw-tt a-center" style="height:auto; max-height: 400px; overflow: auto;">' + text + '</h2>\n\t\t\t\t\t\t<div class="btn-wrap add-mg-t">\n\t\t\t\t\t\t\t<button id="simpleAlertConfirm" type="button" class="bw-btn-txt">\uD655\uC778</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t';
+
+			var template = '\n\t\t\t<div class="dim" style="z-index:99999">\n\t\t\t\t<div class="simple-modal-wrap" style="top:' + top + 'px; left:' + left + 'px;">\n\t\t\t\t\t<div style="width: ' + width + 'px;">\n\t\t\t\t\t\t<h2 class="bw-tt a-center" style="height:auto; max-height: 400px; overflow: auto;">' + text + '</h2>\n\t\t\t\t\t\t<div class="btn-wrap add-mg-t">\n\t\t\t\t\t\t\t<button id="simpleAlertConfirm" type="button" class="bw-btn-txt">OK</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t';
 
 			if (this.alert.length > 0) {
 				var _alert$pop = this.alert.pop(),
@@ -159,7 +161,7 @@ var PopupService = function () {
 			detail = detail ? detail : '';
 			param = param ? param : '';
 
-			var template = '\n\t\t\t<div class="dim" style="z-index:99999">\n\t\t\t\t<div class="simple-modal-wrap" style="top:' + top + 'px; left:' + left + 'px;">\n\t\t\t\t\t<div style="width: ' + width + 'px;">\n\t\t\t\t\t\t<h2 class="bw-tt a-center" style="height:auto; max-height: 200px; overflow: auto;">' + text + '</h2>\n\t\t\t\t\t\t<span style="font-size: 15px; max-height: 200px; overflow: auto;">' + param + '</span>\n\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t<span id="detailToggle" class="chr-c-blue cs-p">\n\t\t\t\t\t\t\t\t\uC0C1\uC138\uBCF4\uAE30 <i class="bxd bxd-toggle chr-c-blue" style="transform: rotate(180deg);font-size: 12px; width: 12px;"></i>\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div id="detailWrapper" style="display: none;" class="detailWrapper">' + detail + '</div>\n\t\t\t\t\t\t<div class="btn-wrap add-mg-t">\n\t\t\t\t\t\t\t<button id="detailAlertConfirm" type="button" class="bw-btn-txt">\uD655\uC778</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t';
+			var template = '\n\t\t\t<div class="dim" style="z-index:99999">\n\t\t\t\t<div class="simple-modal-wrap" style="top:' + top + 'px; left:' + left + 'px;">\n\t\t\t\t\t<div style="width: ' + width + 'px;">\n\t\t\t\t\t\t<h2 class="bw-tt a-center" style="height:auto; max-height: 200px; overflow: auto;">' + text + '</h2>\n\t\t\t\t\t\t<span style="font-size: 15px; max-height: 200px; overflow: auto;">' + param + '</span>\n\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t<span id="detailToggle" class="chr-c-blue cs-p">\n\t\t\t\t\t\t\t\tdetails <i class="bxd bxd-toggle chr-c-blue" style="transform: rotate(180deg);font-size: 12px; width: 12px;"></i>\n\t\t\t\t\t\t\t</span>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div id="detailWrapper" style="display: none;" class="detailWrapper">' + detail + '</div>\n\t\t\t\t\t\t<div class="btn-wrap add-mg-t">\n\t\t\t\t\t\t\t<button id="detailAlertConfirm" type="button" class="bw-btn-txt">confirm</button>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t';
 
 			if (this.alert.length > 0) {
 				var _alert$pop2 = this.alert.pop(),
@@ -222,8 +224,8 @@ var PopupService = function () {
 			var text = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
 			var confirm = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};
 			var cancel = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {};
-			var confirmTxt = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '확인';
-			var cancelTxt = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '취소';
+			var confirmTxt = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : bxMsg('common.confirmOk');
+			var cancelTxt = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : bxMsg('common.confirmCancel');
 
 			var $body = $('body');
 			var width = 460,

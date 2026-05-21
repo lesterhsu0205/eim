@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.MenuDao">
+
+	<select id="selectAll" parameterType="java.lang.String" resultType="eims.web.dto.ui.UiMenuTreeInfo">
+	select
+		 MENU_ID AS id
+		,MENU_NM AS name
+		,MENU_DESC AS description
+		,MENU_SEQ AS seq
+		,PARENT_MENU_ID AS parentId
+	from TBMENUBS			
+	order by MENU_SEQ						
+	</select>
+	
+	<select id="selectMenu" resultType="eims.web.dto.table.MenuDto">	
+	SELECT
+		 MENU_ID AS menuId
+		,MENU_NM AS menuNm
+		,MENU_DESC AS menuDesc
+		,MENU_SEQ AS menuSeq
+		,PARENT_MENU_ID AS parentMenuId
+	FROM TBMENUBS
+	WHERE MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</select>	
+	
+	<select id="selectMenuChild" resultType="eims.web.dto.table.MenuDto">	
+	SELECT
+		 MENU_ID AS menuId
+		,MENU_NM AS menuNm
+		,MENU_DESC AS menuDesc
+		,MENU_SEQ AS menuSeq
+		,PARENT_MENU_ID AS parentMenuId
+	FROM TBMENUBS
+	WHERE PARENT_MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertMenu"	parameterType="eims.web.dto.table.MenuDto">
+	INSERT INTO TBMENUBS (
+		 MENU_ID		
+		,MENU_NM		
+		,MENU_DESC		
+		,MENU_SEQ		
+		,PARENT_MENU_ID		
+	) VALUES (
+ 		 #{menuId, jdbcType = VARCHAR}
+ 		,#{menuNm, jdbcType = VARCHAR}
+ 		,#{menuDesc, jdbcType = VARCHAR}
+ 		,#{menuSeq, jdbcType = NUMERIC}
+ 		,#{parentMenuId, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateMenu"	parameterType="eims.web.dto.table.MenuDto">
+	UPDATE TBMENUBS 
+	SET
+  		MENU_NM = #{menuNm, jdbcType = VARCHAR}, 
+  		MENU_DESC = #{menuDesc, jdbcType = VARCHAR}, 
+  		MENU_SEQ = #{menuSeq, jdbcType = NUMERIC}, 
+  		PARENT_MENU_ID = #{parentMenuId, jdbcType = VARCHAR} 
+	WHERE MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteMenu"	parameterType="java.lang.String">
+	DELETE TBMENUBS
+	WHERE MENU_ID = #{menuId, jdbcType = VARCHAR}
+	</update>
+	
+	<select id="selectMenuListByRole" resultType="eims.web.dto.ui.UiMenuTreeInfo">
+		SELECT 
+		    A.MENU_ID as id
+			,A.MENU_NM as name
+			,A.MENU_SEQ as seq
+			,A.MENU_DESC as description			
+			,A.PARENT_MENU_ID as parentId
+	   		,B.PERM_ID AS permId
+		  FROM 
+		  TBMENUBS AS A, TBROLEMENURL AS B
+		  WHERE 
+		  A.MENU_ID = B.MENU_ID AND B.ROLE_ID =  #{roleId, jdbcType = VARCHAR} 
+		  order by A.MENU_SEQ
+	</select>
+	
+	<!-- 
+	<select id="selectMenuListByRole" resultType="eims.web.dto.ui.UiMenuTreeInfo">
+	SELECT
+		 MENU_ID as id
+		,MENU_NM as name
+		,MENU_SEQ as seq
+		,MENU_DESC as description			
+		,PARENT_MENU_ID as parentId
+	FROM TBMENUBS
+	WHERE MENU_ID IN (
+		SELECT
+			MENU_ID
+		FROM TBROLEMENURL
+		WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR} )
+	order by MENU_SEQ
+	</select>
+	 -->
+	 
+	 
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.IntrfcdeploysysdtDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.IntrfcdeploysysdtDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 INTRFC_ID AS intrfcId
+			,DEPLOY_SYS_CD AS deploySysCd
+			,DEPLOY_SYS_SEQ AS deploySysSeq
+			,DEPLOY_RESULT_CD AS deployResultCd
+			,@rownum := @rownum + 1 AS rn
+		<!-- 	,ROW_NUMBER() over (order by INTRFC_ID) as rn  -->
+		FROM TBINTRFCDEPLOYSYSDT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</if>
+ 		order by INTRFC_ID
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBINTRFCDEPLOYSYSDT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</if>
+	</select>
+	
+	<select id="selectIntrfcdeploysysdt" resultType="eims.web.dto.table.IntrfcdeploysysdtDto">	
+	SELECT
+		 A.INTRFC_ID AS intrfcId
+		,A.DEPLOY_SYS_CD AS deploySysCd
+		,A.DEPLOY_SYS_SEQ AS deploySysSeq
+		,B.DEPLOY_SYS_URL AS deployUrl
+		,A.DEPLOY_RESULT_CD AS deployResultCd
+		,B.DEPLOY_SYS_NM AS deploySysNm
+	FROM TBINTRFCDEPLOYSYSDT A inner join TBDEPOLYSYSBS B on A.DEPLOY_SYS_CD = B.DEPLOY_SYS_CD
+	WHERE A.INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</select>	
+ 	
+ 	<select id="selectDeploySystemUrl" resultType="java.lang.String">	
+	SELECT
+		B.DEPLOY_SYS_URL AS deployUrl
+	FROM TBINTRFCDEPLOYSYSDT A inner join TBDEPOLYSYSBS B on A.DEPLOY_SYS_CD = B.DEPLOY_SYS_CD
+	WHERE A.INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	AND A.DEPLOY_SYS_CD = #{deploySystem, jdbcType = VARCHAR}
+ 	</select>
+
+	<insert id="insertIntrfcdeploysysdt"	parameterType="eims.web.dto.table.IntrfcdeploysysdtDto">
+	INSERT INTO TBINTRFCDEPLOYSYSDT (
+		 INTRFC_ID		
+		,DEPLOY_SYS_CD		
+		,DEPLOY_SYS_SEQ		
+		,DEPLOY_RESULT_CD		
+	) VALUES (
+		 #{intrfcId, jdbcType = VARCHAR}
+ 		,#{deploySysCd, jdbcType = VARCHAR}
+ 		,#{deploySysSeq, jdbcType = NUMERIC}
+ 		,#{deployResultCd, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateIntrfcdeploysysdt"	parameterType="eims.web.dto.table.IntrfcdeploysysdtDto">
+	UPDATE TBINTRFCDEPLOYSYSDT 
+	SET
+ 		DEPLOY_SYS_CD = #{deploySysCd, jdbcType = VARCHAR}		
+  		,DEPLOY_SYS_SEQ = #{deploySysSeq, jdbcType = NUMERIC}		
+  		,DEPLOY_RESULT_CD = #{deployResultCd, jdbcType = VARCHAR}		
+   	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteIntrfcdeploysysdt"	parameterType="eims.web.dto.table.IntrfcdeploysysdtDto">
+	DELETE FROM TBINTRFCDEPLOYSYSDT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</update>
+</mapper>

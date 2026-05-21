@@ -1,8 +1,8 @@
 {
 	"namespace": "common",
 	"messages": {
-		"alertConfirm": "Ok",
-		"confirmOk": "Ok",
+		"alertConfirm": "OK",
+		"confirmOk": "OK",
 		"confirmCancel": "Cancel",
 		"confirmTextDelete": "Delete?",
 		"saved": "Saved.",
@@ -34,8 +34,8 @@
 		"cnt": "counts",
 		"exportDesign": "Design Description Export",
 		"importDesign": "Design Description Import",
-		"exportDefinition": "Definition Export",
-		"importDefinition": "Definition Import",
+		"exportDefinition": "Interface List Export",
+		"importDefinition": "Interface List Import",
 		"fail": "Fail",
 		"success": "Success",
 		"completeUpload": "Uploaded.",
@@ -64,6 +64,6 @@
 		"mciInterface": "MCA Interface",
 		"eaiInterface": "EAI Interface",
 		"fepInterface": "FEP Interface",
-		"logoutMsg": "Logout?"
+		"logoutMsg": "Are you sure you want to log out?"
 	}
 }

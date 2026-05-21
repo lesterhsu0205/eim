@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.MappingfuncbsDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.MappingfuncbsDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 MAPPING_FUNC_NM AS mappingFuncNm
+			,ARGS_CNT AS argsCnt
+			,GUIDE_DESC AS guideDesc
+			, @rownum := @rownum + 1 AS rn
+<!-- 			,ROW_NUMBER() over (order by MAPPING_FUNC_NM) as rn  -->
+		FROM TBMAPPINGFUNCBS
+		WHERE 1=1
+	<if test="mappingFuncNm != null and mappingFuncNm != ''">
+		AND MAPPING_FUNC_NM like CONCAT('%',#{mappingFuncNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="argsCnt != null and argsCnt != ''">
+		AND ARGS_CNT like CONCAT('%',#{argsCnt, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="guideDesc != null and guideDesc != ''">
+		AND GUIDE_DESC like CONCAT('%',#{guideDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+ 		order by MAPPING_FUNC_NM
+	) p, (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBMAPPINGFUNCBS
+		WHERE 1=1
+	<if test="mappingFuncNm != null and mappingFuncNm != ''">
+		AND MAPPING_FUNC_NM like CONCAT('%',#{mappingFuncNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="argsCnt != null and argsCnt != ''">
+		AND ARGS_CNT like CONCAT('%',#{argsCnt, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="guideDesc != null and guideDesc != ''">
+		AND GUIDE_DESC like CONCAT('%',#{guideDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectMappingfuncbs" resultType="eims.web.dto.table.MappingfuncbsDto">	
+	SELECT
+		 MAPPING_FUNC_NM AS mappingFuncNm
+		,ARGS_CNT AS argsCnt
+		,GUIDE_DESC AS guideDesc
+	FROM TBMAPPINGFUNCBS
+	WHERE MAPPING_FUNC_NM = #{mappingFuncNm, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertMappingfuncbs"	parameterType="eims.web.dto.table.MappingfuncbsDto">
+	INSERT INTO TBMAPPINGFUNCBS (
+		 MAPPING_FUNC_NM		
+		,ARGS_CNT		
+		,GUIDE_DESC		
+	) VALUES (
+		 #{mappingFuncNm, jdbcType = VARCHAR}
+ 		,#{argsCnt, jdbcType = NUMERIC}
+ 		,#{guideDesc, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateMappingfuncbs"	parameterType="eims.web.dto.table.MappingfuncbsDto">
+	UPDATE TBMAPPINGFUNCBS 
+	SET
+ 		ARGS_CNT = #{argsCnt, jdbcType = NUMERIC}		
+  		,GUIDE_DESC = #{guideDesc, jdbcType = VARCHAR}		
+   	WHERE MAPPING_FUNC_NM = #{mappingFuncNm, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteMappingfuncbs"	parameterType="eims.web.dto.table.MappingfuncbsDto">
+	DELETE FROM TBMAPPINGFUNCBS
+	WHERE MAPPING_FUNC_NM = #{mappingFuncNm, jdbcType = VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.MsglayoutdtDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.MsglayoutdtDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 MSG_VERSION AS msgVersion
+			,FLD_ENG_NM AS fldEngNm
+			,FLD_KOR_NM AS fldKorNm
+			,DATA_TYPE_NM AS dataTypeNm
+			,ARRAY_SIZE_REF_VAL AS arraySizeRefVal
+			,BASIC_VAL AS basicVal
+			,ENC_YN AS encYn
+			,PARENT_FLD_NM AS parentFldNm
+			,IO_KEY AS ioKey
+			,EXTRNL_MSG_BIZ_CD_YN AS extrnlMsgBizCdYn
+			,EXTRNL_SRCH_KEY_YN AS extrnlSrchKeyYn
+			,CHILD_DTO_NM AS childDtoNm
+			,FLD_UNQ_ID AS fldUnqId
+			,EXTRNL_MSG_NO_YN AS extrnlMsgNoYn
+			,MSG_LAYOUT_ID AS msgLayoutId
+			,MSG_SEQ AS msgSeq
+			,MSG_LEN AS msgLen
+			,DECIMAL_LEN AS decimalLen
+			,MASKING_WAY_CD AS maskingWayCd
+			,ENC_WAY_CD AS encWayCd
+			,ALIGN_NM AS alignNm
+			,PRIVACY_YN AS privacyYn
+			,CD_ATTR_NM AS cdAttrNm
+			,FILLER_VAL AS fillerVal
+			,ISO8583_LEN_FLD_COPY_YN AS iso8583LenFldCopyYn
+			,ISO8583_FLD_DATA_LEN AS iso8583FldDataLen
+			,ISO8583_FLD_MAX_LEN AS iso8583FldMaxLen
+			,FLD_LV_NO AS fldLvNo
+			,EXTRNL_PROCESSOR_CD_YN AS extrnlProcessorCdYn
+			,ISO8583_SPEC_NO_VAL AS iso8583SpecNo
+			,ISO8583_FLD_CHAR_SET_CD AS iso8583FldCharSetCd
+			,ISO8583_VARIABLE_YN AS iso8583VariableYn
+			,ISO8583_FLD_LEN_TYPE_CD AS iso8583FldLenTypeCd
+			,ISO8583_LEN_FLD_INCL_YN AS iso8583LenFldInclYn
+			,ISO8583_TRNSMSN_DATA_LEN AS iso8583TrnsmsnDataLen
+			,ISO8583_TRNSMSN_LEN AS iso8583TrnsmsnLen
+			,EXTRNL_OFFSET_YN AS extrnlOffsetYn
+			,PRIVACY_DSCD AS privacyDscd
+			,FLD_RMK AS fldRmk
+			,RSRV_FLD_VAL1 AS rsrvFldVal1
+			,RSRV_FLD_VAL2 AS rsrvFldVal2
+			,RSRV_FLD_VAL3 AS rsrvFldVal3
+			,META_VALID_VAL AS metaValidVal
+			,CFG_DESC AS cfgDesc
+			,INDS_YN AS indsYn
+			,ISO8583_LEN_FLD_LEN AS iso8583LenFldLen
+			,FLD_ENCODING_CD AS fldEncodingCd
+			,FLD_TRNSFRM_CD AS fldTrnsfrmCd
+			,REPL_KEY AS replKey
+			,KOR_INCL_YN AS korInclYn
+			,PARAM_TYPE AS paramType
+			,@rownum := @rownum + 1 AS rn
+<!-- 			,ROW_NUMBER() over (order by MSG_LAYOUT_ID, MSG_SEQ) as rn  -->
+		FROM TBMSGLAYOUTDT
+		WHERE 1=1
+<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+ </if>
+ 		order by MSG_LAYOUT_ID, MSG_SEQ
+	) p , (SELECT @rownum := 0) r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBMSGLAYOUTDT
+		WHERE 1=1
+<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+ </if>
+	</select>
+	
+	<select id="selectMsglayoutdt" resultType="eims.web.dto.table.MsglayoutdtDto">	
+	SELECT
+		 MSG_VERSION AS msgVersion
+		,FLD_ENG_NM AS fldEngNm
+		,FLD_KOR_NM AS fldKorNm
+		,DATA_TYPE_NM AS dataTypeNm
+		,ARRAY_SIZE_REF_VAL AS arraySizeRefVal
+		,BASIC_VAL AS basicVal
+		,ENC_YN AS encYn
+		,PARENT_FLD_NM AS parentFldNm
+		,IO_KEY AS ioKey
+		,EXTRNL_MSG_BIZ_CD_YN AS extrnlMsgBizCdYn
+		,EXTRNL_SRCH_KEY_YN AS extrnlSrchKeyYn
+		,CHILD_DTO_NM AS childDtoNm
+		,FLD_UNQ_ID AS fldUnqId
+		,EXTRNL_MSG_NO_YN AS extrnlMsgNoYn
+		,MSG_LAYOUT_ID AS msgLayoutId
+		,MSG_SEQ AS msgSeq
+		,MSG_LEN AS msgLen
+		,DECIMAL_LEN AS decimalLen
+		,MASKING_WAY_CD AS maskingWayCd
+		,ENC_WAY_CD AS encWayCd
+		,ALIGN_NM AS alignNm
+		,PRIVACY_YN AS privacyYn
+		,CD_ATTR_NM AS cdAttrNm
+		,FILLER_VAL AS fillerVal
+		,ISO8583_LEN_FLD_COPY_YN AS iso8583LenFldCopyYn
+		,ISO8583_FLD_DATA_LEN AS iso8583FldDataLen
+		,ISO8583_FLD_MAX_LEN AS iso8583FldMaxLen
+		,FLD_LV_NO AS fldLvNo
+		,EXTRNL_PROCESSOR_CD_YN AS extrnlProcessorCdYn
+		,ISO8583_SPEC_NO_VAL AS iso8583SpecNo
+		,ISO8583_FLD_CHAR_SET_CD AS iso8583FldCharSetCd
+		,ISO8583_VARIABLE_YN AS iso8583VariableYn
+		,ISO8583_FLD_LEN_TYPE_CD AS iso8583FldLenTypeCd
+		,ISO8583_LEN_FLD_INCL_YN AS iso8583LenFldInclYn
+		,ISO8583_TRNSMSN_DATA_LEN AS iso8583TrnsmsnDataLen
+		,ISO8583_TRNSMSN_LEN AS iso8583TrnsmsnLen
+		,EXTRNL_OFFSET_YN AS extrnlOffsetYn
+		,PRIVACY_DSCD AS privacyDscd
+		,FLD_RMK AS fldRmk
+		,RSRV_FLD_VAL1 AS rsrvFldVal1
+		,RSRV_FLD_VAL2 AS rsrvFldVal2
+		,RSRV_FLD_VAL3 AS rsrvFldVal3
+		,META_VALID_VAL AS metaValidVal
+		,CFG_DESC AS cfgDesc
+		,INDS_YN AS indsYn
+		,ISO8583_LEN_FLD_LEN AS iso8583LenFldLen
+		,FLD_ENCODING_CD AS fldEncodingCd
+		,FLD_TRNSFRM_CD AS fldTrnsfrmCd
+		,REPL_KEY AS replKey
+		,KOR_INCL_YN AS korInclYn
+		,PARAM_TYPE AS paramType
+	FROM TBMSGLAYOUTDT
+	WHERE MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+	order by MSG_LAYOUT_ID, MSG_SEQ
+ 	</select>	
+
+	<insert id="insertMsglayoutdt"	parameterType="eims.web.dto.table.MsglayoutdtDto">
+	INSERT INTO TBMSGLAYOUTDT (
+		 MSG_LAYOUT_ID		
+		,MSG_VERSION		
+		,MSG_SEQ		
+		,FLD_ENG_NM		
+		,FLD_KOR_NM		
+		,DATA_TYPE_NM		
+		,ARRAY_SIZE_REF_VAL		
+		,MSG_LEN		
+		,DECIMAL_LEN		
+		,BASIC_VAL		
+		,MASKING_WAY_CD		
+		,ENC_YN		
+		,PARENT_FLD_NM		
+		,ENC_WAY_CD		
+		,ALIGN_NM		
+		,IO_KEY		
+		,PRIVACY_YN		
+		,CD_ATTR_NM		
+		,FILLER_VAL		
+		,EXTRNL_MSG_BIZ_CD_YN		
+		,EXTRNL_SRCH_KEY_YN		
+		,ISO8583_LEN_FLD_COPY_YN		
+		,ISO8583_FLD_DATA_LEN		
+		,ISO8583_FLD_MAX_LEN		
+		,FLD_LV_NO		
+		,CHILD_DTO_NM		
+		,FLD_UNQ_ID		
+		,EXTRNL_MSG_NO_YN		
+		,EXTRNL_PROCESSOR_CD_YN		
+		,ISO8583_SPEC_NO_VAL		
+		,ISO8583_FLD_CHAR_SET_CD		
+		,ISO8583_VARIABLE_YN		
+		,ISO8583_FLD_LEN_TYPE_CD		
+		,ISO8583_LEN_FLD_INCL_YN		
+		,ISO8583_TRNSMSN_DATA_LEN		
+		,ISO8583_TRNSMSN_LEN		
+		,EXTRNL_OFFSET_YN		
+		,PRIVACY_DSCD		
+		,FLD_RMK		
+		,RSRV_FLD_VAL1		
+		,RSRV_FLD_VAL2		
+		,RSRV_FLD_VAL3		
+		,META_VALID_VAL		
+		,CFG_DESC		
+		,INDS_YN
+		,ISO8583_LEN_FLD_LEN		
+		,FLD_ENCODING_CD		
+		,FLD_TRNSFRM_CD	
+		,REPL_KEY
+		,KOR_INCL_YN
+		,PARAM_TYPE
+	) VALUES (
+		 #{msgLayoutId, jdbcType = VARCHAR}
+ 		,#{msgVersion, jdbcType = NUMERIC}
+ 		,#{msgSeq, jdbcType = NUMERIC}
+ 		,#{fldEngNm, jdbcType = VARCHAR}
+ 		,#{fldKorNm, jdbcType = VARCHAR}
+ 		,#{dataTypeNm, jdbcType = VARCHAR}
+ 		,#{arraySizeRefVal, jdbcType = VARCHAR}
+ 		,#{msgLen, jdbcType = NUMERIC}
+ 		,#{decimalLen, jdbcType = NUMERIC}
+ 		,#{basicVal, jdbcType = VARCHAR}
+ 		,#{maskingWayCd, jdbcType = VARCHAR}
+ 		,#{encYn, jdbcType = VARCHAR}
+ 		,#{parentFldNm, jdbcType = VARCHAR}
+ 		,#{encWayCd, jdbcType = VARCHAR}
+ 		,#{alignNm, jdbcType = VARCHAR}
+ 		,#{ioKey, jdbcType = VARCHAR}
+ 		,#{privacyYn, jdbcType = VARCHAR}
+ 		,#{cdAttrNm, jdbcType = VARCHAR}
+ 		,#{fillerVal, jdbcType = VARCHAR}
+ 		,#{extrnlMsgBizCdYn, jdbcType = VARCHAR}
+ 		,#{extrnlSrchKeyYn, jdbcType = VARCHAR}
+ 		,#{iso8583LenFldCopyYn, jdbcType = VARCHAR}
+ 		,#{iso8583FldDataLen, jdbcType = NUMERIC}
+ 		,#{iso8583FldMaxLen, jdbcType = NUMERIC}
+ 		,#{fldLvNo, jdbcType = NUMERIC}
+ 		,#{childDtoNm, jdbcType = VARCHAR}
+ 		,#{fldUnqId, jdbcType = VARCHAR}
+ 		,#{extrnlMsgNoYn, jdbcType = VARCHAR}
+ 		,#{extrnlProcessorCdYn, jdbcType = VARCHAR}
+ 		,#{iso8583SpecNo, jdbcType = VARCHAR}
+ 		,#{iso8583FldCharSetCd, jdbcType = VARCHAR}
+ 		,#{iso8583VariableYn, jdbcType = VARCHAR}
+ 		,#{iso8583FldLenTypeCd, jdbcType = VARCHAR}
+ 		,#{iso8583LenFldInclYn, jdbcType = VARCHAR}
+ 		,#{iso8583TrnsmsnDataLen, jdbcType = NUMERIC}
+ 		,#{iso8583TrnsmsnLen, jdbcType = NUMERIC}
+ 		,#{extrnlOffsetYn, jdbcType = VARCHAR}
+ 		,#{privacyDscd, jdbcType = VARCHAR}
+ 		,#{fldRmk, jdbcType = VARCHAR}
+ 		,#{rsrvFldVal1, jdbcType = VARCHAR}
+ 		,#{rsrvFldVal2, jdbcType = VARCHAR}
+ 		,#{rsrvFldVal3, jdbcType = VARCHAR}
+ 		,#{metaValidVal, jdbcType = VARCHAR}
+ 		,#{cfgDesc, jdbcType = VARCHAR}
+ 		,#{indsYn, jdbcType = VARCHAR}
+ 		,#{iso8583LenFldLen, jdbcType = NUMERIC}
+ 		,#{fldEncodingCd, jdbcType = VARCHAR}
+ 		,#{fldTrnsfrmCd, jdbcType = VARCHAR}
+ 		,#{replKey, jdbcType = VARCHAR}
+ 		,#{korInclYn, jdbcType = VARCHAR}
+ 		,#{paramType, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateMsglayoutdt"	parameterType="eims.web.dto.table.MsglayoutdtDto">
+	UPDATE TBMSGLAYOUTDT 
+	SET
+		MSG_VERSION = #{msgVersion, jdbcType = NUMERIC}		
+  		,FLD_ENG_NM = #{fldEngNm, jdbcType = VARCHAR}		
+  		,FLD_KOR_NM = #{fldKorNm, jdbcType = VARCHAR}		
+  		,DATA_TYPE_NM = #{dataTypeNm, jdbcType = VARCHAR}		
+  		,ARRAY_SIZE_REF_VAL = #{arraySizeRefVal, jdbcType = VARCHAR}		
+  		,BASIC_VAL = #{basicVal, jdbcType = VARCHAR}		
+  		,ENC_YN = #{encYn, jdbcType = VARCHAR}		
+  		,PARENT_FLD_NM = #{parentFldNm, jdbcType = VARCHAR}		
+  		,IO_KEY = #{ioKey, jdbcType = VARCHAR}		
+  		,EXTRNL_MSG_BIZ_CD_YN = #{extrnlMsgBizCdYn, jdbcType = VARCHAR}		
+  		,EXTRNL_SRCH_KEY_YN = #{extrnlSrchKeyYn, jdbcType = VARCHAR}		
+  		,CHILD_DTO_NM = #{childDtoNm, jdbcType = VARCHAR}		
+  		,FLD_UNQ_ID = #{fldUnqId, jdbcType = VARCHAR}		
+  		,EXTRNL_MSG_NO_YN = #{extrnlMsgNoYn, jdbcType = VARCHAR}		
+  		,MSG_SEQ = #{msgSeq, jdbcType = NUMERIC}		
+  		,MSG_LEN = #{msgLen, jdbcType = NUMERIC}		
+  		,DECIMAL_LEN = #{decimalLen, jdbcType = NUMERIC}		
+  		,MASKING_WAY_CD = #{maskingWayCd, jdbcType = VARCHAR}		
+  		,ENC_WAY_CD = #{encWayCd, jdbcType = VARCHAR}		
+  		,ALIGN_NM = #{alignNm, jdbcType = VARCHAR}		
+  		,PRIVACY_YN = #{privacyYn, jdbcType = VARCHAR}		
+  		,CD_ATTR_NM = #{cdAttrNm, jdbcType = VARCHAR}		
+  		,FILLER_VAL = #{fillerVal, jdbcType = VARCHAR}		
+  		,ISO8583_LEN_FLD_COPY_YN = #{iso8583LenFldCopyYn, jdbcType = VARCHAR}		
+  		,ISO8583_FLD_DATA_LEN = #{iso8583FldDataLen, jdbcType = NUMERIC}		
+  		,ISO8583_FLD_MAX_LEN = #{iso8583FldMaxLen, jdbcType = NUMERIC}		
+  		,FLD_LV_NO = #{fldLvNo, jdbcType = NUMERIC}		
+  		,EXTRNL_PROCESSOR_CD_YN = #{extrnlProcessorCdYn, jdbcType = VARCHAR}		
+  		,ISO8583_SPEC_NO_VAL = #{iso8583SpecNo, jdbcType = VARCHAR}		
+  		,ISO8583_FLD_CHAR_SET_CD = #{iso8583FldCharSetCd, jdbcType = VARCHAR}		
+  		,ISO8583_VARIABLE_YN = #{iso8583VariableYn, jdbcType = VARCHAR}		
+  		,ISO8583_FLD_LEN_TYPE_CD = #{iso8583FldLenTypeCd, jdbcType = VARCHAR}		
+  		,ISO8583_LEN_FLD_INCL_YN = #{iso8583LenFldInclYn, jdbcType = VARCHAR}		
+  		,ISO8583_TRNSMSN_DATA_LEN = #{iso8583TrnsmsnDataLen, jdbcType = NUMERIC}		
+  		,ISO8583_TRNSMSN_LEN = #{iso8583TrnsmsnLen, jdbcType = NUMERIC}
+  		,EXTRNL_OFFSET_YN = #{extrnlOffsetYn, jdbcType = VARCHAR}
+  		,PRIVACY_DSCD = #{privacyDscd, jdbcType = VARCHAR}	
+  		,FLD_RMK = #{fldRmk, jdbcType = VARCHAR}		
+  		,RSRV_FLD_VAL1 = #{rsrvFldVal1, jdbcType = VARCHAR}		
+  		,RSRV_FLD_VAL2 = #{rsrvFldVal2, jdbcType = VARCHAR}		
+  		,RSRV_FLD_VAL3 = #{rsrvFldVal3, jdbcType = VARCHAR}		
+  		,META_VALID_VAL = #{metaValidVal, jdbcType = VARCHAR}	
+  		,CFG_DESC = #{cfgDesc, jdbcType = VARCHAR}		
+  		,INDS_YN = #{indsYn, jdbcType = VARCHAR}
+  		,ISO8583_LEN_FLD_LEN = #{iso8583LenFldLen, jdbcType = NUMERIC}		
+  		,FLD_ENCODING_CD = #{fldEncodingCd, jdbcType = VARCHAR}		
+  		,FLD_TRNSFRM_CD = #{fldTrnsfrmCd, jdbcType = VARCHAR}	
+  		,REPL_KEY = #{replKey, jdbcType = VARCHAR}
+  		,KOR_INCL_YN = #{korInclYn, jdbcType = VARCHAR}
+  		,PARAM_TYPE = #{paraType, jdbcType = VARCHAR}
+   	WHERE MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteMsglayoutdt"	parameterType="eims.web.dto.table.MsglayoutdtDto">
+	DELETE FROM TBMSGLAYOUTDT
+	WHERE MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}
+ 	</update>
+ 	
+ 	<select id="selectSameIONmChildNm" resultType="java.lang.String">	
+ 	select DISTINCT(MSG_LAYOUT_ID) 
+ 	from TBMSGLAYOUTDT 
+ 	where  CHILD_DTO_NM = #{childDtoNm, jdbcType = VARCHAR} 
+ 	<if test="msgLayoutId != null and msgLayoutId != ''">
+ 	and MSG_LAYOUT_ID not in(#{msgLayoutId, jdbcType = VARCHAR})
+ 	</if>
+ 	</select>
+</mapper>

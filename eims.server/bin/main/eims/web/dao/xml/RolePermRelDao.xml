@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.RolePermRelDao">
+
+	<select id="selectRolePermRel"	resultType="java.lang.Integer">
+	SELECT
+		count(*) cnt 
+	FROM TBROLEPERMRL
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	AND PERM_ID = #{permId, jdbcType = VARCHAR}
+	</select>
+
+	<insert id="insertRolePermRel"	parameterType="eims.web.dto.table.RolePermRelDto">
+	INSERT INTO TBROLEPERMRL (
+		 ROLE_ID		
+		,PERM_ID		
+	) VALUES (
+ 		 #{roleId, jdbcType = VARCHAR}
+ 		,#{permId, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<delete id="deleteRolePermRel"	parameterType="java.lang.String">
+	DELETE FROM TBROLEPERMRL
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	</delete>
+	
+	<delete id="deleteRolePermRel2"	parameterType="eims.web.dto.table.RolePermRelDto">
+	DELETE FROM TBROLEPERMRL
+	WHERE ROLE_ID = #{roleId, jdbcType = VARCHAR}
+	AND PERM_ID = #{permId, jdbcType = VARCHAR}
+	</delete>
+</mapper>

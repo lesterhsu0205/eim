@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.AppcdDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.AppcdDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 APP_CD AS appCd
+			,APP_CD_NM AS appCdNm
+			,PARENT_APP_CD AS parentAppCd
+			,LV_CD AS lvCd
+			,ALIGN_ORDER_NO AS alignOrderNo
+			,APP_CD_DESC AS appCdDesc
+			,@rownum:=@rownum+1 as rn
+		<!-- 배진형수정 ,ROW_NUMBER() over (order by LV_CD, ALIGN_ORDER_NO, APP_CD) as rn -->
+		FROM TBAPPCD
+		WHERE 1=1
+	<if test="appCd != null and appCd != ''">
+		AND APP_CD like CONCAT('%',#{appCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="appCdNm != null and appCdNm != ''">
+		AND APP_CD_NM like CONCAT('%',#{appCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="parentAppCd != null and parentAppCd != ''">
+		AND PARENT_APP_CD like CONCAT('%',#{parentAppCd, jdbcType = VARCHAR},'%') 
+ 	</if>
+	<if test="lvCd != null and lvCd != ''">
+		AND LV_CD like CONCAT('%',#{lvCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="alignOrderNo != null and alignOrderNo != ''">
+		AND ALIGN_ORDER_NO like CONCAT('%',#{alignOrderNo, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="appCdDesc != null and appCdDesc != ''">
+		AND APP_CD_DESC like CONCAT('%',#{appCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	) as p, (SELECT @rownum:=0) as r
+		where p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    and p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	    ORDER BY p.lvCd, p.alignOrderNo, p.appCd
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBAPPCD
+		WHERE 1=1
+	<if test="appCd != null and appCd != ''">
+		AND APP_CD like CONCAT('%',#{appCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="appCdNm != null and appCdNm != ''">
+		AND APP_CD_NM like CONCAT('%',#{appCdNm, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="parentAppCd != null and parentAppCd != ''">
+		AND PARENT_APP_CD like CONCAT('%',#{parentAppCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="lvCd != null and lvCd != ''">
+		AND LV_CD like CONCAT('%',#{lvCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="alignOrderNo != null and alignOrderNo != ''">
+		AND ALIGN_ORDER_NO like CONCAT('%',#{alignOrderNo, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="appCdDesc != null and appCdDesc != ''">
+		AND APP_CD_DESC like CONCAT('%',#{appCdDesc, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectAppcd" resultType="eims.web.dto.table.AppcdDto">	
+	SELECT
+		 APP_CD AS appCd
+		,APP_CD_NM AS appCdNm
+		,PARENT_APP_CD AS parentAppCd
+		,LV_CD AS lvCd
+		,ALIGN_ORDER_NO AS alignOrderNo
+		,APP_CD_DESC AS appCdDesc
+	FROM TBAPPCD
+	WHERE APP_CD = #{appCd, jdbcType = VARCHAR}
+	AND   LV_CD = #{lvCd, jdbcType = VARCHAR}
+	<if test="parentAppCd != null and parentAppCd != ''">
+		AND   PARENT_APP_CD = #{parentAppCd, jdbcType = VARCHAR}
+	</if>
+	</select>	
+
+	<insert id="insertAppcd"	parameterType="eims.web.dto.table.AppcdDto">
+	INSERT INTO TBAPPCD (
+		 APP_CD		
+		,APP_CD_NM		
+		,PARENT_APP_CD		
+		,LV_CD		
+		,ALIGN_ORDER_NO		
+		,APP_CD_DESC		
+	) VALUES (
+		 #{appCd, jdbcType = VARCHAR}
+ 		,#{appCdNm, jdbcType = VARCHAR}
+ 		,#{parentAppCd, jdbcType = VARCHAR}
+ 		,#{lvCd, jdbcType = VARCHAR}
+ 		,#{alignOrderNo, jdbcType = NUMERIC}
+ 		,#{appCdDesc, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateAppcd"	parameterType="eims.web.dto.table.AppcdDto">
+	UPDATE TBAPPCD 
+	SET
+ 		APP_CD_NM = #{appCdNm, jdbcType = VARCHAR}		
+    		,ALIGN_ORDER_NO = #{alignOrderNo, jdbcType = NUMERIC}		
+  		,APP_CD_DESC = #{appCdDesc, jdbcType = VARCHAR}		
+   	WHERE APP_CD = #{appCd, jdbcType = VARCHAR}
+	<if test="parentAppCd != null and parentAppCd != ''">
+		AND   PARENT_APP_CD = #{parentAppCd, jdbcType = VARCHAR}
+	</if>
+	AND   LV_CD = #{lvCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteAppcd"	parameterType="eims.web.dto.table.AppcdDto">
+	DELETE FROM TBAPPCD
+	WHERE APP_CD = #{appCd, jdbcType = VARCHAR}
+	<if test="parentAppCd != null and parentAppCd != ''">
+		AND   PARENT_APP_CD = #{parentAppCd, jdbcType = VARCHAR}
+	</if>
+	AND   LV_CD = #{lvCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteAppCdAll">
+		DELETE FROM TBAPPCD
+ 	</update>
+ 	
+ 	
+	<update id="updateAppCodeInterface"	parameterType="eims.web.dto.table.CodeInterfaceDto">
+	UPDATE TB_EAI_CD_DMN_CD_VAL_I 
+	SET
+		EAI_IF_DATA_APLY_TMSTMP = #{ifDataAplyTmstmp, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_STS_CD = #{ifDataAplyStsCd, jdbcType = VARCHAR}		
+  		,EAI_IF_DATA_APLY_ERR_CD = #{ifDataAplyErrCd, jdbcType = VARCHAR}
+  		,EAI_IF_DATA_APLY_ERR_MSG_CONT = #{ifDataAplyErrMsg, jdbcType = NUMERIC}
+   	WHERE 
+	   	EAI_IF_DATA_SEQ_NBR = #{ifDataSeq, jdbcType = NUMERIC}	
+	</update>
+	
+ 	<select id="selectAppCodeInterfaceList" resultType="eims.web.dto.table.CodeInterfaceDto">
+	 SELECT 
+	 	EAI_IF_DATA_SEQ_NBR as ifDataSeq,
+		EAI_IF_DATA_CRT_TMSTMP as ifDataCrtTmstmp,
+		EAI_IF_DATA_APLY_TP_CD as ifDataAplyTpCd,
+		EAI_IF_DATA_APLY_STS_CD as ifDataAplyStsCd,
+		EAI_IF_DATA_APLY_TMSTMP as ifDataAplyTmstmp,
+		EAI_IF_DATA_APLY_ERR_CD as ifDataAplyErrCd,
+		EAI_IF_DATA_APLY_ERR_MSG_CONT as ifDataAplyErrMsg,
+		CD_DMN_LGCL_NM as dmnLgclNm,
+		CD_DMN_PSCL_NM as dmnPsclNm,
+		CD_DMN_CD_VAL as dmnCdVal,
+		CD_DMN_CD_VAL_GLBL_NM as dmnCdValGlbl,
+		CD_DMN_CD_VAL_LCAL_NM as dmnCdValLcal
+	 FROM 
+	 	TB_EAI_CD_DMN_CD_VAL_I
+	 WHERE
+		(EAI_IF_DATA_APLY_STS_CD = 'N' OR EAI_IF_DATA_APLY_STS_CD = 'E') 
+		AND (CD_DMN_PSCL_NM ='APP_CD'); 
+	</select>
+</mapper>

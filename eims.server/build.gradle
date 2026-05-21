@@ -2,26 +2,25 @@
 apply plugin: 'java'
 apply plugin: 'war'
 
-//배포시 주석처리
-apply plugin: 'application'
-
+//when deploy off
+//apply plugin: 'application'
  
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
 
-//배포시 주석풀기
-//	providedRuntime fileTree(dir: 'lib', include: 'spring-boot-starter-tomcat-1.4.2.RELEASE.jar')
+//when deploy on
+	providedRuntime fileTree(dir: 'lib', include: 'spring-boot-starter-tomcat-1.4.2.RELEASE.jar')
 }
 
 sourceCompatibility = 1.8
 
-//배포시 주석처리
-mainClassName = 'eims.ApplicationMain'
+//when deploy off
+//mainClassName = 'eims.ApplicationMain'
 
 war {
 	baseName = 'eims.server'
     version = '1.0.0'
-    archiveName = 'ROOT.war'
+    archiveName = 'ROOT.war' 
 }
 
 

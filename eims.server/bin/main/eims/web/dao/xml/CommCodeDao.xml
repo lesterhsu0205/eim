@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.CommCodeDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.CommCodeDto">
+		SELECT
+		 COM_CD_ID AS cdId
+		,CD_VAL AS cdVal
+		,LANG_CD AS langCd
+		,CD_NM AS cdNm
+		,CD_VAL_NM AS cdValNm
+		,CD_SEQ AS cdSeq
+		,CD_DESC AS cdDesc
+		FROM TBCODEBS
+		WHERE 1=1
+		<if test="cdId != null and cdId != ''">
+		and 
+			COM_CD_ID like CONCAT('%',#{cdId, jdbcType=VARCHAR},'%')
+		</if>			
+		<if test="cdNm != null and cdNm != ''">
+		and 
+			CD_NM like CONCAT('%',#{cdNm, jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBCODEBS
+		WHERE 1=1
+		<if test="cdId != null and cdId != ''">
+		and 
+			COM_CD_ID like CONCAT('%',#{cdId, jdbcType=VARCHAR},'%')
+		</if>			
+		<if test="cdNm != null and cdNm != ''">
+		and 
+			CD_NM like CONCAT('%',#{cdNm, jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+	
+	<select id="selectCommCode" resultType="eims.web.dto.table.CommCodeDto">	
+	SELECT
+		 COM_CD_ID AS cdId
+		,CD_VAL AS cdVal
+		,LANG_CD AS langCd
+		,CD_NM AS cdNm
+		,CD_VAL_NM AS cdValNm
+		,CD_SEQ AS cdSeq
+		,CD_DESC AS cdDesc
+	FROM TBCODEBS
+	WHERE COM_CD_ID = #{cdId, jdbcType = VARCHAR}
+	AND   CD_VAL = #{cdVal, jdbcType = VARCHAR}
+	AND   LANG_CD = #{langCd, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertCommCode"	parameterType="eims.web.dto.table.CommCodeDto">
+	INSERT INTO TBCODEBS (
+		 COM_CD_ID		
+		,CD_VAL		
+		,LANG_CD		
+		,CD_NM		
+		,CD_VAL_NM		
+		,CD_SEQ		
+		,CD_DESC		
+	) VALUES (
+		 #{cdId, jdbcType = VARCHAR}
+ 		,#{cdVal, jdbcType = VARCHAR}
+ 		,#{langCd, jdbcType = VARCHAR}
+ 		,#{cdNm, jdbcType = VARCHAR}
+ 		,#{cdValNm, jdbcType = VARCHAR}
+ 		,#{cdSeq, jdbcType = NUMERIC}
+ 		,#{cdDesc, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateCommCode"	parameterType="eims.web.dto.table.CommCodeDto">
+	UPDATE TBCODEBS 
+	SET
+   		CD_NM = #{cdNm, jdbcType = VARCHAR}, 
+  		CD_VAL_NM = #{cdValNm, jdbcType = VARCHAR}, 
+  		CD_SEQ = #{cdSeq, jdbcType = NUMERIC}, 
+  		CD_DESC = #{cdDesc, jdbcType = VARCHAR} 
+	WHERE COM_CD_ID = #{cdId, jdbcType = VARCHAR}
+	AND   CD_VAL = #{cdVal, jdbcType = VARCHAR}
+	AND   LANG_CD = #{langCd, jdbcType = VARCHAR}
+	</update>
+	
+	<update id="deleteCommCode"	parameterType="java.lang.String">
+	DELETE TBCODEBS
+	WHERE COM_CD_ID = #{cdId, jdbcType = VARCHAR}
+	AND   CD_VAL = #{cdVal, jdbcType = VARCHAR}
+	AND   LANG_CD = #{langCd, jdbcType = VARCHAR}
+	</update>
+	
+	<select id="selectCommonCodeList" resultType="eims.web.dto.table.CommCodeDto">
+	select		
+		CD_VAL as cdVal			
+		, CD_VAL_NM as cdValNm						
+	from 
+		TBCODEBS
+	where COM_CD_ID = #{cdId, jdbcType=VARCHAR}
+	order by CD_SEQ		 					
+	</select>
+	
+	<select id="selectCommCodeValue" resultType="eims.web.dto.table.CommCodeDto">	
+	SELECT
+		 COM_CD_ID AS cdId
+		,CD_VAL AS cdVal
+		,LANG_CD AS langCd
+		,CD_NM AS cdNm
+		,CD_VAL_NM AS cdValNm
+		,CD_SEQ AS cdSeq
+		,CD_DESC AS cdDesc
+	FROM TBCODEBS
+	WHERE COM_CD_ID = #{cdId, jdbcType = VARCHAR}
+	AND   CD_VAL_NM = #{cdValNm, jdbcType = VARCHAR}
+	AND   LANG_CD = #{langCd, jdbcType = VARCHAR}
+	</select>
+	
+</mapper>

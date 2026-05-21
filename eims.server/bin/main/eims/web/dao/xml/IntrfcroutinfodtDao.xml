@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.IntrfcroutinfodtDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.IntrfcroutinfodtDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 INTRFC_ID AS intrfcId
+			,SEQ AS seq
+			,LEN_FLD_OFFSET_LEN AS lenFldOffsetLen
+			,FLD_DATA_LEN AS fldDataLen
+			,FLD_CFG_VAL AS fldCfgVal
+			,@rownum := @rownum + 1 AS rn
+<!-- 			,ROW_NUMBER() over (order by ) as rn  -->
+		FROM TBINTRFCROUTINFODT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="seq != null and seq != ''">
+		AND SEQ like CONCAT('%',#{seq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="lenFldOffsetLen != null and lenFldOffsetLen != ''">
+		AND LEN_FLD_OFFSET_LEN like CONCAT('%',#{lenFldOffsetLen, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="fldDataLen != null and fldDataLen != ''">
+		AND FLD_DATA_LEN like CONCAT('%',#{fldDataLen, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="fldCfgVal != null and fldCfgVal != ''">
+		AND FLD_CFG_VAL like CONCAT('%',#{fldCfgVal, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	
+	) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBINTRFCROUTINFODT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="seq != null and seq != ''">
+		AND SEQ like CONCAT('%',#{seq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="lenFldOffsetLen != null and lenFldOffsetLen != ''">
+		AND LEN_FLD_OFFSET_LEN like CONCAT('%',#{lenFldOffsetLen, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="fldDataLen != null and fldDataLen != ''">
+		AND FLD_DATA_LEN like CONCAT('%',#{fldDataLen, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="fldCfgVal != null and fldCfgVal != ''">
+		AND FLD_CFG_VAL like CONCAT('%',#{fldCfgVal, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectIntrfcroutinfodt" resultType="eims.web.dto.table.IntrfcroutinfodtDto">	
+	SELECT
+		INTRFC_ID AS intrfcId
+		,SEQ AS seq
+		,LEN_FLD_OFFSET_LEN AS lenFldOffsetLen
+		,FLD_DATA_LEN AS fldDataLen
+		,FLD_CFG_VAL AS fldCfgVal
+		,RUTNG_DESC AS rutngDesc
+		,CNDT_CD AS cndtCd
+	FROM TBINTRFCROUTINFODT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	</select>	
+
+	<insert id="insertIntrfcroutinfodt"	parameterType="eims.web.dto.table.IntrfcroutinfodtDto">
+	INSERT INTO TBINTRFCROUTINFODT (
+		 INTRFC_ID		
+		,SEQ		
+		,LEN_FLD_OFFSET_LEN		
+		,FLD_DATA_LEN		
+		,FLD_CFG_VAL		
+		,RUTNG_DESC		
+		,CNDT_CD		
+	) VALUES (
+		 #{intrfcId, jdbcType = VARCHAR}
+ 		,#{seq, jdbcType = NUMERIC}
+ 		,#{lenFldOffsetLen, jdbcType = NUMERIC}
+ 		,#{fldDataLen, jdbcType = NUMERIC}
+ 		,#{fldCfgVal, jdbcType = VARCHAR}
+ 		,#{rutngDesc, jdbcType = VARCHAR}
+ 		,#{cndtCd, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateIntrfcroutinfodt"	parameterType="eims.web.dto.table.IntrfcroutinfodtDto">
+	UPDATE TBINTRFCROUTINFODT 
+	SET
+		LEN_FLD_OFFSET_LEN = #{lenFldOffsetLen, jdbcType = NUMERIC}		
+  		,FLD_DATA_LEN = #{fldDataLen, jdbcType = NUMERIC}		
+  		,FLD_CFG_VAL = #{fldCfgVal, jdbcType = VARCHAR}		
+  		,RUTNG_DESC = #{rutngDesc, jdbcType = VARCHAR}		
+  		,CNDT_CD = #{cndtCd, jdbcType = VARCHAR}
+		AND SEQ = #{seq, jdbcType = NUMERIC}
+   	</update>
+	
+	<update id="deleteIntrfcroutinfodt"	parameterType="eims.web.dto.table.IntrfcroutinfodtDto">
+	DELETE FROM TBINTRFCROUTINFODT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	</update>
+</mapper>

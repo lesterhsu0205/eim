@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.DepolysysbsDao">
+
+	<select id="selectAll"
+		resultType="eims.web.dto.table.DepolysysbsDto">
+		SELECT *
+		FROM(
+		SELECT
+		DEPLOY_SYS_CD AS deploySysCd
+		,DEPLOY_SYS_NM AS deploySysNm
+		,DEPLOY_SYS_URL AS deploySysUrl
+		,DEPLOY_SYS_DESC AS deploySysDesc
+		,DEPLOY_SYS_GRP_CD AS deploySysGrpCd
+		,@rownum := @rownum + 1 AS rn
+		<!-- ,ROW_NUMBER() over (order by DEPLOY_SYS_CD) as rn -->
+		FROM TBDEPOLYSYSBS
+		WHERE 1=1
+		<if test="deploySysCd != null and deploySysCd != ''">
+			AND DEPLOY_SYS_CD like CONCAT('%',#{deploySysCd, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysNm != null and deploySysNm != ''">
+			AND DEPLOY_SYS_NM like CONCAT('%',#{deploySysNm, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysUrl != null and deploySysUrl != ''">
+			AND DEPLOY_SYS_URL like CONCAT('%',#{deploySysUrl, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysDesc != null and deploySysDesc != ''">
+			AND DEPLOY_SYS_DESC like CONCAT('%',#{deploySysDesc, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysGrpCd != null and deploySysGrpCd != ''">
+			AND DEPLOY_SYS_GRP_CD like CONCAT('%',#{deploySysGrpCd, jdbcType =
+			VARCHAR},'%')
+		</if>
+		order by DEPLOY_SYS_CD
+		) p, (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber ,
+		jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC})
+		AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize,
+		jdbcType=NUMERIC}))
+	</select>
+
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+		count(*) cnt
+		FROM
+		TBDEPOLYSYSBS
+		WHERE 1=1
+		<if test="deploySysCd != null and deploySysCd != ''">
+			AND DEPLOY_SYS_CD like CONCAT('%',#{deploySysCd, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysNm != null and deploySysNm != ''">
+			AND DEPLOY_SYS_NM like CONCAT('%',#{deploySysNm, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysUrl != null and deploySysUrl != ''">
+			AND DEPLOY_SYS_URL like CONCAT('%',#{deploySysUrl, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysDesc != null and deploySysDesc != ''">
+			AND DEPLOY_SYS_DESC like CONCAT('%',#{deploySysDesc, jdbcType =
+			VARCHAR},'%')
+		</if>
+		<if test="deploySysGrpCd != null and deploySysGrpCd != ''">
+			AND DEPLOY_SYS_GRP_CD like CONCAT('%',#{deploySysGrpCd, jdbcType =
+			VARCHAR},'%')
+		</if>
+	</select>
+
+	<select id="selectDepolysysbs"
+		resultType="eims.web.dto.table.DepolysysbsDto">
+		SELECT
+		DEPLOY_SYS_CD AS deploySysCd
+		,DEPLOY_SYS_NM AS deploySysNm
+		,DEPLOY_SYS_URL AS
+		deploySysUrl
+		,DEPLOY_SYS_DESC AS deploySysDesc
+		,DEPLOY_SYS_GRP_CD AS
+		deploySysGrpCd
+		FROM TBDEPOLYSYSBS
+		WHERE DEPLOY_SYS_CD = #{deploySysCd, jdbcType = VARCHAR}
+	</select>
+
+	<insert id="insertDepolysysbs"
+		parameterType="eims.web.dto.table.DepolysysbsDto">
+		INSERT INTO TBDEPOLYSYSBS (
+		DEPLOY_SYS_CD
+		,DEPLOY_SYS_NM
+		,DEPLOY_SYS_URL
+		,DEPLOY_SYS_DESC
+		,DEPLOY_SYS_GRP_CD
+		) VALUES (
+		#{deploySysCd, jdbcType = VARCHAR}
+		,#{deploySysNm, jdbcType = VARCHAR}
+		,#{deploySysUrl, jdbcType = VARCHAR}
+		,#{deploySysDesc, jdbcType = VARCHAR}
+		,#{deploySysGrpCd, jdbcType = VARCHAR}
+		)
+	</insert>
+
+	<update id="updateDepolysysbs"
+		parameterType="eims.web.dto.table.DepolysysbsDto">
+		UPDATE TBDEPOLYSYSBS
+		SET
+		DEPLOY_SYS_NM = #{deploySysNm, jdbcType = VARCHAR}
+		,DEPLOY_SYS_URL = #{deploySysUrl, jdbcType = VARCHAR}
+		,DEPLOY_SYS_DESC = #{deploySysDesc, jdbcType = VARCHAR}
+		,DEPLOY_SYS_GRP_CD = #{deploySysGrpCd, jdbcType = VARCHAR}
+		WHERE DEPLOY_SYS_CD = #{deploySysCd, jdbcType = VARCHAR}
+	</update>
+
+	<update id="deleteDepolysysbs"
+		parameterType="eims.web.dto.table.DepolysysbsDto">
+		DELETE FROM TBDEPOLYSYSBS
+		WHERE DEPLOY_SYS_CD = #{deploySysCd, jdbcType = VARCHAR}
+	</update>
+</mapper>

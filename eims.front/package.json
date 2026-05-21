@@ -2,11 +2,11 @@
     "private": true,
     "devDependencies": {
         "@uirouter/angularjs": "latest",
-        "angular": "^1.6.8",
+        "angular": "^1.8.2",
         "bxuip-angular.js-builder": "^1.0.9",
         "bxuip-angular.js-ui": "^1.1.10",
         "cross-spawn": "^6.0.5",
-        "jquery": "^2.2.3",
+        "jquery": "^3.5.1",
         "lodash": "^4.14.1",
         "oclazyload": "1.1.0"
     },

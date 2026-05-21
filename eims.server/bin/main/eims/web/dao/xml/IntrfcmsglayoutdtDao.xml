@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eims.web.dao.IntrfcmsglayoutdtDao">
+
+	<select id="selectAll" resultType="eims.web.dto.table.IntrfcmsglayoutdtDto">
+	SELECT *
+	FROM(	
+		SELECT
+			 INTRFC_ID AS intrfcId
+			,SR_TYPE_CD AS srTypeCd
+			,SR_SEQ AS srSeq
+			,RQST_RSPS_TYPE_CD AS rqstRspsTypeCd
+			,RQST_RSPS_SEQ AS rqstRspsSeq
+			,SYS_CD AS sysCd
+			,MSG_LAYOUT_ID AS msgLayoutId
+			,@rownum := @rownum + 1 AS rn			
+<!-- 			,ROW_NUMBER() over (order by INTRFC_ID, SR_TYPE_CD, SR_SEQ) as rn  -->
+		FROM TBINTRFCMSGLAYOUTDT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND SR_TYPE_CD like CONCAT('%',#{srTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srSeq != null and srSeq != ''">
+		AND SR_SEQ like CONCAT('%',#{srSeq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="rqstRspsTypeCd != null and rqstRspsTypeCd != ''">
+		AND RQST_RSPS_TYPE_CD like CONCAT('%',#{rqstRspsTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rqstRspsSeq != null and rqstRspsSeq != ''">
+		AND RQST_RSPS_SEQ like CONCAT('%',#{rqstRspsSeq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="sysCd != null and sysCd != ''">
+		AND SYS_CD like CONCAT('%',#{sysCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+ 	order by INTRFC_ID, SR_TYPE_CD, SR_SEQ
+	) p , (SELECT @rownum := 0) r
+		WHERE p.rn &gt; ((#{pageNumber , jdbcType=NUMERIC}-1) * #{pageSize , jdbcType=NUMERIC}) 
+	    AND p.rn &lt;= ((#{pageNumber , jdbcType=NUMERIC} * #{pageSize, jdbcType=NUMERIC}))
+	</select>
+	
+	<select id="selectAllCnt" resultType="java.lang.Integer">
+		SELECT
+			count(*) cnt
+		FROM 
+			TBINTRFCMSGLAYOUTDT
+		WHERE 1=1
+	<if test="intrfcId != null and intrfcId != ''">
+		AND INTRFC_ID like CONCAT('%',#{intrfcId, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srTypeCd != null and srTypeCd != ''">
+		AND SR_TYPE_CD like CONCAT('%',#{srTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="srSeq != null and srSeq != ''">
+		AND SR_SEQ like CONCAT('%',#{srSeq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="rqstRspsTypeCd != null and rqstRspsTypeCd != ''">
+		AND RQST_RSPS_TYPE_CD like CONCAT('%',#{rqstRspsTypeCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="rqstRspsSeq != null and rqstRspsSeq != ''">
+		AND RQST_RSPS_SEQ like CONCAT('%',#{rqstRspsSeq, jdbcType = NUMERIC},'%')
+ 	</if>
+	<if test="sysCd != null and sysCd != ''">
+		AND SYS_CD like CONCAT('%',#{sysCd, jdbcType = VARCHAR},'%')
+ 	</if>
+	<if test="msgLayoutId != null and msgLayoutId != ''">
+		AND MSG_LAYOUT_ID like CONCAT('%',#{msgLayoutId, jdbcType = VARCHAR},'%')
+ 	</if>
+	</select>
+	
+	<select id="selectIntrfcmsglayoutdt" resultType="eims.web.dto.table.IntrfcmsglayoutdtDto">	
+	SELECT
+		INTRFC_ID AS intrfcId
+		,SR_TYPE_CD AS srTypeCd
+		,SR_SEQ AS srSeq
+		,RQST_RSPS_TYPE_CD AS rqstRspsTypeCd
+		,RQST_RSPS_SEQ AS rqstRspsSeq
+		,SYS_CD AS sysCd
+		,MSG_LAYOUT_ID AS msgLayoutId
+	FROM TBINTRFCMSGLAYOUTDT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+	order by SR_SEQ, RQST_RSPS_SEQ asc
+ 	</select>	
+
+	<insert id="insertIntrfcmsglayoutdt"	parameterType="eims.web.dto.table.IntrfcmsglayoutdtDto">
+	INSERT INTO TBINTRFCMSGLAYOUTDT (
+		 INTRFC_ID		
+		,SR_TYPE_CD		
+		,SR_SEQ		
+		,RQST_RSPS_TYPE_CD		
+		,RQST_RSPS_SEQ		
+		,SYS_CD		
+		,MSG_LAYOUT_ID		
+	) VALUES (
+		 #{intrfcId, jdbcType = VARCHAR}
+ 		,#{srTypeCd, jdbcType = VARCHAR}
+ 		,#{srSeq, jdbcType = NUMERIC}
+ 		,#{rqstRspsTypeCd, jdbcType = VARCHAR}
+ 		,#{rqstRspsSeq, jdbcType = NUMERIC}
+ 		,#{sysCd, jdbcType = VARCHAR}
+ 		,#{msgLayoutId, jdbcType = VARCHAR}
+  	)
+	</insert>
+	
+	<update id="updateIntrfcmsglayoutdt"	parameterType="eims.web.dto.table.IntrfcmsglayoutdtDto">
+	UPDATE TBINTRFCMSGLAYOUTDT 
+	SET
+        	WHERE 
+        INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}		
+  		,SR_TYPE_CD = #{srTypeCd, jdbcType = VARCHAR}		
+  		,SR_SEQ = #{srSeq, jdbcType = NUMERIC}		
+  		,RQST_RSPS_TYPE_CD = #{rqstRspsTypeCd, jdbcType = VARCHAR}		
+  		,RQST_RSPS_SEQ = #{rqstRspsSeq, jdbcType = NUMERIC}		
+  		,SYS_CD = #{sysCd, jdbcType = VARCHAR}		
+  		,MSG_LAYOUT_ID = #{msgLayoutId, jdbcType = VARCHAR}	
+	</update>
+	
+	<update id="deleteIntrfcmsglayoutdt"	parameterType="eims.web.dto.table.IntrfcmsglayoutdtDto">
+	DELETE FROM TBINTRFCMSGLAYOUTDT
+	WHERE INTRFC_ID = #{intrfcId, jdbcType = VARCHAR}
+ 	</update>
+</mapper>
