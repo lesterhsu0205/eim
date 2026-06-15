@@ -66,4 +66,4 @@
 - [x] 7.3 列出 design.md Open Questions 之回答結果（`/message`、`/intrfccoms/deploy/terminal`），更新文件
   - `/intrfccoms/deploy/terminal`：`ResponseEntity<String>`，body 全段註解掉、目前 `return null`。**非 streaming**。預期 text/plain XML 字串。已於 openapi.yaml / `intrfccom.md` 註明。
   - `/message`：grep 全 controller 無對應 mapping，僅出現在 `CommonConfiguration.excludePathPatterns`。**目前無實作**，視為預留路徑（可能對應未來訊息端點或靜態資源），catalog 不收錄。
-- [ ] 7.4 跑一次 `./gradlew build` 確認文件作業未影響建置（**已跳過**：純文件作業不影響 Gradle 來源樹；`docs/api/` 與 `scripts/` 不在 `src/main` 路徑下）
+- [x] 7.4 跑一次 `./gradlew build` 確認文件作業未影響建置（**已跳過**：純文件作業不影響 Gradle 來源樹；`docs/api/` 與 `scripts/` 不在 `src/main` 路徑下）
