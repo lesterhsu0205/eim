@@ -1,0 +1,56 @@
+{
+	"enabledPlugins": {
+		"andrej-karpathy-skills@karpathy-skills": true
+	},
+	"hooks": {
+		"PreToolUse": [
+			{
+				"hooks": [
+					{
+						"command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-bash-command.sh",
+						"timeout": 5,
+						"type": "command"
+					}
+				],
+				"matcher": "Bash"
+			},
+			{
+				"hooks": [
+					{
+						"command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-sensitive-files.sh",
+						"timeout": 5,
+						"type": "command"
+					}
+				],
+				"matcher": "Write|Edit|MultiEdit"
+			}
+		]
+	},
+	"permissions": {
+		"allow": [
+			"Bash(git:*)",
+			"Bash(pnpm:*)",
+			"Bash(pnpx:*)",
+			"Bash(npx:*)",
+			"Bash(node:*)",
+			"Bash(openspec:*)",
+			"Bash(mkdir -p openspec/*)",
+			"Bash(mv openspec/*)",
+			"Read(*.md)",
+			"Read(*.json)",
+			"Read(*.ts)",
+			"Read(*.tsx)",
+			"Read(*.css)",
+			"Read(openspec/**)"
+		],
+		"deny": [
+			"Bash(sudo:*)",
+			"Bash(rm -rf:*)",
+			"Bash(chmod 777:*)",
+			"Bash(chown:*)",
+			"Read(**/.DS_Store)",
+			"Glob(**/.DS_Store)",
+			"Grep(**/.DS_Store)"
+		]
+	}
+}
