@@ -1,0 +1,1275 @@
+openapi: 3.0.3
+info:
+  title: EIMS Server REST API
+  version: "1.0.0"
+  description: |
+    自 `eims.web.controller` 套件中所有 `@RequestMapping` / `@GetMapping` /
+    `@PostMapping` / `@PutMapping` / `@DeleteMapping` 註解掃描而得之 REST API 規格。
+
+    認證：除 `x-interceptor-excluded: true` 之 operation 外，皆需先通過 CAS SSO 與
+    `RequestInterceptor`（見 `eims.config.CommonConfiguration`）。
+
+    反序列化：全域 `CustomObjectMapper` 啟用 `FAIL_ON_UNKNOWN_PROPERTIES = true`，
+    呼叫端必須只送 DTO 已宣告之欄位。
+
+servers:
+  - url: http://localhost:9100/eims
+    description: 本機 Tomcat 開發環境（context path `/eims`、port `9100`）。
+  - url: https://{host}/eims
+    description: WAS 部署環境（JNDI `java:/EIMSNXA`）。
+    variables:
+      host:
+        default: eims.example.com
+
+tags:
+  - name: Main
+    description: 登入、登出、SSO、使用者資訊、語系切換。
+  - name: Menu
+    description: 選單 CRUD。
+  - name: Role
+    description: 角色 CRUD 與 menu/perm 關聯。
+  - name: Perm
+    description: 權限 CRUD。
+  - name: User
+    description: 使用者 CRUD。
+  - name: App
+    description: 應用程式 CRUD。
+  - name: Biz
+    description: 業務代碼 CRUD。
+  - name: CommCode
+    description: 共用代碼 CRUD 與查詢。
+  - name: Enc
+    description: 加密代碼。
+  - name: Mask
+    description: 遮罩代碼。
+  - name: Trx
+    description: 交易 CRUD。
+  - name: Srsys
+    description: 來源系統 CRUD。
+  - name: Depolysys
+    description: 部署系統 CRUD 與條件查詢。
+  - name: Extrnlinst
+    description: 外部機構 CRUD。
+  - name: Mappingfunc
+    description: Mapping 函式 CRUD。
+  - name: Meta
+    description: Meta CRUD、影響分析、同步。
+  - name: Msglayout
+    description: 訊息版面 CRUD、暫存、Excel 匯出、檔案上傳、外部訊息、msgId 產生。
+  - name: Intrfccom
+    description: 介面 CRUD、部署 / 重新部署 / 部署歷程、檔案上傳 / 匯入 / 匯出、layoutdiff、terminal、intrfcId 產生。
+  - name: Actionhist
+    description: 操作歷程查詢與新增。
+
+components:
+  securitySchemes:
+    casSso:
+      type: apiKey
+      in: cookie
+      name: JSESSIONID
+      description: |
+        CAS Single Sign-On。實作於 `eims.config.SSOFilterConfig`，由 `cas-client-core`
+        與 `cas-client-support-saml` 提供（`lib/` 內離線 JAR）。Session 以 JSESSIONID
+        cookie 維持。標註 `x-interceptor-excluded: true` 之 operation 不走
+        `RequestInterceptor`，但可能仍受 SSO Filter 覆蓋——依 `CommonConfiguration`
+        excludePathPatterns 為準。
+
+  schemas:
+    ErrorResponse:
+      type: object
+      description: 共用錯誤回應，對應 `eims.web.dto.ui.ErrorResponse`。
+      properties:
+        code:
+          type: string
+          description: 錯誤代碼。
+        message:
+          type: string
+          description: 錯誤訊息。
+        detail:
+          type: string
+          description: 詳細資訊（選填）。
+    Generic:
+      type: object
+      description: |
+        泛型佔位 schema。骨架版本未逐 DTO 展開欄位；詳見 `eims.web.dto.table.<XxxDto>`
+        或 `eims.web.dto.ui.<UiXxxOut>`。後續 change 補完細節。
+      additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: 請求格式或欄位錯誤。
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: 未通過 CAS SSO 或 session 過期。
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ServerError:
+      description: 內部錯誤。
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+security:
+  - casSso: []
+
+paths:
+  # =========================================================================
+  # Main
+  # =========================================================================
+  /login:
+    post:
+      tags: [Main]
+      operationId: login
+      summary: 一般帳密登入。
+      x-interceptor-excluded: true
+      description: 排除於 `RequestInterceptor`（見 `CommonConfiguration.excludePathPatterns`）。
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId: { type: string }
+                password: { type: string, format: password }
+      responses:
+        "200":
+          description: 登入結果，包含 session 資訊。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "500": { $ref: "#/components/responses/ServerError" }
+  /eims/sso:
+    get:
+      tags: [Main]
+      operationId: ssoEntry
+      summary: CAS SSO 入口。
+      responses:
+        "200":
+          description: 重新導向或 SSO ticket 驗證結果。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+  /changelang:
+    get:
+      tags: [Main]
+      operationId: changeLang
+      summary: 切換使用者語系。
+      parameters:
+        - in: query
+          name: lang
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+  /logininfosso:
+    get:
+      tags: [Main]
+      operationId: getLoginInfoSso
+      summary: 取得 SSO 登入資訊。
+      responses:
+        "200":
+          description: SSO 登入後使用者資訊。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+  /bxmlogin:
+    get:
+      tags: [Main]
+      operationId: bxmLogin
+      summary: BXM 登入入口。
+      x-interceptor-excluded: true
+      description: 排除於 `RequestInterceptor`。
+      security: []
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+  /userInfo:
+    get:
+      tags: [Main]
+      operationId: getUserInfo
+      summary: 取得目前登入使用者資訊。
+      responses:
+        "200":
+          description: 使用者資訊。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+  /logout:
+    post:
+      tags: [Main]
+      operationId: logout
+      summary: 登出。
+      x-interceptor-excluded: true
+      description: 排除於 `RequestInterceptor`。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+
+  # =========================================================================
+  # Menu
+  # =========================================================================
+  /menus:
+    get:
+      tags: [Menu]
+      operationId: listMenus
+      summary: 取得選單清單。
+      x-interceptor-excluded: true
+      description: 排除於 `RequestInterceptor`。
+      responses:
+        "200":
+          description: 選單清單。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+    post:
+      tags: [Menu]
+      operationId: createMenu
+      summary: 新增選單。
+      x-interceptor-excluded: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Generic" }
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+    put:
+      tags: [Menu]
+      operationId: updateMenu
+      summary: 修改選單。
+      x-interceptor-excluded: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Generic" }
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+  /menus/{menuId}:
+    parameters:
+      - in: path
+        name: menuId
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Menu]
+      operationId: getMenu
+      summary: 取單筆選單。
+      responses:
+        "200":
+          description: 選單。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+    delete:
+      tags: [Menu]
+      operationId: deleteMenu
+      summary: 刪除選單。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Generic" }
+
+  # =========================================================================
+  # Role
+  # =========================================================================
+  /roles:
+    get:
+      tags: [Role]
+      operationId: listRoles
+      summary: 角色清單。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+    post:
+      tags: [Role]
+      operationId: createRole
+      summary: 新增角色。
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+    put:
+      tags: [Role]
+      operationId: updateRole
+      summary: 修改角色。
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+  /roles/{roleId}:
+    parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Role]
+      operationId: getRole
+      summary: 取單筆角色。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+    delete:
+      tags: [Role]
+      operationId: deleteRole
+      summary: 刪除角色。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+  /roles/{roleId}/menus:
+    parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Role]
+      operationId: listRoleMenus
+      summary: 角色對應之選單清單。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+    put:
+      tags: [Role]
+      operationId: updateRoleMenus
+      summary: 設定角色之選單清單。
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+  /roles/{roleId}/menupopups:
+    parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Role]
+      operationId: listRoleMenuPopups
+      summary: popup 用之選單清單。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+  /roles/{roleId}/menus/{menuId}:
+    parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema: { type: string }
+      - in: path
+        name: menuId
+        required: true
+        schema: { type: string }
+    delete:
+      tags: [Role]
+      operationId: removeRoleMenu
+      summary: 移除角色之單一選單。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+  /roles/{roleId}/perms:
+    parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Role]
+      operationId: listRolePerms
+      summary: 角色對應之權限清單。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+    put:
+      tags: [Role]
+      operationId: updateRolePerms
+      summary: 設定角色之權限清單。
+      requestBody:
+        required: true
+        content:
+          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+  /roles/{roleId}/permpopups:
+    parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Role]
+      operationId: listRolePermPopups
+      summary: popup 用之權限清單。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+  /roles/{roleId}/perms/{permId}:
+    parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema: { type: string }
+      - in: path
+        name: permId
+        required: true
+        schema: { type: string }
+    delete:
+      tags: [Role]
+      operationId: removeRolePerm
+      summary: 移除角色之單一權限。
+      responses:
+        "200":
+          description: 結果。
+          content:
+            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+
+  # =========================================================================
+  # Perm
+  # =========================================================================
+  /perms:
+    get:
+      tags: [Perm]
+      operationId: listPerms
+      summary: 權限清單。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Perm]
+      operationId: createPerm
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Perm]
+      operationId: updatePerm
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /perms/{permId}:
+    parameters: [{ in: path, name: permId, required: true, schema: { type: string } }]
+    get:
+      tags: [Perm]
+      operationId: getPerm
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Perm]
+      operationId: deletePerm
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # User
+  # =========================================================================
+  /users:
+    get:
+      tags: [User]
+      operationId: listUsers
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [User]
+      operationId: createUser
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [User]
+      operationId: updateUser
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /users/{userId}:
+    parameters: [{ in: path, name: userId, required: true, schema: { type: string } }]
+    get:
+      tags: [User]
+      operationId: getUser
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [User]
+      operationId: deleteUser
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /userstest/test:
+    post:
+      tags: [User]
+      operationId: userTest
+      summary: 測試端點。
+      x-interceptor-excluded: true
+      description: 排除於 `RequestInterceptor`。
+      security: []
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # App
+  # =========================================================================
+  /apps:
+    get:
+      tags: [App]
+      operationId: listApps
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [App]
+      operationId: createApp
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [App]
+      operationId: updateApp
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /apps/{appCd}:
+    parameters: [{ in: path, name: appCd, required: true, schema: { type: string } }]
+    get:
+      tags: [App]
+      operationId: getApp
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [App]
+      operationId: deleteApp
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Biz
+  # =========================================================================
+  /bizs:
+    get:
+      tags: [Biz]
+      operationId: listBizs
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Biz]
+      operationId: createBiz
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Biz]
+      operationId: updateBiz
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /bizs/{bizCd}:
+    parameters: [{ in: path, name: bizCd, required: true, schema: { type: string } }]
+    get:
+      tags: [Biz]
+      operationId: getBiz
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Biz]
+      operationId: deleteBiz
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # CommCode
+  # =========================================================================
+  /codes:
+    get:
+      tags: [CommCode]
+      operationId: listCodes
+      x-interceptor-excluded: true
+      description: 排除於 `RequestInterceptor`。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [CommCode]
+      operationId: createCode
+      x-interceptor-excluded: true
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [CommCode]
+      operationId: updateCode
+      x-interceptor-excluded: true
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /codes/common/{cdId}:
+    parameters: [{ in: path, name: cdId, required: true, schema: { type: string } }]
+    get:
+      tags: [CommCode]
+      operationId: getCommonCode
+      summary: 共用代碼。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /codes/{cdId}:
+    parameters: [{ in: path, name: cdId, required: true, schema: { type: string } }]
+    get:
+      tags: [CommCode]
+      operationId: getCode
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [CommCode]
+      operationId: deleteCode
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Enc / Mask
+  # =========================================================================
+  /encCd:
+    get:
+      tags: [Enc]
+      operationId: getEncCd
+      summary: 加密代碼清單。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /maskCd:
+    get:
+      tags: [Mask]
+      operationId: getMaskCd
+      summary: 遮罩代碼清單。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Trx
+  # =========================================================================
+  /trxs:
+    get:
+      tags: [Trx]
+      operationId: listTrxs
+      x-interceptor-excluded: true
+      description: 排除於 `RequestInterceptor`（`/trxs` 與 `/trxs/**`）。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Trx]
+      operationId: createTrx
+      x-interceptor-excluded: true
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Trx]
+      operationId: updateTrx
+      x-interceptor-excluded: true
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /trxs/{trxCd}:
+    parameters: [{ in: path, name: trxCd, required: true, schema: { type: string } }]
+    get:
+      tags: [Trx]
+      operationId: getTrx
+      x-interceptor-excluded: true
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Trx]
+      operationId: deleteTrx
+      x-interceptor-excluded: true
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Srsys
+  # =========================================================================
+  /srsyss:
+    get:
+      tags: [Srsys]
+      operationId: listSrsyss
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Srsys]
+      operationId: createSrsys
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Srsys]
+      operationId: updateSrsys
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /srsyss/{sysCd}:
+    parameters: [{ in: path, name: sysCd, required: true, schema: { type: string } }]
+    get:
+      tags: [Srsys]
+      operationId: getSrsys
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Srsys]
+      operationId: deleteSrsys
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Depolysys
+  # =========================================================================
+  /depolysyss:
+    get:
+      tags: [Depolysys]
+      operationId: listDepolysyss
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Depolysys]
+      operationId: createDepolysys
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Depolysys]
+      operationId: updateDepolysys
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /depolysyss/{deploySysCd}:
+    parameters: [{ in: path, name: deploySysCd, required: true, schema: { type: string } }]
+    get:
+      tags: [Depolysys]
+      operationId: getDepolysys
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Depolysys]
+      operationId: deleteDepolysys
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /depolysyss/getlist:
+    post:
+      tags: [Depolysys]
+      operationId: getDepolysysList
+      summary: 條件查詢部署系統清單。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Extrnlinst
+  # =========================================================================
+  /extrnlinsts:
+    get:
+      tags: [Extrnlinst]
+      operationId: listExtrnlinsts
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Extrnlinst]
+      operationId: createExtrnlinst
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Extrnlinst]
+      operationId: updateExtrnlinst
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /extrnlinsts/{instCd}:
+    parameters: [{ in: path, name: instCd, required: true, schema: { type: string } }]
+    get:
+      tags: [Extrnlinst]
+      operationId: getExtrnlinst
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Extrnlinst]
+      operationId: deleteExtrnlinst
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Mappingfunc
+  # =========================================================================
+  /mappingfuncs:
+    get:
+      tags: [Mappingfunc]
+      operationId: listMappingfuncs
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Mappingfunc]
+      operationId: createMappingfunc
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Mappingfunc]
+      operationId: updateMappingfunc
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /mappingfuncs/{mappingFuncNm}:
+    parameters: [{ in: path, name: mappingFuncNm, required: true, schema: { type: string } }]
+    get:
+      tags: [Mappingfunc]
+      operationId: getMappingfunc
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Mappingfunc]
+      operationId: deleteMappingfunc
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Meta
+  # =========================================================================
+  /metas:
+    get:
+      tags: [Meta]
+      operationId: listMetas
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Meta]
+      operationId: createMeta
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Meta]
+      operationId: updateMeta
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /metas/{metaEngNm}:
+    parameters: [{ in: path, name: metaEngNm, required: true, schema: { type: string } }]
+    get:
+      tags: [Meta]
+      operationId: getMeta
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Meta]
+      operationId: deleteMeta
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /metas/effects:
+    get:
+      tags: [Meta]
+      operationId: getMetaEffects
+      summary: Meta 變更影響分析。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /metas/syncs:
+    get:
+      tags: [Meta]
+      operationId: getMetaSyncs
+      summary: Meta 同步。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Msglayout
+  # =========================================================================
+  /msglayouts:
+    get:
+      tags: [Msglayout]
+      operationId: listMsglayouts
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Msglayout]
+      operationId: createMsglayout
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Msglayout]
+      operationId: updateMsglayout
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /msglayouts/{msgLayoutId}:
+    parameters: [{ in: path, name: msgLayoutId, required: true, schema: { type: string } }]
+    get:
+      tags: [Msglayout]
+      operationId: getMsglayout
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Msglayout]
+      operationId: deleteMsglayout
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /msglayouts/{msgLayoutId}/effects:
+    parameters: [{ in: path, name: msgLayoutId, required: true, schema: { type: string } }]
+    get:
+      tags: [Msglayout]
+      operationId: getMsglayoutEffects
+      summary: 訊息版面變更影響分析。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /msglayoutstemp:
+    post:
+      tags: [Msglayout]
+      operationId: createMsglayoutTemp
+      summary: 暫存訊息版面。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Msglayout]
+      operationId: updateMsglayoutTemp
+      summary: 更新暫存訊息版面。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /msglayoutslist:
+    post:
+      tags: [Msglayout]
+      operationId: getMsglayoutList
+      summary: 條件查詢訊息版面清單。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /msglayouts/excelexport:
+    post:
+      tags: [Msglayout]
+      operationId: exportMsglayoutExcel
+      summary: 訊息版面 Excel 匯出。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200":
+          description: Excel 二進位串流。
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+  /msglayouts/fileuploads:
+    post:
+      tags: [Msglayout]
+      operationId: uploadMsglayoutFile
+      summary: 訊息版面檔案上傳。
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /msglayouts/extrnlMsgs:
+    get:
+      tags: [Msglayout]
+      operationId: getExtrnlMsgs
+      summary: 外部訊息清單。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /msglayouts/msgidcreate:
+    post:
+      tags: [Msglayout]
+      operationId: createMsgId
+      summary: 產生 msg id。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+
+  # =========================================================================
+  # Intrfccom
+  # =========================================================================
+  /intrfccoms:
+    get:
+      tags: [Intrfccom]
+      operationId: listIntrfccoms
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Intrfccom]
+      operationId: createIntrfccom
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    put:
+      tags: [Intrfccom]
+      operationId: updateIntrfccom
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/{intrfcId}:
+    parameters: [{ in: path, name: intrfcId, required: true, schema: { type: string } }]
+    get:
+      tags: [Intrfccom]
+      operationId: getIntrfccom
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    delete:
+      tags: [Intrfccom]
+      operationId: deleteIntrfccom
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /interfaceListApi:
+    get:
+      tags: [Intrfccom]
+      operationId: listInterfaceApi
+      summary: 介面清單（外部 API）。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/deploy:
+    post:
+      tags: [Intrfccom]
+      operationId: deployIntrfccom
+      summary: 部署介面。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/deployAll:
+    post:
+      tags: [Intrfccom]
+      operationId: deployAllIntrfccom
+      summary: 全部部署。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/deployhistorys:
+    get:
+      tags: [Intrfccom]
+      operationId: listDeployHistorys
+      summary: 部署歷程。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/deployhistoryresults:
+    get:
+      tags: [Intrfccom]
+      operationId: listDeployHistoryResults
+      summary: 部署結果。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/redeploy:
+    post:
+      tags: [Intrfccom]
+      operationId: redeployIntrfccom
+      summary: 重新部署。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/deploy/{intrfcId}:
+    parameters: [{ in: path, name: intrfcId, required: true, schema: { type: string } }]
+    get:
+      tags: [Intrfccom]
+      operationId: getDeployStatus
+      summary: 單筆部署狀態。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/deploy/terminal:
+    get:
+      tags: [Intrfccom]
+      operationId: getDeployTerminal
+      summary: Terminal 介面查詢。
+      x-interceptor-excluded: true
+      security: []
+      description: |
+        排除於 `RequestInterceptor`。Controller 簽章 `ResponseEntity<String>`，
+        目前實作回應 body 全段註解掉、`return null`，**非 streaming**。
+        若日後回復實作，預期回傳 `text/plain` 之 XML 字串。
+      parameters:
+        - in: query
+          name: filter
+          required: false
+          schema: { type: string }
+        - in: query
+          name: model
+          required: false
+          schema: { type: string }
+      responses:
+        "200":
+          description: 目前回傳 null；未來預期為 text/plain XML 字串。
+          content:
+            text/plain:
+              schema: { type: string }
+  /intrfccoms/intrfcidcreate:
+    post:
+      tags: [Intrfccom]
+      operationId: createIntrfcId
+      summary: 產生 intrfc id。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/layoutdiff:
+    get:
+      tags: [Intrfccom]
+      operationId: getLayoutDiff
+      summary: 介面 layout 差異比對。
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/fileuploads:
+    post:
+      tags: [Intrfccom]
+      operationId: uploadIntrfccomFile
+      summary: 介面檔案上傳。
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/import/intrfcfiles:
+    post:
+      tags: [Intrfccom]
+      operationId: importIntrfcFiles
+      summary: 匯入介面檔案。
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/import/definition:
+    post:
+      tags: [Intrfccom]
+      operationId: importIntrfcDefinition
+      summary: 匯入介面定義。
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+  /intrfccoms/excelexport:
+    post:
+      tags: [Intrfccom]
+      operationId: exportIntrfccomExcel
+      summary: 介面 Excel 匯出。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200":
+          description: Excel 二進位串流。
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+  /intrfccoms/export/intrfcinfos:
+    get:
+      tags: [Intrfccom]
+      operationId: exportIntrfcInfos
+      summary: 介面資訊匯出。
+      responses:
+        "200":
+          description: 二進位串流。
+          content:
+            application/octet-stream:
+              schema: { type: string, format: binary }
+
+  # =========================================================================
+  # Actionhist
+  # =========================================================================
+  /actionhists:
+    get:
+      tags: [Actionhist]
+      operationId: listActionhists
+      summary: 操作歷程查詢。
+      parameters:
+        - in: query
+          name: hstDscd
+          required: false
+          schema: { type: string }
+        - in: query
+          name: itemId
+          required: false
+          schema: { type: string }
+        - in: query
+          name: workCttCd
+          required: false
+          schema: { type: string }
+        - in: query
+          name: workDttmFrom
+          required: false
+          schema: { type: string }
+        - in: query
+          name: workDttmTo
+          required: false
+          schema: { type: string }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+    post:
+      tags: [Actionhist]
+      operationId: createActionhist
+      summary: 新增操作歷程。
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      responses:
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
