@@ -576,6 +576,820 @@ components:
           type: array
           items: { $ref: "#/components/schemas/ActionhisthsDto" }
 
+    # ========================================================================
+    # intrfc 批次：dto（共用）
+    # ========================================================================
+    IntrfcDeploy:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcDeploy`。部署請求。
+      properties:
+        deployStatus: { type: string, description: "DEPLOY/ROLLBACK/DELETE" }
+        intrfcId: { type: string }
+        deployTime: { type: string }
+        deployer: { type: string }
+        deploySysCd: { type: string }
+        deployVersion: { type: string }
+        intrfccombsDto: { $ref: "#/components/schemas/IntrfcInfo" }
+    IntrfcDeployResponse:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcDeployResponse`。
+      properties:
+        systemCd: { type: string }
+        deployStatus: { type: string, description: "SUCCESS/FAIL" }
+        message: { type: string }
+    IntrfcDeployResponseList:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcDeployResponseList`。
+      properties:
+        intrfcDeployResponseList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcDeployResponseResult" }
+    IntrfcDeployResponseResult:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcDeployResponseResult`。
+      properties:
+        systemCd: { type: string }
+        systemNm: { type: string }
+        systemUrl: { type: string }
+        deployStatus: { type: string, description: "SUCCESS/FAIL" }
+        message: { type: string }
+    IntrfcDeployTerminal:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcDeployTerminal`。內部用途，controller 構造後序列化為 text/plain（見 `/intrfccoms/deploy/terminal`）。
+      properties:
+        deployStatus: { type: string }
+        intrfcId: { type: string }
+        deployTime: { type: string }
+        deployer: { type: string }
+        deploySysCd: { type: string }
+        deployVersion: { type: string }
+        intrfcmsglayoutdtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcmsglayoutdtDto" }
+    IntrfcFileImportErrInfo:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcFileImportErrInfo`。匯入錯誤明細。
+      properties:
+        fileName: { type: string }
+        message: { type: string }
+        parameter:
+          type: array
+          items: { type: string }
+        status: { type: integer, format: int32 }
+    IntrfcInfo:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcInfo`。介面完整資訊（含巢狀明細）。
+      properties:
+        intrfcId: { type: string }
+        intrfcNm: { type: string }
+        intrfcWayCd: { type: string }
+        workStatusCd: { type: string }
+        regManId: { type: string }
+        regDttm: { type: string }
+        msgTrnsfrmYn: { type: string }
+        trxCd: { type: string }
+        bizCd: { type: string }
+        instCd: { type: string }
+        trxDscd: { type: string }
+        intrfcTypeCd: { type: string }
+        lv1Cd: { type: string }
+        lv2Cd: { type: string }
+        lv3Cd: { type: string }
+        lv4Cd: { type: string }
+        lv5Cd: { type: string }
+        syncAsyncDscd: { type: string }
+        srTypeCd: { type: string }
+        rqstExtrnlMsgNo: { type: string }
+        rspsExtrnlMsgNo: { type: string }
+        rspsYn: { type: string }
+        trxTypeDscd: { type: string }
+        viewId: { type: string }
+        protocolDscd: { type: string }
+        httpMethod: { type: string }
+        contextUrl: { type: string }
+        requestMediaType: { type: string }
+        responseMediaType: { type: string }
+        execEnvDscd: { type: string }
+        intrfcmsglayoutdtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcmsglayoutdtDto" }
+        intrfcsrsysdtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcsrsysdtDto" }
+        intrfcroutinfodtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcroutinfodtDto" }
+        intrfccombsMappingReqDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccombsMappingDto" }
+        intrfccombsMappingResDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccombsMappingDto" }
+        eaiDetailDto: { $ref: "#/components/schemas/IntrfccombsDetailEAIDto" }
+        mciDetailDto: { $ref: "#/components/schemas/IntrfccombsDetailMCIDto" }
+        fepDetailDto: { $ref: "#/components/schemas/IntrfccombsDetailFEPDto" }
+        ccDetailDto: { $ref: "#/components/schemas/IntrfccombsDetailCCDto" }
+        intrfcMsgFieldEncodingDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcMsgFieldEncodingDto" }
+    IntrfcInfoExportDto:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcInfoExportDto`。匯出用扁平結構。
+      properties:
+        intrfcId: { type: string }
+        intrfcNm: { type: string }
+        intrfcWayCd: { type: string }
+        workStatusCd: { type: string }
+        regManId: { type: string }
+        regDttm: { type: string }
+        msgTrnsfrmYn: { type: string }
+        trxCd: { type: string }
+        bizCd: { type: string }
+        instCd: { type: string }
+        trxDscd: { type: string }
+        intrfcTypeCd: { type: string }
+        lv1Cd: { type: string }
+        lv2Cd: { type: string }
+        lv3Cd: { type: string }
+        lv4Cd: { type: string }
+        lv5Cd: { type: string }
+        syncAsyncDscd: { type: string }
+        srTypeCd: { type: string }
+        rqstExtrnlMsgNo: { type: string }
+        rspsExtrnlMsgNo: { type: string }
+        crtnSeq: { type: integer, format: int32 }
+        rsrvFldVal1: { type: string }
+        rsrvFldVal2: { type: string }
+        rsrvFldVal3: { type: string }
+        rspsYn: { type: string }
+        trxTypeDscd: { type: string }
+        rawData: { type: string }
+        bizCdNm: { type: string }
+        instCdNm: { type: string }
+        viewId: { type: string }
+        regMamNm: { type: string }
+        appCdNm: { type: string }
+        srTypeCdSend: { type: string }
+        sysCdSend: { type: string }
+        sysNmSend: { type: string }
+        trxCdSend: { type: string }
+        filePathSend: { type: string }
+        crgManNmSend: { type: string }
+        srTypeCdReceive: { type: string }
+        sysCdReceive: { type: string }
+        sysNmReceive: { type: string }
+        trxCdReceive: { type: string }
+        filePathReceive: { type: string }
+        crgManNmReceive: { type: string }
+        seq1: { type: integer, format: int32 }
+        lenFldOffsetLen1: { type: integer, format: int32 }
+        fldDataLen1: { type: integer, format: int32 }
+        fldCfgVal1: { type: string }
+        rutngDesc1: { type: string }
+        cndtCd1: { type: string }
+        seq2: { type: integer, format: int32 }
+        lenFldOffsetLen2: { type: integer, format: int32 }
+        fldDataLen2: { type: integer, format: int32 }
+        fldCfgVal2: { type: string }
+        rutngDesc2: { type: string }
+        cndtCd2: { type: string }
+        protocolDscd: { type: string }
+        httpMethod: { type: string }
+        contextUrl: { type: string }
+        requestMediaType: { type: string }
+        responseMediaType: { type: string }
+        execEnvDscd: { type: string }
+        eaiDto: { $ref: "#/components/schemas/IntrfccombsDetailEAIDto" }
+        mciDto: { $ref: "#/components/schemas/IntrfccombsDetailMCIDto" }
+        fepDto: { $ref: "#/components/schemas/IntrfccombsDetailFEPDto" }
+        ccDto: { $ref: "#/components/schemas/IntrfccombsDetailCCDto" }
+    IntrfccombsDetail:
+      description: |
+        對應 `eims.web.dto.IntrfccombsDetail`（marker interface，無欄位）。子型別：CC/EAI/FEP/MCI。
+        實際 DTO 無 `detailType` 判別欄位，故採 `oneOf` 不附 `discriminator`；子型別由 controller
+        端依介面類型（intrfcTypeCd）選用對應欄位（eaiDto/mciDto/fepDto/ccDto）。
+      oneOf:
+        - $ref: "#/components/schemas/IntrfccombsDetailCCDto"
+        - $ref: "#/components/schemas/IntrfccombsDetailEAIDto"
+        - $ref: "#/components/schemas/IntrfccombsDetailFEPDto"
+        - $ref: "#/components/schemas/IntrfccombsDetailMCIDto"
+    IntrfcdeployInfoDto:
+      type: object
+      description: 對應 `eims.web.dto.IntrfcdeployInfoDto`。
+      properties:
+        deploySysCd: { type: string }
+        deployUrl: { type: string }
+        jsonData: { type: string }
+    GenLayoutDetailDto:
+      type: object
+      description: 對應 `eims.web.dto.GenLayoutDetailDto`。`layoutDetailSeq` 序列化自欄位 `layoutDatailSeq`。
+      properties:
+        sysCd: { type: string }
+        voClassId: { type: string }
+        layoutDetailSeq: { type: integer, format: int32 }
+        elementNm: { type: string }
+        fieldNm: { type: string }
+        fieldDesc: { type: string }
+        fieldDataTypeCd: { type: string }
+        fieldLengthVal: { type: integer, format: int32 }
+        decimalLengthVal: { type: integer, format: int32 }
+        formatCd: { type: string }
+        arrayRefFieldId: { type: string }
+        encryptDecryptDivisionCd: { type: string }
+        defaultVal: { type: string }
+        alignCd: { type: string }
+        createUserId: { type: string }
+        createAppId: { type: string }
+        createDt: { type: string, format: date-time }
+        updateUserId: { type: string }
+        updateAppId: { type: string }
+        updateDt: { type: string, format: date-time }
+    AdminLayoutInfo:
+      type: object
+      description: 對應 `eims.web.dto.AdminLayoutInfo`。`layoutDetailList` 序列化自 `genLayoutDetailList`。
+      properties:
+        dtoClass: { type: string }
+        layoutDetailList:
+          type: array
+          items: { $ref: "#/components/schemas/GenLayoutDetailDto" }
+
+    # ========================================================================
+    # intrfc 批次：dto.table（Intrfc 系列）
+    # ========================================================================
+    IntrfccombsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsDto`。介面組合（含巢狀明細）。
+      properties:
+        intrfcId: { type: string }
+        intrfcNm: { type: string }
+        intrfcNmSub: { type: string }
+        intrfcWayCd: { type: string }
+        workStatusCd: { type: string }
+        regManId: { type: string }
+        regDttm: { type: string }
+        msgTrnsfrmYn: { type: string }
+        trxCd: { type: string }
+        bizCd: { type: string }
+        instCd: { type: string }
+        trxDscd: { type: string }
+        intrfcTypeCd: { type: string }
+        lv1Cd: { type: string }
+        lv2Cd: { type: string }
+        lv3Cd: { type: string }
+        lv4Cd: { type: string }
+        lv5Cd: { type: string }
+        syncAsyncDscd: { type: string }
+        srTypeCd: { type: string }
+        rqstExtrnlMsgNo: { type: string }
+        rspsExtrnlMsgNo: { type: string }
+        crtnSeq: { type: integer, format: int32 }
+        rsrvFldVal1: { type: string }
+        rsrvFldVal2: { type: string }
+        rsrvFldVal3: { type: string }
+        rspsYn: { type: string }
+        trxTypeDscd: { type: string }
+        rawData: { type: string }
+        bizCdNm: { type: string }
+        instCdNm: { type: string }
+        viewId: { type: string }
+        protocolDscd: { type: string }
+        httpMethod: { type: string }
+        contextUrl: { type: string }
+        requestMediaType: { type: string }
+        responseMediaType: { type: string }
+        execEnvDscd: { type: string }
+        msgLayoutTranYn: { type: string }
+        compulsionDeployYn: { type: string }
+        msgLayoutTranList:
+          type: array
+          items: { type: string }
+        intrfcmsglayoutdtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcmsglayoutdtDto" }
+        intrfcsrsysdtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcsrsysdtDto" }
+        intrfcroutinfodtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcroutinfodtDto" }
+        intrfcdeployhisthsDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcdeployhisthsDto" }
+        intrfcdeploysysdtDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcdeploysysdtDto" }
+        intrfccombsMappingReqDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccombsMappingDto" }
+        intrfccombsMappingResDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccombsMappingDto" }
+        eaiDto: { $ref: "#/components/schemas/IntrfccombsDetailEAIDto" }
+        mciDto: { $ref: "#/components/schemas/IntrfccombsDetailMCIDto" }
+        fepDto: { $ref: "#/components/schemas/IntrfccombsDetailFEPDto" }
+        ccDto: { $ref: "#/components/schemas/IntrfccombsDetailCCDto" }
+        intrfcMsgFieldEncodingDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcMsgFieldEncodingDto" }
+    IntrfccombsListDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsListDto`。介面清單／查詢條件。
+      properties:
+        intrfcId: { type: string }
+        intrfcNm: { type: string }
+        intrfcNmSub: { type: string }
+        intrfcWayCd: { type: string }
+        workStatusCd: { type: string }
+        regManId: { type: string }
+        regDttm: { type: string }
+        msgTrnsfrmYn: { type: string }
+        trxCd: { type: string }
+        bizCd: { type: string }
+        instCd: { type: string }
+        trxDscd: { type: string }
+        intrfcTypeCd: { type: string }
+        lv1Cd: { type: string }
+        lv2Cd: { type: string }
+        lv3Cd: { type: string }
+        lv4Cd: { type: string }
+        lv5Cd: { type: string }
+        rawData: { type: string }
+        srSeqAsS: { type: integer, format: int32 }
+        srTypeCdS: { type: string }
+        sysCdS: { type: string }
+        srSeqAsR: { type: integer, format: int32 }
+        srTypeCdR: { type: string }
+        sysCdR: { type: string }
+        rqstExtrnlMsgNo: { type: string }
+        rspsExtrnlMsgNo: { type: string }
+        trxTypeDscd: { type: string }
+        viewId: { type: string }
+        execEnvDscd: { type: string }
+        syncAsyncDscd: { type: string }
+        rspsYn: { type: string }
+    IntrfccombsDetailCCDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsDetailCCDto`。CC 子型別。
+      properties:
+        intrfDesc: { type: string }
+    IntrfccombsDetailEAIDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsDetailEAIDto`。EAI 子型別。
+      properties:
+        timeOut: { type: string }
+        privacyInclYn: { type: string }
+        currIntrfcIdentifier: { type: string }
+        backupAprvStat: { type: string }
+        occurCycle: { type: string }
+        dupFileProc: { type: string }
+        scheduleProcInterval: { type: string }
+        dayOccurCnt: { type: string }
+        encTargetYn: { type: string }
+        intrfDesc: { type: string }
+        intrfcUse: { type: string }
+        sendFilePath: { type: string }
+        sendFileNm: { type: string }
+        sendTranPostProc: { type: string }
+        sendTranPostBackPath: { type: string }
+        sendTranBeforeScript: { type: string }
+        sendTranBeforeScriptType: { type: string }
+        recvFilePath: { type: string }
+        recvFileNm: { type: string }
+        recvTranPostFinCreateYn: { type: string }
+        recvTranPostScript: { type: string }
+        recordSize: { type: string }
+        recordSeparator: { type: string }
+        recvTranPostScriptType: { type: string }
+        recvDbActionType: { type: string }
+        lobColNm: { type: string }
+        searchProcCnt: { type: integer, format: int32 }
+        errSkipYn: { type: string }
+        sendDbQuery: { type: string }
+        recvDbQuery: { type: string }
+        reqWrapperDtoNm: { type: string }
+        resWrapperDtoNm: { type: string }
+        fepTranIntrfcId: { type: string }
+    IntrfccombsDetailFEPDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsDetailFEPDto`。FEP 子型別。
+      properties:
+        timeOut: { type: string }
+        timeOutProcMode: { type: string }
+        trnsmsnErrResYn: { type: string }
+        delayRspsYn: { type: string }
+        reqWrapperDtoNm: { type: string }
+        resWrapperDtoNm: { type: string }
+        relationTrxCd: { type: string }
+        commNetworkIntrfcYn: { type: string }
+        fileId: { type: string }
+        recordSize: { type: string }
+        recordSeparator: { type: string }
+        fileNm: { type: string }
+        dupTrnsmsnAllwYn: { type: string }
+        dupFileProcMode: { type: string }
+        dupFileProc: { type: string }
+        occurCycle: { type: string }
+        fileTranIntrfcId: { type: string }
+        privacyInclYn: { type: string }
+        encTargetYn: { type: string }
+        currIntrfcIdentifier: { type: string }
+        intrfDesc: { type: string }
+        backupAprvStat: { type: string }
+        intrfcUse: { type: string }
+        sendFileNm: { type: string }
+        sendFilePath: { type: string }
+        recvFilePath: { type: string }
+    IntrfccombsDetailMCIDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsDetailMCIDto`。MCI 子型別。
+      properties:
+        timeOut: { type: string }
+        privacyInclYn: { type: string }
+        occurCycle: { type: string }
+        dayOccurCnt: { type: string }
+        currIntrfcIdentifier: { type: string }
+        backupAprvStat: { type: string }
+        encTargetYn: { type: string }
+        intrfDesc: { type: string }
+        intrfcUse: { type: string }
+    IntrfccombsMappingDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsMappingDto`。欄位對應。
+      properties:
+        mappingTypeCd: { type: string }
+        reqResTypeCd: { type: string }
+        mappingSeq: { type: integer, format: int32 }
+        srcData: { type: string }
+        targetData: { type: string }
+        targetDataSeq: { type: integer, format: int32 }
+        fldEncoding: { type: string }
+        wideHalfCharCngCd: { type: string }
+        encCd: { type: string }
+    IntrfccombsRawDataDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsRawDataDto`。rawData 解析結構。
+      properties:
+        intrfccombsMappingReqDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccombsMappingDto" }
+        intrfccombsMappingResDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccombsMappingDto" }
+        eaiDto: { $ref: "#/components/schemas/IntrfccombsDetailEAIDto" }
+        mciDto: { $ref: "#/components/schemas/IntrfccombsDetailMCIDto" }
+        fepDto: { $ref: "#/components/schemas/IntrfccombsDetailFEPDto" }
+        ccDto: { $ref: "#/components/schemas/IntrfccombsDetailCCDto" }
+        intrfcMsgFieldEncodingDto:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcMsgFieldEncodingDto" }
+    IntrfccombsFileUploadDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccombsFileUploadDto`。
+      properties:
+        isAdd: { type: boolean }
+        intrfccombsDto: { $ref: "#/components/schemas/IntrfccombsDto" }
+    IntrfccomdtDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfccomdtDto`。
+      properties:
+        intrfcId: { type: string }
+        trxCd: { type: string }
+        bizCd: { type: string }
+        instCd: { type: string }
+        trxTypeCd: { type: string }
+    IntrfcdeployhisthsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcdeployhisthsDto`。部署歷程。
+      properties:
+        intrfcId: { type: string }
+        deployVersion: { type: integer, format: int32 }
+        deployDttm: { type: string }
+        deploySysCd: { type: string }
+        deployResultCd: { type: string }
+        rawData: { type: string }
+        resultRawData: { type: string }
+    IntrfcdeploysysdtDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcdeploysysdtDto`。部署系統明細。
+      properties:
+        intrfcId: { type: string }
+        deploySysCd: { type: string }
+        deployUrl: { type: string }
+        deploySysSeq: { type: integer, format: int32 }
+        deploySysNm: { type: string }
+        deployResultCd: { type: string }
+    IntrfcmsglayoutdtDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcmsglayoutdtDto`。
+      properties:
+        intrfcId: { type: string }
+        srTypeCd: { type: string }
+        srSeq: { type: integer, format: int32 }
+        rqstRspsTypeCd: { type: string }
+        rqstRspsSeq: { type: integer, format: int32 }
+        sysCd: { type: string }
+        msgLayoutId: { type: string }
+        msglayoutbsDto: { $ref: "#/components/schemas/MsglayoutbsDto" }
+    IntrfcroutinfodtDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcroutinfodtDto`。路由資訊。
+      properties:
+        intrfcId: { type: string }
+        seq: { type: integer, format: int32 }
+        lenFldOffsetLen: { type: integer, format: int32 }
+        fldDataLen: { type: integer, format: int32 }
+        fldCfgVal: { type: string }
+        rutngDesc: { type: string }
+        cndtCd: { type: string }
+    IntrfcsrsysdtDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcsrsysdtDto`。送收系統明細。
+      properties:
+        intrfcId: { type: string }
+        srTypeCd: { type: string }
+        srSeq: { type: integer, format: int32 }
+        sysCd: { type: string }
+        sysNm: { type: string }
+        trxCd: { type: string }
+        filePath: { type: string }
+        crgManNm: { type: string }
+    IntrfcFileUploadDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcFileUploadDto`。檔案上傳之 metadata。
+      properties:
+        intrfcTypeCd: { type: string }
+    IntrfcIdCreateDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcIdCreateDto`。介面 ID 채번。
+      properties:
+        intrfcId: { type: string }
+        trxDscd: { type: string }
+        intrfcTypeCd: { type: string, description: "MCI/EAI_I/EAI_E/FEP" }
+        lv1Cd: { type: string }
+        lv2Cd: { type: string }
+        lv3Cd: { type: string }
+        sendSysCd: { type: string }
+        receiveSysCd: { type: string }
+        seq: { type: integer, format: int32 }
+    IntrfcMsgFieldEncodingDto:
+      type: object
+      description: 對應 `eims.web.dto.table.IntrfcMsgFieldEncodingDto`。欄位編碼設定（含 `FieldEncodingDto` 明細，data 批次已定義）。
+      properties:
+        intrfcId: { type: string }
+        msgLayoutId: { type: string }
+        srCd: { type: string }
+        srSysCd: { type: string }
+        fieldEncodingDto:
+          type: array
+          items: { $ref: "#/components/schemas/FieldEncodingDto" }
+
+    # ========================================================================
+    # intrfc 批次：dto.table（Msg 系列）
+    # ========================================================================
+    MsglayoutbsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MsglayoutbsDto`。訊息版面（含明細欄位）。
+      properties:
+        msgLayoutId: { type: string }
+        msgNm: { type: string }
+        msgNmSub: { type: string }
+        msgVersion: { type: integer, format: int32 }
+        chlDscd: { type: string }
+        trxDscd: { type: string }
+        msgDscd: { type: string }
+        regManId: { type: string }
+        regDttm: { type: string }
+        msgDesc: { type: string }
+        dtoNm: { type: string }
+        lv1Cd: { type: string }
+        lv2Cd: { type: string }
+        lv3Cd: { type: string }
+        lv4Cd: { type: string }
+        lv5Cd: { type: string }
+        msgDataVal: { type: string }
+        jobId: { type: string }
+        extrnlBizNm: { type: string }
+        bitMapCrtnYn: { type: string }
+        iso8583DataTypeCd: { type: string }
+        bitMapTypeCd: { type: string }
+        rsrvFldVal1: { type: string }
+        rsrvFldVal2: { type: string }
+        appTypeCd: { type: string }
+        trxCd: { type: string }
+        appNm: { type: string }
+        crtnSeq: { type: integer, format: int32 }
+        rsrvFldVal3: { type: string }
+        sharedYn: { type: string }
+        workStatusCd: { type: string }
+        custApiYn: { type: string }
+        msgRvsNo: { type: integer, format: int32 }
+        msglayoutdtDto:
+          type: array
+          items: { $ref: "#/components/schemas/MsglayoutdtDto" }
+    MsglayoutbsDtoMapping:
+      type: object
+      description: 對應 `eims.web.dto.table.MsglayoutbsDtoMapping`。版面比對（左右兩組欄位）。
+      properties:
+        msgLayoutId: { type: string }
+        fldEngNm: { type: string }
+        fldKorNm: { type: string }
+        dataTypeNm: { type: string }
+        msgSeq: { type: integer, format: int32 }
+        msgLen: { type: integer, format: int32 }
+        decimalLen: { type: integer, format: int32 }
+        msgLayoutId2: { type: string }
+        fldEngNm2: { type: string }
+        fldKorNm2: { type: string }
+        dataTypeNm2: { type: string }
+        msgSeq2: { type: integer, format: int32 }
+        msgLen2: { type: integer, format: int32 }
+        decimalLen2: { type: integer, format: int32 }
+    MsglayoutbsFileUploadDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MsglayoutbsFileUploadDto`。
+      properties:
+        isAdd: { type: boolean }
+        msglayoutbsDto: { $ref: "#/components/schemas/MsglayoutbsDto" }
+    MsglayoutbsListDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MsglayoutbsListDto`。
+      properties:
+        msglayoutbsDtoList:
+          type: array
+          items: { $ref: "#/components/schemas/MsglayoutbsDto" }
+    MsglayoutdtDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MsglayoutdtDto`。訊息版面欄位明細。
+      properties:
+        msgLayoutId: { type: string }
+        msgVersion: { type: integer, format: int32 }
+        fldEngNm: { type: string }
+        fldKorNm: { type: string }
+        dataTypeNm: { type: string }
+        arraySizeRefVal: { type: string }
+        basicVal: { type: string }
+        encYn: { type: string }
+        parentFldNm: { type: string }
+        ioKey: { type: string }
+        childDtoNm: { type: string }
+        fldUnqId: { type: string }
+        msgSeq: { type: integer, format: int32 }
+        msgLen: { type: integer, format: int32 }
+        decimalLen: { type: integer, format: int32 }
+        alignNm: { type: string }
+        privacyDscd: { type: string }
+        cdAttrNm: { type: string }
+        fillerVal: { type: string }
+        fldLvNo: { type: integer, format: int32 }
+        extrnlMsgBizCdYn: { type: string }
+        extrnlSrchKeyYn: { type: string }
+        extrnlMsgNoYn: { type: string }
+        extrnlProcessorCdYn: { type: string }
+        extrnlOffsetYn: { type: string }
+        iso8583LenFldCopyYn: { type: string }
+        iso8583FldDataLen: { type: integer, format: int32 }
+        iso8583FldMaxLen: { type: integer, format: int32 }
+        iso8583SpecNo: { type: string }
+        iso8583FldCharSetCd: { type: string }
+        iso8583VariableYn: { type: string }
+        iso8583FldLenTypeCd: { type: string }
+        iso8583LenFldInclYn: { type: string }
+        iso8583TrnsmsnDataLen: { type: integer, format: int32 }
+        iso8583TrnsmsnLen: { type: integer, format: int32 }
+        fldRmk: { type: string }
+        cfgDesc: { type: string }
+        indsYn: { type: string }
+        iso8583LenFldLen: { type: integer, format: int32 }
+        fldEncodingCd: { type: string }
+        fldTrnsfrmCd: { type: string }
+        maskingWayCd: { type: string }
+        encWayCd: { type: string }
+        privacyYn: { type: string }
+        rsrvFldVal1: { type: string }
+        rsrvFldVal2: { type: string }
+        rsrvFldVal3: { type: string }
+        metaValidVal: { type: string }
+        paramType: { type: string }
+        replKey: { type: string }
+        korInclYn: { type: string }
+    MsgIdCreateDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MsgIdCreateDto`。訊息 ID 채번。
+      properties:
+        msgLayoutId: { type: string }
+        chlDscd: { type: string }
+        trxDscd: { type: string }
+        msgDscd: { type: string }
+        lv1Cd: { type: string }
+        lv2Cd: { type: string }
+        lv3Cd: { type: string }
+        sendSysCd: { type: string }
+        receiveSysCd: { type: string }
+        extrnlBizNm: { type: string }
+        msgVersion: { type: integer, format: int32 }
+        fileId: { type: string }
+        msgNumber: { type: string }
+        seq: { type: string }
+    MsgInsertDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MsgInsertDto`。
+      properties:
+        msglayoutbsDto: { $ref: "#/components/schemas/MsglayoutbsDto" }
+        insertYn: { type: boolean }
+    MsgLayoutEffectDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MsgLayoutEffectDto`。版面變更影響。
+      properties:
+        intrfcId: { type: string }
+        intrfcNm: { type: string }
+        intrfcType: { type: string }
+        msgLayoutId: { type: string }
+
+    # ========================================================================
+    # intrfc 批次：dto.ui
+    # ========================================================================
+    UiIntrfccombsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfccombsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        intrfccombsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccombsListDto" }
+    UiIntrfccomdtOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfccomdtOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        intrfccomdtOutList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfccomdtDto" }
+    UiIntrfcdeployhisthsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfcdeployhisthsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        intrfcdeployhisthsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcdeployhisthsDto" }
+    UiIntrfcdeploysysdtOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfcdeploysysdtOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        intrfcdeploysysdtOutList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcdeploysysdtDto" }
+    UiIntrfcmsglayoutdtOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfcmsglayoutdtOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        intrfcmsglayoutdtOutList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcmsglayoutdtDto" }
+    UiIntrfcroutinfodtOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfcroutinfodtOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        intrfcroutinfodtOutList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcroutinfodtDto" }
+    UiIntrfcsrsysdtOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfcsrsysdtOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        intrfcsrsysdtOutList:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcsrsysdtDto" }
+    UiIntrfcDeployResponse:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfcDeployResponse`。
+      properties:
+        intrfcDeployResponse:
+          type: array
+          items: { $ref: "#/components/schemas/IntrfcDeployResponse" }
+    UiIntrfcIdOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiIntrfcIdOut`。
+      properties:
+        intrfcId: { type: string }
+    UiMsglayoutbsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiMsglayoutbsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        msglayoutbsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/MsglayoutbsDto" }
+    UiMsgLayoutIdOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiMsgLayoutIdOut`。
+      properties:
+        msgLayoutId: { type: string }
+
   responses:
     BadRequest:
       description: 請求格式或欄位錯誤。
@@ -1429,31 +2243,31 @@ paths:
       tags: [Msglayout]
       operationId: listMsglayouts
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiMsglayoutbsOut" } } } }
     post:
       tags: [Msglayout]
       operationId: createMsglayout
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiMsgLayoutIdOut" } } } }
     put:
       tags: [Msglayout]
       operationId: updateMsglayout
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /msglayouts/{msgLayoutId}:
     parameters: [{ in: path, name: msgLayoutId, required: true, schema: { type: string } }]
     get:
       tags: [Msglayout]
       operationId: getMsglayout
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsDto" } } } }
     delete:
       tags: [Msglayout]
       operationId: deleteMsglayout
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /msglayouts/{msgLayoutId}/effects:
     parameters: [{ in: path, name: msgLayoutId, required: true, schema: { type: string } }]
     get:
@@ -1461,36 +2275,36 @@ paths:
       operationId: getMsglayoutEffects
       summary: 訊息版面變更影響分析。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/MsgLayoutEffectDto" } } } } }
   /msglayoutstemp:
     post:
       tags: [Msglayout]
       operationId: createMsglayoutTemp
       summary: 暫存訊息版面。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiMsgLayoutIdOut" } } } }
     put:
       tags: [Msglayout]
       operationId: updateMsglayoutTemp
       summary: 更新暫存訊息版面。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /msglayoutslist:
     post:
       tags: [Msglayout]
       operationId: getMsglayoutList
       summary: 條件查詢訊息版面清單。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { type: array, items: { type: string } } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsListDto" } } } }
   /msglayouts/excelexport:
     post:
       tags: [Msglayout]
       operationId: exportMsglayoutExcel
       summary: 訊息版面 Excel 匯出。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsDto" } } } }
       responses:
         "200":
           description: Excel 二進位串流。
@@ -1509,24 +2323,24 @@ paths:
             schema:
               type: object
               properties:
-                file: { type: string, format: binary }
+                msglayoutFile: { type: string, format: binary, description: "@RequestPart(\"msglayoutFile\")" }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsFileUploadDto" } } } }
   /msglayouts/extrnlMsgs:
     get:
       tags: [Msglayout]
       operationId: getExtrnlMsgs
       summary: 外部訊息清單。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiMsglayoutbsOut" } } } }
   /msglayouts/msgidcreate:
     post:
       tags: [Msglayout]
       operationId: createMsgId
       summary: 產生 msg id。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MsgIdCreateDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/MsgIdCreateDto" } } } }
 
   # =========================================================================
   # Intrfccom
@@ -1536,76 +2350,76 @@ paths:
       tags: [Intrfccom]
       operationId: listIntrfccoms
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiIntrfccombsOut" } } } }
     post:
       tags: [Intrfccom]
       operationId: createIntrfccom
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfccombsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiIntrfcIdOut" } } } }
     put:
       tags: [Intrfccom]
       operationId: updateIntrfccom
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfccombsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /intrfccoms/{intrfcId}:
     parameters: [{ in: path, name: intrfcId, required: true, schema: { type: string } }]
     get:
       tags: [Intrfccom]
       operationId: getIntrfccom
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfccombsDto" } } } }
     delete:
       tags: [Intrfccom]
       operationId: deleteIntrfccom
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /interfaceListApi:
     get:
       tags: [Intrfccom]
       operationId: listInterfaceApi
       summary: 介面清單（外部 API）。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiIntrfccombsOut" } } } }
   /intrfccoms/deploy:
     post:
       tags: [Intrfccom]
       operationId: deployIntrfccom
       summary: 部署介面。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfccombsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiIntrfcDeployResponse" } } } }
   /intrfccoms/deployAll:
     post:
       tags: [Intrfccom]
       operationId: deployAllIntrfccom
       summary: 全部部署。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      description: Controller 簽章無 `@RequestBody`（無 request body）。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiIntrfcDeployResponse" } } } }
   /intrfccoms/deployhistorys:
     get:
       tags: [Intrfccom]
       operationId: listDeployHistorys
       summary: 部署歷程。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiIntrfcdeployhisthsOut" } } } }
   /intrfccoms/deployhistoryresults:
     get:
       tags: [Intrfccom]
       operationId: listDeployHistoryResults
       summary: 部署結果。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfcDeployResponseList" } } } }
   /intrfccoms/redeploy:
     post:
       tags: [Intrfccom]
       operationId: redeployIntrfccom
       summary: 重新部署。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfcdeployhisthsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /intrfccoms/deploy/{intrfcId}:
     parameters: [{ in: path, name: intrfcId, required: true, schema: { type: string } }]
     get:
@@ -1613,7 +2427,7 @@ paths:
       operationId: getDeployStatus
       summary: 單筆部署狀態。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfccombsDto" } } } }
   /intrfccoms/deploy/terminal:
     get:
       tags: [Intrfccom]
@@ -1645,16 +2459,16 @@ paths:
       tags: [Intrfccom]
       operationId: createIntrfcId
       summary: 產生 intrfc id。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfcIdCreateDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfcIdCreateDto" } } } }
   /intrfccoms/layoutdiff:
     get:
       tags: [Intrfccom]
       operationId: getLayoutDiff
       summary: 介面 layout 差異比對。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/MsglayoutbsDto" } } } }
   /intrfccoms/fileuploads:
     post:
       tags: [Intrfccom]
@@ -1667,9 +2481,10 @@ paths:
             schema:
               type: object
               properties:
-                file: { type: string, format: binary }
+                intrfcFile: { type: string, format: binary, description: "@RequestPart(\"intrfcFile\")" }
+                intrfcTypeCd: { type: string, description: "@RequestPart(\"intrfcTypeCd\")" }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /intrfccoms/import/intrfcfiles:
     post:
       tags: [Intrfccom]
@@ -1682,9 +2497,12 @@ paths:
             schema:
               type: object
               properties:
-                file: { type: string, format: binary }
+                intrfcFile:
+                  type: array
+                  items: { type: string, format: binary }
+                  description: "多檔上傳，part name `intrfcFile`"
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 匯入錯誤明細。, content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/IntrfcFileImportErrInfo" } } } } }
   /intrfccoms/import/definition:
     post:
       tags: [Intrfccom]
@@ -1697,15 +2515,18 @@ paths:
             schema:
               type: object
               properties:
-                file: { type: string, format: binary }
+                intrfcFile:
+                  type: array
+                  items: { type: string, format: binary }
+                  description: "多檔上傳，part name `intrfcFile`"
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 匯入錯誤明細。, content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/IntrfcFileImportErrInfo" } } } } }
   /intrfccoms/excelexport:
     post:
       tags: [Intrfccom]
       operationId: exportIntrfccomExcel
       summary: 介面 Excel 匯出。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/IntrfccombsDto" } } } }
       responses:
         "200":
           description: Excel 二進位串流。

@@ -37,9 +37,10 @@ docs/api/
 
 ## Schema 詳細度（目前狀態）
 
-- `components.schemas.Generic` 為佔位 schema（`additionalProperties: true`），未逐 DTO 展開欄位。
-- 詳細欄位請反查 `eims.web.dto.table.<XxxDto>`（request）與 `eims.web.dto.ui.<UiXxxOut>`（response）。
-- 後續可開另一個 change 補完 schema。
+- 三批 schema 補完計畫（`flesh-out-schemas-main-auth` / `-data` / `-intrfc`）已完成：所有領域 DTO 皆以實際 `eims.web.dto.*` 欄位逐一展開於 `components.schemas`。
+- `Generic` 佔位 schema（`additionalProperties: true`）已退場，僅保留給 `/userstest/test` 測試端點，以及少數無對應 DTO 之 Main 流程端點（`/eims/sso`、`/changelang`、`/bxmlogin`，回應為轉址 / 簡單字串）。
+- `IntrfccombsDetail` 之 CC/EAI/FEP/MCI 子型別以 `oneOf` 表達；因 DTO 無判別欄位（`IntrfccombsDetail` 為空 marker interface），不附 `discriminator`。
+- 詳細欄位仍可反查 `eims.web.dto.table.<XxxDto>`（request）與 `eims.web.dto.ui.<UiXxxOut>`（response）。
 
 ## 新增 / 修改 endpoint 流程
 
