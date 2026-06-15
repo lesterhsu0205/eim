@@ -286,6 +286,296 @@ components:
           type: array
           items: { $ref: "#/components/schemas/BizcdDto" }
 
+    # ========================================================================
+    # data 批次：dto.table
+    # ========================================================================
+    CommCodeDto:
+      type: object
+      description: 對應 `eims.web.dto.table.CommCodeDto`。Jackson `NON_ABSENT` + `NON_EMPTY` + `ignoreUnknown=true`。
+      properties:
+        cdId: { type: string, description: 代碼 ID }
+        cdVal: { type: string, description: 代碼值 }
+        langCd: { type: string, description: 語言代碼 }
+        cdNm: { type: string, description: 代碼名稱 }
+        cdValNm: { type: string, description: 代碼值名稱 }
+        cdSeq: { type: integer, format: int32, description: 序號 }
+        cdDesc: { type: string, description: 代碼說明 }
+    CodeInterfaceDto:
+      type: object
+      description: 對應 `eims.web.dto.table.CodeInterfaceDto`。代碼介接資料。
+      properties:
+        ifDataSeq: { type: integer, format: int32 }
+        ifDataCrtTmstmp: { type: string }
+        ifDataAplyTpCd: { type: string }
+        ifDataAplyStsCd: { type: string }
+        ifDataAplyTmstmp: { type: string }
+        ifDataAplyErrCd: { type: string }
+        ifDataAplyErrMsg: { type: string }
+        dmnLgclNm: { type: string }
+        dmnPsclNm: { type: string }
+        dmnCdVal: { type: string }
+        dmnCdValGlbl: { type: string }
+        stdTrmDataScl: { type: string }
+    EnccdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.EnccdDto`。加密代碼。
+      properties:
+        encCd: { type: string, description: 加密代碼 }
+        encNm: { type: string, description: 加密名稱 }
+    MaskcdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MaskcdDto`。遮罩代碼。
+      properties:
+        maskCd: { type: string, description: 遮罩代碼 }
+        maskNm: { type: string, description: 遮罩名稱 }
+    FieldEncodingDto:
+      type: object
+      description: |
+        對應 `eims.web.dto.table.FieldEncodingDto`。欄位編碼明細項。
+        為 `IntrfcMsgFieldEncodingDto`（intrfc 批次）之 list 元素；本身為獨立 DTO，兩者非重複（不合併）。
+      properties:
+        seq: { type: integer, format: int32, description: 欄位序號 }
+        fldEngNm: { type: string, description: 欄位英文名 }
+        fldUnqId: { type: string, description: 欄位唯一 ID }
+        fldEncoding: { type: string, description: 欄位編碼 }
+        wideHalfCharCngCd: { type: string, description: 全半形轉換代碼 }
+    TrxcdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.TrxcdDto`。
+      properties:
+        trxCd: { type: string, description: 交易代碼 }
+        trxCdNm: { type: string, description: 交易代碼名稱 }
+        mngSysCd: { type: string, description: 管理系統代碼（COO/COB 等） }
+        trxCdDesc: { type: string, description: 交易代碼說明 }
+    SrsysbsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.SrsysbsDto`。送收系統。
+      properties:
+        sysCd: { type: string, description: 系統代碼 }
+        sysNm: { type: string, description: 系統名稱 }
+        sysCdDesc: { type: string, description: 系統代碼說明 }
+        crgManNm: { type: string, description: 負責人 }
+        noncoreYn: { type: string, description: 非核心系統 Y/N }
+    DepolysysbsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.DepolysysbsDto`。部署系統。
+      properties:
+        deploySysCd: { type: string, description: 部署系統代碼 }
+        deploySysNm: { type: string, description: 部署系統名稱 }
+        deploySysUrl: { type: string, description: 部署系統 URL }
+        deploySysDesc: { type: string, description: 部署系統說明 }
+        deploySysGrpCd: { type: string, description: 部署系統群組代碼 }
+    ExtrnlinstcdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.ExtrnlinstcdDto`。外部機構代碼。
+      properties:
+        instCd: { type: string, description: 機構代碼 }
+        instCdNm: { type: string, description: 機構代碼名稱 }
+        instDstnctnVal: { type: string, description: 機構判別值 }
+        instCdDesc: { type: string, description: 機構代碼說明 }
+    MappingfuncbsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MappingfuncbsDto`。對應函式。
+      properties:
+        mappingFuncNm: { type: string, description: 對應函式名稱 }
+        argsCnt: { type: integer, format: int32, description: 參數個數 }
+        guideDesc: { type: string, description: 使用說明 }
+    MetabsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MetabsDto`。Meta 標準項目。
+      properties:
+        metaEngNm: { type: string, description: Meta 英文名 }
+        metaKorNm: { type: string, description: Meta 韓文名 }
+        metaLen: { type: integer, format: int32, description: 長度 }
+        decimalLen: { type: integer, format: int32, description: 小數長度 }
+        dataTypeNm: { type: string, description: 資料型別名 }
+        metaEncYn: { type: string, description: 加密 Y/N }
+        metaTermType: { type: string, description: 術語類型 }
+    BcMetaDto:
+      type: object
+      description: 對應 `eims.web.dto.table.BcMetaDto`。（資料來源：JNDI / spring.meta.datasource.*）
+      properties:
+        stdAreaNm: { type: string, description: 標準領域名 }
+        dicPhyNm: { type: string, description: 字典物理名 }
+        dicLogNm: { type: string, description: 字典邏輯名 }
+        dataTypeNm: { type: string, description: 資料型別名 }
+        dataTypeCd: { type: string, description: 資料型別代碼 }
+        dataLen: { type: integer, format: int32, description: 資料長度 }
+        dataScale: { type: integer, format: int32, description: 小數位數 }
+        dicDesc: { type: string, description: 字典說明 }
+    BcMetaAppCdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.BcMetaAppCdDto`。（資料來源：JNDI / spring.meta.datasource.*）
+      properties:
+        cdVal: { type: string }
+        cdValNm: { type: string }
+        pCdId: { type: string, description: 上層代碼 ID }
+        pCdValId: { type: string, description: 上層代碼值 ID }
+        cdValId: { type: string, description: 代碼值 ID }
+    BcMetaSysCdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.BcMetaSysCdDto`。（資料來源：JNDI / spring.meta.datasource.*）
+      properties:
+        cdVal: { type: string }
+        cdValNm: { type: string }
+        cdValDesc: { type: string }
+    MetaEffectDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MetaEffectDto`。Meta 變更影響（介面對應）。
+      properties:
+        metaEngNm: { type: string, description: Meta 英文名 }
+        intrfcId: { type: string, description: 介面 ID }
+        intrfcNm: { type: string, description: 介面名稱 }
+        intrfcType: { type: string, description: 介面類型 }
+        msgLayoutId: { type: string, description: 訊息版面 ID }
+    MetaInterfaceDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MetaInterfaceDto`。Meta 介接資料（標準術語）。
+      properties:
+        ifDataSeq: { type: integer, format: int32 }
+        ifDataCrtTmstmp: { type: string }
+        ifDataAplyTpCd: { type: string }
+        ifDataAplyStsCd: { type: string }
+        ifDataAplyTmstmp: { type: string }
+        ifDataAplyErrCd: { type: string }
+        ifDataAplyErrMsg: { type: string }
+        stdTrmTpCd: { type: string }
+        stdTrmLgclNm: { type: string }
+        stdTrmPsclNm: { type: string }
+        stdTrmDataTpNm: { type: string }
+        stdTrmDataLen: { type: integer, format: int32 }
+        stdTrmDataScl: { type: integer, format: int32 }
+        stdTrmDmnEncYn: { type: string }
+    ActionhisthsDto:
+      type: object
+      description: 對應 `eims.web.dto.table.ActionhisthsDto`。操作歷程。
+      properties:
+        hstDscd: { type: string, description: 歷程區分代碼 }
+        itemId: { type: string, description: 項目 ID }
+        workCttCd: { type: string, description: 作業內容代碼 }
+        workDttm: { type: string, description: 作業時間 }
+        userId: { type: string, description: 使用者 ID }
+        itemDesc: { type: string, description: 項目說明 }
+        intrfcType: { type: string, description: 介面類型 }
+    DomainCORSDto:
+      type: object
+      description: |
+        對應 `eims.web.dto.table.DomainCORSDto`。CORS 網域設定。無對應 endpoint，僅供未來批次 `$ref`。
+        property 名採 setter `@JsonProperty` 別名（反序列化用）；序列化輸出採欄位原名。
+      properties:
+        tenantId: { type: string, description: 來源欄位 sysCd }
+        domainId: { type: string }
+        originValue: { type: string, description: 來源欄位 originDomainNm }
+        originHeader: { type: string, description: 來源欄位 originHeaderContent }
+        originMethod: { type: string, description: 來源欄位 originMethodId }
+        createUserId: { type: string }
+        createAppId: { type: string }
+        createDt: { type: string, format: date-time }
+        updateUserId: { type: string }
+        updateAppId: { type: string }
+        updateDt: { type: string, format: date-time }
+    DomainSSLDto:
+      type: object
+      description: |
+        對應 `eims.web.dto.table.DomainSSLDto`。SSL 網域設定。無對應 endpoint，僅供未來批次 `$ref`。
+        property 名採 setter `@JsonProperty` 別名（反序列化用）；序列化輸出採欄位原名。
+      properties:
+        tenantId: { type: string, description: 來源欄位 sysCd }
+        domainId: { type: string }
+        resourcePath: { type: string, description: 來源欄位 resourcePathUrlAdr }
+        pwd: { type: string, format: password, description: 來源欄位 sslPassword }
+        sslContent: { type: string, format: byte, description: "SSL 內容（byte[]）" }
+        createUserId: { type: string }
+        createAppId: { type: string }
+        createDt: { type: string, format: date-time }
+        updateUserId: { type: string }
+        updateAppId: { type: string }
+        updateDt: { type: string, format: date-time }
+
+    # ========================================================================
+    # data 批次：dto.ui
+    # ========================================================================
+    UiCommCodeOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiCommCodeOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        commCodeDtoList:
+          type: array
+          items: { $ref: "#/components/schemas/CommCodeDto" }
+    UiEncOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiEncOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        encOutList:
+          type: array
+          items: { $ref: "#/components/schemas/EnccdDto" }
+    UiMaskOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiMaskOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        maskOutList:
+          type: array
+          items: { $ref: "#/components/schemas/MaskcdDto" }
+    UiTrxcdOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiTrxcdOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        trxcdOutList:
+          type: array
+          items: { $ref: "#/components/schemas/TrxcdDto" }
+    UiSrsysbsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiSrsysbsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        srsysbsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/SrsysbsDto" }
+    UiDepolysysbsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiDepolysysbsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        depolysysbsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/DepolysysbsDto" }
+    UiExtrnlinstcdOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiExtrnlinstcdOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        extrnlinstcdOutList:
+          type: array
+          items: { $ref: "#/components/schemas/ExtrnlinstcdDto" }
+    UiMappingfuncbsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiMappingfuncbsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        mappingfuncbsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/MappingfuncbsDto" }
+    UiMetabsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiMetabsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        metabsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/MetabsDto" }
+    UiActionhisthsOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiActionhisthsOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        actionhisthsOutList:
+          type: array
+          items: { $ref: "#/components/schemas/ActionhisthsDto" }
+
   responses:
     BadRequest:
       description: 請求格式或欄位錯誤。
@@ -845,21 +1135,21 @@ paths:
       x-interceptor-excluded: true
       description: 排除於 `RequestInterceptor`。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiCommCodeOut" } } } }
     post:
       tags: [CommCode]
       operationId: createCode
       x-interceptor-excluded: true
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/CommCodeDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
     put:
       tags: [CommCode]
       operationId: updateCode
       x-interceptor-excluded: true
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/CommCodeDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /codes/common/{cdId}:
     parameters: [{ in: path, name: cdId, required: true, schema: { type: string } }]
     get:
@@ -867,19 +1157,19 @@ paths:
       operationId: getCommonCode
       summary: 共用代碼。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/CommCodeDto" } } } } }
   /codes/{cdId}:
     parameters: [{ in: path, name: cdId, required: true, schema: { type: string } }]
     get:
       tags: [CommCode]
       operationId: getCode
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommCodeDto" } } } }
     delete:
       tags: [CommCode]
       operationId: deleteCode
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
 
   # =========================================================================
   # Enc / Mask
@@ -890,14 +1180,14 @@ paths:
       operationId: getEncCd
       summary: 加密代碼清單。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiEncOut" } } } }
   /maskCd:
     get:
       tags: [Mask]
       operationId: getMaskCd
       summary: 遮罩代碼清單。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiMaskOut" } } } }
 
   # =========================================================================
   # Trx
@@ -909,21 +1199,21 @@ paths:
       x-interceptor-excluded: true
       description: 排除於 `RequestInterceptor`（`/trxs` 與 `/trxs/**`）。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiTrxcdOut" } } } }
     post:
       tags: [Trx]
       operationId: createTrx
       x-interceptor-excluded: true
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/TrxcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
     put:
       tags: [Trx]
       operationId: updateTrx
       x-interceptor-excluded: true
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/TrxcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /trxs/{trxCd}:
     parameters: [{ in: path, name: trxCd, required: true, schema: { type: string } }]
     get:
@@ -931,13 +1221,13 @@ paths:
       operationId: getTrx
       x-interceptor-excluded: true
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/TrxcdDto" } } } }
     delete:
       tags: [Trx]
       operationId: deleteTrx
       x-interceptor-excluded: true
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
 
   # =========================================================================
   # Srsys
@@ -947,31 +1237,31 @@ paths:
       tags: [Srsys]
       operationId: listSrsyss
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiSrsysbsOut" } } } }
     post:
       tags: [Srsys]
       operationId: createSrsys
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/SrsysbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
     put:
       tags: [Srsys]
       operationId: updateSrsys
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/SrsysbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /srsyss/{sysCd}:
     parameters: [{ in: path, name: sysCd, required: true, schema: { type: string } }]
     get:
       tags: [Srsys]
       operationId: getSrsys
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/SrsysbsDto" } } } }
     delete:
       tags: [Srsys]
       operationId: deleteSrsys
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
 
   # =========================================================================
   # Depolysys
@@ -981,39 +1271,39 @@ paths:
       tags: [Depolysys]
       operationId: listDepolysyss
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiDepolysysbsOut" } } } }
     post:
       tags: [Depolysys]
       operationId: createDepolysys
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/DepolysysbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
     put:
       tags: [Depolysys]
       operationId: updateDepolysys
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/DepolysysbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /depolysyss/{deploySysCd}:
     parameters: [{ in: path, name: deploySysCd, required: true, schema: { type: string } }]
     get:
       tags: [Depolysys]
       operationId: getDepolysys
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/DepolysysbsDto" } } } }
     delete:
       tags: [Depolysys]
       operationId: deleteDepolysys
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /depolysyss/getlist:
     post:
       tags: [Depolysys]
       operationId: getDepolysysList
       summary: 條件查詢部署系統清單。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { type: array, items: { type: string } } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/DepolysysbsDto" } } } } }
 
   # =========================================================================
   # Extrnlinst
@@ -1023,31 +1313,31 @@ paths:
       tags: [Extrnlinst]
       operationId: listExtrnlinsts
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiExtrnlinstcdOut" } } } }
     post:
       tags: [Extrnlinst]
       operationId: createExtrnlinst
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/ExtrnlinstcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
     put:
       tags: [Extrnlinst]
       operationId: updateExtrnlinst
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/ExtrnlinstcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /extrnlinsts/{instCd}:
     parameters: [{ in: path, name: instCd, required: true, schema: { type: string } }]
     get:
       tags: [Extrnlinst]
       operationId: getExtrnlinst
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/ExtrnlinstcdDto" } } } }
     delete:
       tags: [Extrnlinst]
       operationId: deleteExtrnlinst
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
 
   # =========================================================================
   # Mappingfunc
@@ -1057,31 +1347,31 @@ paths:
       tags: [Mappingfunc]
       operationId: listMappingfuncs
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiMappingfuncbsOut" } } } }
     post:
       tags: [Mappingfunc]
       operationId: createMappingfunc
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MappingfuncbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
     put:
       tags: [Mappingfunc]
       operationId: updateMappingfunc
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MappingfuncbsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /mappingfuncs/{mappingFuncNm}:
     parameters: [{ in: path, name: mappingFuncNm, required: true, schema: { type: string } }]
     get:
       tags: [Mappingfunc]
       operationId: getMappingfunc
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/MappingfuncbsDto" } } } }
     delete:
       tags: [Mappingfunc]
       operationId: deleteMappingfunc
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
 
   # =========================================================================
   # Meta
@@ -1091,45 +1381,45 @@ paths:
       tags: [Meta]
       operationId: listMetas
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiMetabsOut" } } } }
     post:
       tags: [Meta]
       operationId: createMeta
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MetabsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
     put:
       tags: [Meta]
       operationId: updateMeta
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/MetabsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /metas/{metaEngNm}:
     parameters: [{ in: path, name: metaEngNm, required: true, schema: { type: string } }]
     get:
       tags: [Meta]
       operationId: getMeta
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/MetabsDto" } } } }
     delete:
       tags: [Meta]
       operationId: deleteMeta
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
   /metas/effects:
     get:
       tags: [Meta]
       operationId: getMetaEffects
       summary: Meta 變更影響分析。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { type: array, items: { $ref: "#/components/schemas/MetaEffectDto" } } } } }
   /metas/syncs:
     get:
       tags: [Meta]
       operationId: getMetaSyncs
       summary: Meta 同步。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 同步筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
 
   # =========================================================================
   # Msglayout
@@ -1464,11 +1754,11 @@ paths:
           required: false
           schema: { type: string }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiActionhisthsOut" } } } }
     post:
       tags: [Actionhist]
       operationId: createActionhist
       summary: 新增操作歷程。
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/ActionhisthsDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 影響筆數。, content: { application/json: { schema: { type: integer, format: int32 } } } }
