@@ -1,0 +1,74 @@
+## 1. 前置調查
+
+- [ ] 1.1 讀 `eims.web.dto` 之 `IntrfcDeploy`、`IntrfcDeployResponse`、`IntrfcDeployResponseList`、`IntrfcDeployResponseResult`、`IntrfcDeployTerminal`、`IntrfcFileImportErrInfo`、`IntrfcInfo`、`IntrfcInfoExportDto`、`IntrfccombsDetail`、`IntrfcdeployInfoDto`、`GenLayoutDetailDto`、`AdminLayoutInfo`
+- [ ] 1.2 讀 `eims.web.dto.table` 之 Intrfc 系列 18 個 DTO
+- [ ] 1.3 讀 Msg 系列：`MsglayoutbsDto`、`MsglayoutbsDtoMapping`、`MsglayoutbsFileUploadDto`、`MsglayoutbsListDto`、`MsglayoutdtDto`、`MsgIdCreateDto`、`MsgInsertDto`、`MsgLayoutEffectDto`
+- [ ] 1.4 讀 `eims.web.dto.ui` 之 `UiIntrfc*` 系列與 `UiMsglayout*` 系列共 11 個 DTO
+- [ ] 1.5 確認 `IntrfccombsDetail` 是否含 `detailType`（或類似）欄位作為 discriminator；若無，改用 description 列舉
+- [ ] 1.6 比對 `IntrfcdeployInfoDto` 與 `UiIntrfcdeployhisthsOut` 欄位重疊度
+- [ ] 1.7 比對 `MsglayoutbsDtoMapping` 與 `IntrfccombsMappingDto` 欄位重疊度
+
+## 2. Schema 新增（dto 共用）
+
+- [ ] 2.1 `IntrfcDeploy`、`IntrfcDeployResponse`、`IntrfcDeployResponseList`、`IntrfcDeployResponseResult`（依 D9 巢狀展開）
+- [ ] 2.2 `IntrfcDeployTerminal`（內部用，description 註明）
+- [ ] 2.3 `IntrfcFileImportErrInfo`、`IntrfcInfo`、`IntrfcInfoExportDto`
+- [ ] 2.4 `IntrfccombsDetail`（oneOf + discriminator，依 D8）
+- [ ] 2.5 `IntrfcdeployInfoDto`、`GenLayoutDetailDto`、`AdminLayoutInfo`（若 main-auth 已加則略過）
+
+## 3. Schema 新增（table - Intrfc 系列）
+
+- [ ] 3.1 `IntrfccombsDto`、`IntrfccombsListDto`
+- [ ] 3.2 `IntrfccombsDetailCCDto`、`IntrfccombsDetailEAIDto`、`IntrfccombsDetailFEPDto`、`IntrfccombsDetailMCIDto`
+- [ ] 3.3 `IntrfccombsMappingDto`、`IntrfccombsRawDataDto`、`IntrfccombsFileUploadDto`
+- [ ] 3.4 `IntrfccomdtDto`、`IntrfcdeployhisthsDto`、`IntrfcdeploysysdtDto`
+- [ ] 3.5 `IntrfcmsglayoutdtDto`、`IntrfcroutinfodtDto`、`IntrfcsrsysdtDto`
+- [ ] 3.6 `IntrfcFileUploadDto`、`IntrfcIdCreateDto`、`IntrfcMsgFieldEncodingDto`
+
+## 4. Schema 新增（table - Msg 系列）
+
+- [ ] 4.1 `MsglayoutbsDto`、`MsglayoutbsListDto`、`MsglayoutdtDto`
+- [ ] 4.2 `MsglayoutbsDtoMapping`、`MsglayoutbsFileUploadDto`
+- [ ] 4.3 `MsgIdCreateDto`、`MsgInsertDto`、`MsgLayoutEffectDto`
+
+## 5. Schema 新增（ui）
+
+- [ ] 5.1 `UiIntrfccombsOut`、`UiIntrfccomdtOut`
+- [ ] 5.2 `UiIntrfcdeployhisthsOut`、`UiIntrfcdeploysysdtOut`、`UiIntrfcDeployResponse`、`UiIntrfcIdOut`
+- [ ] 5.3 `UiIntrfcmsglayoutdtOut`、`UiIntrfcroutinfodtOut`、`UiIntrfcsrsysdtOut`
+- [ ] 5.4 `UiMsglayoutbsOut`、`UiMsgLayoutIdOut`
+
+## 6. Path operation $ref 切換 — Intrfccom
+
+- [ ] 6.1 `/intrfccoms` POST/PUT body → `IntrfccombsDto`；GET → `UiIntrfccombsOut`
+- [ ] 6.2 `/intrfccoms/{intrfcId}` GET → `UiIntrfccombsOut`；DELETE → `CommonResponse`
+- [ ] 6.3 `/interfaceListApi` GET → `UiIntrfccombsOut` list
+- [ ] 6.4 `/intrfccoms/deploy`、`/intrfccoms/deployAll` POST body → `IntrfcDeploy`；回應 → `UiIntrfcDeployResponse`
+- [ ] 6.5 `/intrfccoms/deployhistorys`、`/intrfccoms/deployhistoryresults` GET → `UiIntrfcdeployhisthsOut`
+- [ ] 6.6 `/intrfccoms/redeploy` POST body → `IntrfcDeploy`；回應 → `UiIntrfcDeployResponse`
+- [ ] 6.7 `/intrfccoms/deploy/{intrfcId}` GET → `UiIntrfcdeployhisthsOut`
+- [ ] 6.8 `/intrfccoms/deploy/terminal` GET 回應確認為 `text/plain` + `type: string`（依 D10）
+- [ ] 6.9 `/intrfccoms/intrfcidcreate` POST body → `IntrfcIdCreateDto`；回應 → `UiIntrfcIdOut`
+- [ ] 6.10 `/intrfccoms/layoutdiff` GET 回應依 controller 反查（可能 `GenLayoutDetailDto`）
+- [ ] 6.11 `/intrfccoms/fileuploads`、`/intrfccoms/import/intrfcfiles`、`/intrfccoms/import/definition` multipart：依 D11 展開 metadata 欄位
+- [ ] 6.12 `/intrfccoms/excelexport` POST body → `IntrfccombsListDto`（查詢條件）；response `application/octet-stream`
+- [ ] 6.13 `/intrfccoms/export/intrfcinfos` GET response `application/octet-stream`
+
+## 7. Path operation $ref 切換 — Msglayout
+
+- [ ] 7.1 `/msglayouts` POST/PUT body → `MsglayoutbsDto`；GET → `UiMsglayoutbsOut`
+- [ ] 7.2 `/msglayouts/{msgLayoutId}` GET → `UiMsglayoutbsOut`；DELETE → `CommonResponse`
+- [ ] 7.3 `/msglayouts/{msgLayoutId}/effects` GET → `MsgLayoutEffectDto` array
+- [ ] 7.4 `/msglayoutstemp` POST/PUT body → `MsglayoutbsDto`（暫存版本）
+- [ ] 7.5 `/msglayoutslist` POST body → `MsglayoutbsListDto`；回應 → `UiMsglayoutbsOut` list
+- [ ] 7.6 `/msglayouts/excelexport` POST body → `MsglayoutbsListDto`；response `application/octet-stream`
+- [ ] 7.7 `/msglayouts/fileuploads` multipart：依 D11 展開
+- [ ] 7.8 `/msglayouts/extrnlMsgs` GET 回應依 controller 反查
+- [ ] 7.9 `/msglayouts/msgidcreate` POST body → `MsgIdCreateDto`；回應 → `UiMsgLayoutIdOut`
+
+## 8. 驗證
+
+- [ ] 8.1 跑 `./scripts/check-api-catalog.sh`
+- [ ] 8.2 yaml lint 通過（含 `discriminator` / `oneOf` 結構）
+- [ ] 8.3 grep `"$ref": "#/components/schemas/Generic"`，確認僅出現在 `/userstest/test` 或預留 endpoint
+- [ ] 8.4 更新 `docs/api/README.md` 之「Schema 詳細度」段落，標註本批次完成、`Generic` 退場
