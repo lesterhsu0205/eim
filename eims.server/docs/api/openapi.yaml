@@ -77,23 +77,214 @@ components:
   schemas:
     ErrorResponse:
       type: object
-      description: 共用錯誤回應，對應 `eims.web.dto.ui.ErrorResponse`。
+      description: 對應 `eims.web.dto.ui.ErrorResponse`。
       properties:
-        code:
+        responseStatus:
           type: string
-          description: 錯誤代碼。
         message:
           type: string
-          description: 錯誤訊息。
-        detail:
+        parameters:
+          type: array
+          items: { type: string }
+        stackTrace:
           type: string
-          description: 詳細資訊（選填）。
+    CommonResponse:
+      type: object
+      description: 對應 `eims.web.dto.CommonResponse`。一般成功/失敗回應；與 `ErrorResponse` 結構不同。
+      properties:
+        hasError:
+          type: boolean
+        errorMsg:
+          type: string
     Generic:
       type: object
       description: |
-        泛型佔位 schema。骨架版本未逐 DTO 展開欄位；詳見 `eims.web.dto.table.<XxxDto>`
-        或 `eims.web.dto.ui.<UiXxxOut>`。後續 change 補完細節。
+        泛型佔位 schema。本批次（main-auth）涵蓋之 DTO 已展開；尚未展開之 endpoint
+        後續 `flesh-out-schemas-data` / `flesh-out-schemas-intrfc` change 補完。
       additionalProperties: true
+
+    # ========================================================================
+    # main-auth 批次：共用 dto
+    # ========================================================================
+    SessionInfo:
+      type: object
+      description: 對應 `eims.web.dto.SessionInfo`。
+      properties:
+        userId: { type: string }
+        userPassword: { type: string, format: password }
+        locale: { type: string }
+        check:
+          type: string
+          description: 預設 `Y`。
+    UserInfo:
+      type: object
+      description: 對應 `eims.web.dto.UserInfo`。
+      properties:
+        userId: { type: string }
+        roleId: { type: string }
+        locale: { type: string }
+        type: { type: string }
+    LoginUserInfo:
+      type: object
+      description: 對應 `eims.web.dto.LoginUserInfo`。包含 session、user、perm、menu 樹。
+      properties:
+        sessionInfo:
+          $ref: "#/components/schemas/SessionInfo"
+        userDto:
+          $ref: "#/components/schemas/UserDto"
+        permList:
+          type: array
+          items: { $ref: "#/components/schemas/PermDto" }
+        menuList:
+          type: array
+          items: { $ref: "#/components/schemas/UiMenuTreeInfo" }
+
+    # ========================================================================
+    # main-auth 批次：dto.table
+    # ========================================================================
+    MenuDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MenuDto`。Jackson `NON_ABSENT` + `NON_EMPTY` + `ignoreUnknown=true`。
+      properties:
+        menuId: { type: string, description: 選單 ID }
+        menuNm: { type: string, description: 選單名稱 }
+        menuDesc: { type: string, description: 選單說明 }
+        menuSeq: { type: integer, format: int32, description: 順序 }
+        parentMenuId: { type: string, description: 上層選單 ID }
+    RoleDto:
+      type: object
+      description: 對應 `eims.web.dto.table.RoleDto`。
+      properties:
+        roleId: { type: string, description: 角色 ID }
+        roleNm: { type: string, description: 角色名稱 }
+        roleDesc: { type: string, description: 角色說明 }
+        basicMenuId: { type: string, description: 預設選單 ID }
+    PermDto:
+      type: object
+      description: 對應 `eims.web.dto.table.PermDto`。
+      properties:
+        permId: { type: string, description: 權限 ID }
+        permNm: { type: string, description: 權限名稱 }
+        permDesc: { type: string, description: 權限說明 }
+        permTypeCd: { type: string, description: 權限類別代碼 }
+        check: { type: boolean, description: 勾選狀態（popup 用） }
+    UserDto:
+      type: object
+      description: 對應 `eims.web.dto.table.UserDto`。
+      properties:
+        userId: { type: string, description: 使用者 ID }
+        userNm: { type: string, description: 使用者名稱 }
+        userPwd: { type: string, format: password, description: 使用者密碼 }
+        dutyNm: { type: string, description: 職稱 }
+        deptNm: { type: string, description: 部門 }
+        email: { type: string, format: email }
+        roleId: { type: string, description: 角色 ID }
+    AppcdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.AppcdDto`。
+      properties:
+        appCd: { type: string }
+        appCdNm: { type: string }
+        parentAppCd: { type: string }
+        lvCd: { type: string }
+        alignOrderNo: { type: integer, format: int32 }
+        appCdDesc: { type: string }
+        appUnqKey: { type: string }
+    BizcdDto:
+      type: object
+      description: 對應 `eims.web.dto.table.BizcdDto`。
+      properties:
+        bizCd: { type: string }
+        bizCdNm: { type: string }
+        bizCdDesc: { type: string }
+    MenuRoleRelDto:
+      type: object
+      description: 對應 `eims.web.dto.table.MenuRoleRelDto`。
+      properties:
+        menuId: { type: string }
+        roleId: { type: string }
+        permId: { type: string }
+    RolePermRelDto:
+      type: object
+      description: 對應 `eims.web.dto.table.RolePermRelDto`。
+      properties:
+        roleId: { type: string }
+        permId: { type: string }
+    ChangePwdInfo:
+      type: object
+      description: 對應 `eims.web.dto.table.ChangePwdInfo`。`sysCd` 序列化為 `tenantId`。
+      properties:
+        tenantId:
+          type: string
+          description: 序列化來源 `sysCd`（透過 `@JsonProperty("tenantId")`）。
+        userId: { type: string }
+        userPwd: { type: string, format: password }
+        changePwd: { type: string, format: password }
+        updateUserId: { type: string }
+        updateAppId: { type: string }
+
+    # ========================================================================
+    # main-auth 批次：dto.ui
+    # ========================================================================
+    UiMenuOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiMenuOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        menuOutList:
+          type: array
+          items: { $ref: "#/components/schemas/MenuDto" }
+    UiMenuTreeInfo:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiMenuTreeInfo`。樹狀結構節點，由 controller 端組裝。
+      properties:
+        id: { type: string }
+        parentId: { type: string }
+        name: { type: string }
+        seq: { type: integer, format: int32 }
+        description: { type: string }
+        check: { type: boolean }
+        permId: { type: string }
+    UiRoleOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiRoleOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        roleDtoList:
+          type: array
+          items: { $ref: "#/components/schemas/RoleDto" }
+    UiPermOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiPermOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        permDtoList:
+          type: array
+          items: { $ref: "#/components/schemas/PermDto" }
+    UiUserOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiUserOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        userOutList:
+          type: array
+          items: { $ref: "#/components/schemas/UserDto" }
+    UiAppcdOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiAppcdOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        appcdOutList:
+          type: array
+          items: { $ref: "#/components/schemas/AppcdDto" }
+    UiBizcdOut:
+      type: object
+      description: 對應 `eims.web.dto.ui.UiBizcdOut`。
+      properties:
+        totalCnt: { type: integer, format: int32 }
+        bizcdOutList:
+          type: array
+          items: { $ref: "#/components/schemas/BizcdDto" }
 
   responses:
     BadRequest:
@@ -134,17 +325,13 @@ paths:
         required: true
         content:
           application/json:
-            schema:
-              type: object
-              properties:
-                userId: { type: string }
-                password: { type: string, format: password }
+            schema: { $ref: "#/components/schemas/SessionInfo" }
       responses:
         "200":
-          description: 登入結果，包含 session 資訊。
+          description: 登入結果，包含 session、user、perm list 與 menu tree。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/LoginUserInfo" }
         "400": { $ref: "#/components/responses/BadRequest" }
         "401": { $ref: "#/components/responses/Unauthorized" }
         "500": { $ref: "#/components/responses/ServerError" }
@@ -185,7 +372,7 @@ paths:
           description: SSO 登入後使用者資訊。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/LoginUserInfo" }
   /bxmlogin:
     get:
       tags: [Main]
@@ -210,7 +397,7 @@ paths:
           description: 使用者資訊。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/UserInfo" }
   /logout:
     post:
       tags: [Main]
@@ -223,7 +410,7 @@ paths:
           description: 結果。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/CommonResponse" }
 
   # =========================================================================
   # Menu
@@ -240,7 +427,7 @@ paths:
           description: 選單清單。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/UiMenuOut" }
     post:
       tags: [Menu]
       operationId: createMenu
@@ -250,13 +437,13 @@ paths:
         required: true
         content:
           application/json:
-            schema: { $ref: "#/components/schemas/Generic" }
+            schema: { $ref: "#/components/schemas/MenuDto" }
       responses:
         "200":
           description: 結果。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/CommonResponse" }
     put:
       tags: [Menu]
       operationId: updateMenu
@@ -266,13 +453,13 @@ paths:
         required: true
         content:
           application/json:
-            schema: { $ref: "#/components/schemas/Generic" }
+            schema: { $ref: "#/components/schemas/MenuDto" }
       responses:
         "200":
           description: 結果。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/CommonResponse" }
   /menus/{menuId}:
     parameters:
       - in: path
@@ -288,7 +475,7 @@ paths:
           description: 選單。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/MenuDto" }
     delete:
       tags: [Menu]
       operationId: deleteMenu
@@ -298,7 +485,7 @@ paths:
           description: 結果。
           content:
             application/json:
-              schema: { $ref: "#/components/schemas/Generic" }
+              schema: { $ref: "#/components/schemas/CommonResponse" }
 
   # =========================================================================
   # Role
@@ -312,7 +499,7 @@ paths:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/UiRoleOut" } }
     post:
       tags: [Role]
       operationId: createRole
@@ -320,12 +507,12 @@ paths:
       requestBody:
         required: true
         content:
-          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+          application/json: { schema: { $ref: "#/components/schemas/RoleDto" } }
       responses:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } }
     put:
       tags: [Role]
       operationId: updateRole
@@ -333,12 +520,12 @@ paths:
       requestBody:
         required: true
         content:
-          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+          application/json: { schema: { $ref: "#/components/schemas/RoleDto" } }
       responses:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } }
   /roles/{roleId}:
     parameters:
       - in: path
@@ -353,7 +540,7 @@ paths:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/RoleDto" } }
     delete:
       tags: [Role]
       operationId: deleteRole
@@ -362,7 +549,7 @@ paths:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } }
   /roles/{roleId}/menus:
     parameters:
       - in: path
@@ -375,9 +562,12 @@ paths:
       summary: 角色對應之選單清單。
       responses:
         "200":
-          description: 結果。
+          description: 結果（menu tree）。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/UiMenuTreeInfo" }
     put:
       tags: [Role]
       operationId: updateRoleMenus
@@ -385,12 +575,15 @@ paths:
       requestBody:
         required: true
         content:
-          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+          application/json:
+            schema:
+              type: array
+              items: { $ref: "#/components/schemas/MenuRoleRelDto" }
       responses:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } }
   /roles/{roleId}/menupopups:
     parameters:
       - in: path
@@ -403,9 +596,12 @@ paths:
       summary: popup 用之選單清單。
       responses:
         "200":
-          description: 結果。
+          description: 結果（menu tree popup 視圖）。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/UiMenuTreeInfo" }
   /roles/{roleId}/menus/{menuId}:
     parameters:
       - in: path
@@ -424,7 +620,7 @@ paths:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } }
   /roles/{roleId}/perms:
     parameters:
       - in: path
@@ -439,7 +635,7 @@ paths:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/UiPermOut" } }
     put:
       tags: [Role]
       operationId: updateRolePerms
@@ -447,12 +643,15 @@ paths:
       requestBody:
         required: true
         content:
-          application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+          application/json:
+            schema:
+              type: array
+              items: { $ref: "#/components/schemas/RolePermRelDto" }
       responses:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } }
   /roles/{roleId}/permpopups:
     parameters:
       - in: path
@@ -467,7 +666,7 @@ paths:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/UiPermOut" } }
   /roles/{roleId}/perms/{permId}:
     parameters:
       - in: path
@@ -486,7 +685,7 @@ paths:
         "200":
           description: 結果。
           content:
-            application/json: { schema: { $ref: "#/components/schemas/Generic" } }
+            application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } }
 
   # =========================================================================
   # Perm
@@ -497,31 +696,31 @@ paths:
       operationId: listPerms
       summary: 權限清單。
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiPermOut" } } } }
     post:
       tags: [Perm]
       operationId: createPerm
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/PermDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
     put:
       tags: [Perm]
       operationId: updatePerm
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/PermDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
   /perms/{permId}:
     parameters: [{ in: path, name: permId, required: true, schema: { type: string } }]
     get:
       tags: [Perm]
       operationId: getPerm
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/PermDto" } } } }
     delete:
       tags: [Perm]
       operationId: deletePerm
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
 
   # =========================================================================
   # User
@@ -531,38 +730,38 @@ paths:
       tags: [User]
       operationId: listUsers
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiUserOut" } } } }
     post:
       tags: [User]
       operationId: createUser
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/UserDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
     put:
       tags: [User]
       operationId: updateUser
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/UserDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
   /users/{userId}:
     parameters: [{ in: path, name: userId, required: true, schema: { type: string } }]
     get:
       tags: [User]
       operationId: getUser
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UserDto" } } } }
     delete:
       tags: [User]
       operationId: deleteUser
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
   /userstest/test:
     post:
       tags: [User]
       operationId: userTest
       summary: 測試端點。
       x-interceptor-excluded: true
-      description: 排除於 `RequestInterceptor`。
+      description: 排除於 `RequestInterceptor`。測試用、結構不固定，保留 `Generic`。
       security: []
       requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
       responses:
@@ -576,31 +775,31 @@ paths:
       tags: [App]
       operationId: listApps
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiAppcdOut" } } } }
     post:
       tags: [App]
       operationId: createApp
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/AppcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
     put:
       tags: [App]
       operationId: updateApp
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/AppcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
   /apps/{appCd}:
     parameters: [{ in: path, name: appCd, required: true, schema: { type: string } }]
     get:
       tags: [App]
       operationId: getApp
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/AppcdDto" } } } }
     delete:
       tags: [App]
       operationId: deleteApp
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
 
   # =========================================================================
   # Biz
@@ -610,31 +809,31 @@ paths:
       tags: [Biz]
       operationId: listBizs
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/UiBizcdOut" } } } }
     post:
       tags: [Biz]
       operationId: createBiz
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/BizcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
     put:
       tags: [Biz]
       operationId: updateBiz
-      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+      requestBody: { required: true, content: { application/json: { schema: { $ref: "#/components/schemas/BizcdDto" } } } }
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
   /bizs/{bizCd}:
     parameters: [{ in: path, name: bizCd, required: true, schema: { type: string } }]
     get:
       tags: [Biz]
       operationId: getBiz
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/BizcdDto" } } } }
     delete:
       tags: [Biz]
       operationId: deleteBiz
       responses:
-        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/Generic" } } } }
+        "200": { description: 結果。, content: { application/json: { schema: { $ref: "#/components/schemas/CommonResponse" } } } }
 
   # =========================================================================
   # CommCode
